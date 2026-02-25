@@ -378,11 +378,16 @@ body.seo-page .topbar .logo{
   width:40px;
   height:40px;
   border-radius:14px;
-  background: linear-gradient(135deg, var(--a), var(--b));
-  box-shadow: 0 18px 45px rgba(124,92,255,.30);
+
+  background: linear-gradient(135deg, var(--a), var(--b)) !important;
+  box-shadow: 0 18px 45px rgba(124,92,255,.30) !important;
+
   display:grid;
   place-items:center;
   flex:none;
+
+  padding:0 !important;
+  border:0 !important;
 }
 
 /* Centrado perfecto de la U */
