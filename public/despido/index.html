@@ -1,1 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <title>Calculadora de indemnización por despido y finiquito</title>
+  <meta name="description" content="Estimación orientativa de indemnización por despido improcedente/objetivo y finiquito (vacaciones). Cálculo local, sin registro." />
+  <link rel="canonical" href="https://unahojatools.com/despido/" />
+
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Calculadora de indemnización por despido y finiquito" />
+  <meta property="og:description" content="Estimación orientativa por fechas y salario. Cálculo local." />
+  <meta property="og:url" content="https://unahojatools.com/despido/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/tools-despido.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Calculadora de despido y finiquito",
+    "url":"https://unahojatools.com/despido/",
+    "applicationCategory":"LegalApplication",
+    "operatingSystem":"All",
+    "inLanguage":"es-ES"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"¿El resultado es oficial?","acceptedAnswer":{"@type":"Answer","text":"No. Es una estimación orientativa. La cuantía real puede variar por convenio, salario regulador, topes y casuística."}},
+      {"@type":"Question","name":"¿Incluye finiquito completo?","acceptedAnswer":{"@type":"Answer","text":"Incluye una estimación simple de vacaciones pendientes. Otros conceptos (pagas, atrasos, pluses) dependen del caso."}},
+      {"@type":"Question","name":"¿Se guardan mis datos?","acceptedAnswer":{"@type":"Answer","text":"No. Todo se calcula en tu navegador."}}
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Indemnización y finiquito</p>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="/">Inicio</a>
+        <button class="btn" type="button" data-share>Compartir</button>
+        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <div class="hd"><h2>Herramientas</h2><p>Finanzas, empleo y legal.</p></div>
+        <div class="bd nav">
+          <a href="/hipoteca/"><strong>Simulador de hipoteca</strong><span>Cuota, amortización y TAE.</span></a>
+          <a href="/despido/"><strong>Indemnización y finiquito</strong><span>Estimación orientativa.</span></a>
+          <a href="/dias-habiles-2026/"><strong>Días hábiles 2026</strong><span>Contar, sumar y exportar.</span></a>
+          <a href="/validadores/"><strong>Validadores</strong><span>DNI/NIE e IBAN.</span></a>
+          <a href="/intereses/"><strong>Intereses</strong><span>Legal y demora.</span></a>
+          <a href="/paro/"><strong>Prestación</strong><span>Duración y cuantía.</span></a>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="hd">
+          <h1>Calculadora de indemnización y finiquito</h1>
+          <p>Estimación orientativa por fechas, salario y tipo de extinción.</p>
+        </div>
+
+        <div class="bd">
+          <div class="adslot" data-adslot>Espacio de anuncios (desactivado)</div>
+
+          <section style="margin-top:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field"><label>Fecha inicio contrato</label><input id="d-start" type="date" value="2018-01-01"></div>
+              <div class="field"><label>Fecha extinción</label><input id="d-end" type="date" value="2026-02-25"></div>
+
+              <div class="field">
+                <label>Tipo</label>
+                <select id="d-type">
+                  <option value="improcedente" selected>Improcedente</option>
+                  <option value="objetivo">Objetivo</option>
+                  <option value="solo_finiquito">Solo finiquito</option>
+                </select>
+              </div>
+
+              <div class="field"><label>Salario bruto mensual (€)</label><input id="d-salary" type="number" value="2000" min="0" step="10"></div>
+
+              <div class="field"><label>Pagas</label>
+                <select id="d-pagas">
+                  <option value="12">12</option>
+                  <option value="14" selected>14</option>
+                </select>
+              </div>
+
+              <div class="field"><label>Vacaciones disfrutadas este año (días)</label><input id="d-vacUsed" type="number" value="5" min="0" step="1"></div>
+            </div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" type="button" id="d-calc">Calcular</button>
+              <button class="btn" type="button" id="d-copy">Copiar</button>
+            </div>
+
+            <div class="kpis" id="d-kpis"></div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Desglose</label>
+              <div class="small" id="d-detail">Pulsa “Calcular”.</div>
+            </div>
+          </section>
+
+          <section id="faq" style="margin-top:14px">
+            <h2 style="margin:0;font-size:16px">Preguntas frecuentes</h2>
+            <p class="small"><strong>¿Es un cálculo oficial?</strong><br/>No. Es orientativo.</p>
+            <p class="small"><strong>¿Incluye todo el finiquito?</strong><br/>Incluye vacaciones pendientes de forma simple. Otros conceptos pueden variar.</p>
+          </section>
+
+          <div class="adslot" data-adslot style="margin-top:12px">Espacio de anuncios (desactivado)</div>
+
+          <div class="footer">
+            <div class="small">© <span data-year></span> UnaHojaTools</div>
+            <div class="small"><a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="consentbar" style="display:none;margin-top:16px" class="card">
+      <div class="bd">
+        <strong>Cookies y anuncios</strong>
+        <p class="small" style="margin:8px 0 10px 0">Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.</p>
+        <div class="row">
+          <button class="btn" id="consentReject" type="button">Rechazar</button>
+          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
