@@ -1,1 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <title>Cookies: UnaHojaTools</title>
+  <meta name="description" content="Información sobre cookies y consentimiento para anuncios en UnaHojaTools." />
+  <link rel="canonical" href="https://unahojatools.com/cookies/" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Cookies</p>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="/">Inicio</a>
+        <a class="btn" href="/privacidad/">Privacidad</a>
+        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1>Cookies</h1>
+      <p>Qué se guarda y cómo gestionar tu consentimiento para anuncios.</p>
+    </section>
+
+    <section class="card">
+      <div class="bd">
+        <h2 style="margin:0 0 8px 0;font-size:16px">Qué usamos</h2>
+        <p class="small">
+          Esta web guarda una preferencia de consentimiento para anuncios en el almacenamiento local del navegador.
+          No es obligatorio aceptar para usar las calculadoras.
+        </p>
+
+        <h2 style="margin:14px 0 8px 0;font-size:16px">Cambiar tu elección</h2>
+        <p class="small">
+          Pulsa “Consentimiento” para mostrar el banner y elegir de nuevo.
+        </p>
+
+        <div class="footer">
+          <div class="small">© <span data-year></span> UnaHojaTools</div>
+          <div class="small"><a href="/privacidad/">Privacidad</a></div>
+        </div>
+      </div>
+    </section>
+
+    <div id="consentbar" style="display:none;margin-top:16px" class="card">
+      <div class="bd">
+        <strong>Cookies y anuncios</strong>
+        <p class="small" style="margin:8px 0 10px 0">
+          Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.
+        </p>
+        <div class="row">
+          <button class="btn" id="consentReject" type="button">Rechazar</button>
+          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
