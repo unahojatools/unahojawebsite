@@ -423,9 +423,7 @@ body.seo-page .topbar .logo{
   place-items:center;
 }
 
-body.seo-page .topbar .logo span{
-  display:block;
-  line-height:1;
-  font-size:16px;
-  transform: translateY(-0.5px);
+body.seo-page .topbar .logo span{font-weight:950;color:#081022}
+.brand .t{margin:0;font-size:14px;font-weight:950}
+.brand .s{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
 }
