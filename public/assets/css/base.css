@@ -225,10 +225,36 @@ body.seo-page {
 body.seo-page .top {
   background: #ffffff;
   border-bottom: 1px solid #e5e7eb;
+  height: auto;
+  padding: 14px 16px;
 }
 
 body.seo-page .logo {
   color: #111827;
+  
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  background: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.2px;
+
+  color: #111827 !important;
+}
+
+body.seo-page .logo::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+
+  background: linear-gradient(135deg, #6366f1, #22d3ee);
+  flex-shrink: 0;
 }
 
 body.seo-page nav a {
@@ -239,6 +265,8 @@ body.seo-page .bd {
   max-width: 860px;
   margin: 0 auto;
   padding: 24px 16px 64px;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 body.seo-page .card {
