@@ -1,172 +1,34 @@
-:root{
-  --bg:#070b16;
-  --text:#eaf0ff;
-  --muted:#a8b3d6;
-  --line:rgba(255,255,255,.10);
-  --a:#7c5cff;
-  --b:#2dd4bf;
-  --ok:#34d399;
-  --bad:#fb7185;
-  --shadow: 0 18px 55px rgba(0,0,0,.45);
-  --r:18px;
-  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-}
+(function () {
+  const ADS = {
+    loaded: false,
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family:var(--sans);
-  color:var(--text);
-  background:
-    radial-gradient(1100px 600px at 15% -10%, rgba(124,92,255,.50), transparent 60%),
-    radial-gradient(900px 540px at 90% 10%, rgba(45,212,191,.30), transparent 55%),
-    radial-gradient(800px 540px at 70% 115%, rgba(251,113,133,.14), transparent 55%),
-    var(--bg);
-  line-height:1.4;
-}
+    // Cuando tengas anuncios, pega aquí el script (AdSense u otra red)
+    ADS_SCRIPT_HTML: "",
 
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:22px}
+    loadOnce() {
+      if (this.loaded) return;
+      if (!this.ADS_SCRIPT_HTML) return;
+      const container = document.createElement("div");
+      container.innerHTML = this.ADS_SCRIPT_HTML.trim();
 
-.topbar{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(7,11,22,.86), rgba(7,11,22,.56));
-  border-bottom:1px solid var(--line);
-}
-.topbar .wrap{display:flex;gap:14px;align-items:center;justify-content:space-between}
+      container.querySelectorAll("script").forEach(s => {
+        const ns = document.createElement("script");
+        for (const a of s.attributes) ns.setAttribute(a.name, a.value);
+        ns.textContent = s.textContent || "";
+        document.head.appendChild(ns);
+      });
 
-.brand{display:flex;gap:10px;align-items:center}
-.logo{
-  width:40px;height:40px;border-radius:14px;
-  background: linear-gradient(135deg, var(--a), var(--b));
-  box-shadow: 0 18px 45px rgba(124,92,255,.30);
-  display:grid;place-items:center;flex:none;
-}
-.logo span{font-weight:950;color:#081022}
-.brand .t{margin:0;font-size:14px;font-weight:950}
-.brand .s{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
+      this.loaded = true;
+    },
 
-.btn{
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.06);
-  color:var(--text);
-  border-radius:14px;
-  padding:10px 12px;
-  font-weight:850;font-size:13px;
-  cursor:pointer;
-  transition: transform .08s ease, border-color .2s ease, background .2s ease;
-  display:inline-flex;gap:8px;align-items:center;
-  text-decoration:none;
-}
-.btn:hover{transform: translateY(-1px);border-color:rgba(124,92,255,.45)}
-.btn.primary{
-  border:none;
-  background: linear-gradient(135deg, rgba(124,92,255,1), rgba(45,212,191,1));
-  color:#07101f;
-}
-.pill{
-  padding:6px 10px;border:1px solid var(--line);border-radius:999px;
-  color:var(--muted);font-size:12px;display:inline-flex;gap:8px;align-items:center;
-  background: rgba(255,255,255,.04);
-}
+    updateSlots(consented) {
+      document.querySelectorAll("[data-adslot]").forEach(slot => {
+        slot.textContent = consented
+          ? "Espacio de anuncios (activado)"
+          : "Espacio de anuncios (desactivado)";
+      });
+    }
+  };
 
-.hero{padding:24px 0 10px 0;}
-.hero h1{margin:0;font-size:36px;letter-spacing:-.02em}
-.hero p{margin:10px 0 0 0;color:var(--muted);max-width:80ch;font-size:15px}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.hero .row{margin-top:14px}
-
-.grid{display:grid;grid-template-columns: 320px 1fr;gap:16px;align-items:start}
-@media (max-width: 980px){ .grid{grid-template-columns:1fr} }
-
-.card{
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-  border:1px solid var(--line);
-  border-radius: var(--r);
-  box-shadow: var(--shadow);
-  overflow:hidden;
-}
-.card .hd{
-  padding:14px;border-bottom:1px solid var(--line);
-  background: linear-gradient(180deg, rgba(124,92,255,.16), transparent 65%);
-}
-.card .hd h1,.card .hd h2,.card .hd h3{margin:0;font-size:16px}
-.card .hd p{margin:6px 0 0 0;color:var(--muted);font-size:12px}
-.card .bd{padding:14px}
-
-.nav{display:flex;flex-direction:column;gap:8px}
-.nav a{
-  text-decoration:none;
-  padding:12px;border-radius:14px;border:1px solid var(--line);
-  background: rgba(255,255,255,.03);
-  display:flex;flex-direction:column;gap:4px;
-}
-.nav a:hover{border-color:rgba(45,212,191,.55)}
-.nav a.active{
-  border-color: rgba(45,212,191,.55);
-  background: linear-gradient(135deg, rgba(45,212,191,.16), rgba(124,92,255,.10));
-}
-.nav a strong{font-size:13px}
-.nav a span{font-size:12px;color:var(--muted)}
-
-.field{
-  display:flex;flex-direction:column;gap:6px;
-  background: rgba(255,255,255,.03);
-  border:1px solid var(--line);
-  padding:12px;border-radius:16px;
-}
-label{font-size:12px;color:var(--muted)}
-input, select, textarea{
-  width:100%;
-  border-radius:12px;
-  border:1px solid var(--line);
-  background: rgba(0,0,0,.14);
-  color:var(--text);
-  padding:10px 10px;
-  outline:none;
-  font-weight:750;font-size:13px;
-}
-textarea{min-height:110px;font-family:var(--mono);font-weight:650}
-
-.kpis{display:grid;grid-template-columns: repeat(4, 1fr);gap:10px;margin-top:12px;}
-@media (max-width: 980px){.kpis{grid-template-columns: repeat(2, 1fr)}}
-@media (max-width: 520px){.kpis{grid-template-columns: 1fr}}
-.kpi{
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:12px;
-  background: rgba(255,255,255,.03);
-}
-.kpi .k{font-size:12px;color:var(--muted)}
-.kpi .v{font-size:18px;font-weight:950;margin-top:6px}
-.small{font-size:12px;color:var(--muted)}
-.ok{color:var(--ok);font-weight:950}
-.bad{color:var(--bad);font-weight:950}
-
-.table{width:100%;border-collapse:collapse;font-size:12px}
-.table th,.table td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;}
-.table th:first-child,.table td:first-child{text-align:left}
-.table th{color:var(--muted);font-weight:950}
-
-.adslot{
-  border:1px dashed rgba(255,255,255,.22);
-  border-radius:16px;
-  padding:14px;
-  color:var(--muted);
-  background: rgba(0,0,0,.10);
-}
-
-.footer{
-  margin-top:16px;
-  padding-top:12px;
-  border-top:1px solid var(--line);
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  align-items:center;
-  justify-content:space-between;
-}
-.footer a{color:var(--text);text-decoration:underline;text-decoration-color: rgba(124,92,255,.55);text-underline-offset:3px}
+  window.UH_ADS = ADS;
+})();
