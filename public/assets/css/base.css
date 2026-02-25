@@ -178,3 +178,38 @@ textarea{min-height:110px;font-family:var(--mono);font-weight:650}
 @supports (-webkit-touch-callout: none) {
   body { min-height: -webkit-fill-available; }
 }
+
+/* ---- Fix overflow móvil ---- */
+
+/* Evita scroll horizontal accidental */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Hacer que los grids pasen a 1 columna en móvil */
+@media (max-width: 820px) {
+  .grid {
+    grid-template-columns: 1fr !important; /* sidebar arriba + contenido abajo */
+  }
+
+  /* Formularios: una columna */
+  .bd > section > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Asegura que cualquier cosa dentro de grids pueda encoger */
+.grid, .card, .bd, .field {
+  min-width: 0;
+}
+
+/* Inputs y selects nunca deben desbordar */
+input, select, textarea, button {
+  max-width: 100%;
+}
+
+/* Si algún elemento tiene sombras/bordes grandes, evita que se salga */
+.card, .field {
+  overflow: hidden;
+}
+
