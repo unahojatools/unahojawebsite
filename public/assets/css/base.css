@@ -236,16 +236,6 @@ body.seo-page .logo {
   display:grid;place-items:center;flex:none;
 }
 
-body.seo-page .logo::before {
-  content: "";
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
-  flex-shrink: 0;
-}
-
 body.seo-page nav a {
   color: #374151;
 }
