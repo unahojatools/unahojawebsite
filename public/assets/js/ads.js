@@ -20,7 +20,6 @@
 
     renderSlots() {
       document.querySelectorAll("[data-adslot]").forEach((el) => {
-        // Evita renderizar dos veces
         if (el.dataset.filled) return;
         el.dataset.filled = "1";
 
@@ -39,14 +38,20 @@
     },
   };
 
-  // Solo cargar si hay consentimiento
-  if (localStorage.getItem("ads_consent") === "accepted") {
+  // ✅ ESTA es tu clave real del banner (app.js)
+  const consentKey = "unahojatools_consent_ads_v1";
+  const consentValue = localStorage.getItem(consentKey); // "yes" | "no" | null
+  const consented = consentValue === "yes";
+
+  if (consented) {
+    // Cargar AdSense solo si hay consentimiento
     if (document.readyState === "complete") ADS.loadOnce();
     else window.addEventListener("load", () => ADS.loadOnce());
   } else {
-    // Si no hay consentimiento, deja un placeholder limpio
+    // Placeholder si no hay consentimiento
     document.querySelectorAll("[data-adslot]").forEach((el) => {
       el.textContent = "Espacio de anuncios (desactivado)";
+      el.removeAttribute("data-filled");
     });
   }
 })();
