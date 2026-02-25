@@ -1,1 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <title>Simulador de hipoteca: cuota, amortización y TAE aproximada</title>
+  <meta name="description" content="Calcula cuota mensual, amortización e intereses. Estima una TAE aproximada con gastos. Cálculo local, sin registro." />
+  <link rel="canonical" href="https://unahojatools.com/hipoteca/" />
+
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Simulador de hipoteca" />
+  <meta property="og:description" content="Cuota, amortización y TAE aproximada con gastos. Cálculo local." />
+  <meta property="og:url" content="https://unahojatools.com/hipoteca/" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/tools-hipoteca.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Simulador de hipoteca",
+    "url":"https://unahojatools.com/hipoteca/",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"All",
+    "inLanguage":"es-ES"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {"@type":"Question","name":"¿Qué es el sistema francés?","acceptedAnswer":{"@type":"Answer","text":"Es un método de amortización con cuota constante (si el tipo no cambia). Al principio se pagan más intereses y menos amortización; con el tiempo cambia el reparto."}},
+      {"@type":"Question","name":"¿Qué significa TAE aproximada?","acceptedAnswer":{"@type":"Answer","text":"Es una estimación del coste efectivo anual a partir de pagos y gastos introducidos. No sustituye la TAE oficial de una oferta bancaria."}}
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Simulador de hipoteca</p>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="/">Inicio</a>
+        <button class="btn" type="button" data-share>Compartir</button>
+        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <div class="hd"><h2>Herramientas</h2><p>Finanzas, empleo y legal.</p></div>
+        <div class="bd nav">
+          <a href="/hipoteca/"><strong>Simulador de hipoteca</strong><span>Cuota, amortización y TAE.</span></a>
+          <a href="/despido/"><strong>Indemnización y finiquito</strong><span>Estimación orientativa.</span></a>
+          <a href="/dias-habiles-2026/"><strong>Días hábiles 2026</strong><span>Contar, sumar y exportar.</span></a>
+          <a href="/validadores/"><strong>Validadores</strong><span>DNI/NIE e IBAN.</span></a>
+          <a href="/intereses/"><strong>Intereses</strong><span>Legal y demora.</span></a>
+          <a href="/paro/"><strong>Prestación</strong><span>Duración y cuantía.</span></a>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="hd">
+          <h1>Simulador de hipoteca</h1>
+          <p>Cuota mensual, amortización e indicador de coste efectivo aproximado.</p>
+        </div>
+
+        <div class="bd">
+          <div class="adslot" data-adslot>Espacio de anuncios (desactivado)</div>
+
+          <section style="margin-top:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field"><label>Capital (€)</label><input id="h-principal" type="number" value="200000" min="0" step="1000"></div>
+              <div class="field"><label>Plazo (años)</label><input id="h-years" type="number" value="30" min="1" step="1"></div>
+              <div class="field"><label>TIN anual (%)</label><input id="h-tin" type="number" value="3.00" min="0" step="0.01"></div>
+              <div class="field"><label>Gastos iniciales (€)</label><input id="h-upfront" type="number" value="2000" min="0" step="50"></div>
+              <div class="field"><label>Gastos mensuales (€/mes)</label><input id="h-monthlyFees" type="number" value="0" min="0" step="1"></div>
+              <div class="field"><label>Amortización extra anual (€)</label><input id="h-extra" type="number" value="0" min="0" step="50"></div>
+            </div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" type="button" id="h-calc">Calcular</button>
+              <button class="btn" type="button" id="h-exportCsv">Exportar CSV</button>
+              <button class="btn" type="button" id="h-copy">Copiar</button>
+            </div>
+
+            <div class="kpis" id="h-kpis"></div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Tabla (resumen anual)</label>
+              <div style="overflow:auto">
+                <table class="table" id="h-table">
+                  <thead><tr><th>Año</th><th>Pago anual</th><th>Interés</th><th>Amortización</th><th>Saldo</th></tr></thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="small" style="margin-top:8px">
+                La TAE mostrada es una aproximación basada en flujos y gastos introducidos.
+              </div>
+            </div>
+          </section>
+
+          <section id="faq" style="margin-top:14px">
+            <h2 style="margin:0;font-size:16px">Preguntas frecuentes</h2>
+            <p class="small"><strong>¿Se guardan mis datos?</strong><br/>No. Todo se calcula en tu navegador.</p>
+          </section>
+
+          <div class="adslot" data-adslot style="margin-top:12px">Espacio de anuncios (desactivado)</div>
+
+          <div class="footer">
+            <div class="small">© <span data-year></span> UnaHojaTools</div>
+            <div class="small"><a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="consentbar" style="display:none;margin-top:16px" class="card">
+      <div class="bd">
+        <strong>Cookies y anuncios</strong>
+        <p class="small" style="margin:8px 0 10px 0">Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.</p>
+        <div class="row">
+          <button class="btn" id="consentReject" type="button">Rechazar</button>
+          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
