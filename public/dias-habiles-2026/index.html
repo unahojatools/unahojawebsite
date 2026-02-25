@@ -1,1 +1,151 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <title>Calculadora de días hábiles 2026 por CCAA</title>
+  <meta name="description" content="Cuenta días hábiles entre fechas, suma N días hábiles y exporta festivos a calendario (ICS). Cálculo local, sin registro." />
+  <link rel="canonical" href="https://unahojatools.com/dias-habiles-2026/" />
+
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Calculadora de días hábiles 2026 por CCAA" />
+  <meta property="og:description" content="Cuenta y suma días hábiles. Exporta festivos a ICS. Cálculo local." />
+  <meta property="og:url" content="https://unahojatools.com/dias-habiles-2026/" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/tools-habiles.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Calculadora de días hábiles 2026",
+    "url":"https://unahojatools.com/dias-habiles-2026/",
+    "applicationCategory":"ProductivityApplication",
+    "operatingSystem":"All",
+    "inLanguage":"es-ES"
+  }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Días hábiles 2026</p>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="/">Inicio</a>
+        <button class="btn" type="button" data-share>Compartir</button>
+        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <div class="hd"><h2>Herramientas</h2><p>Finanzas, empleo y legal.</p></div>
+        <div class="bd nav">
+          <a href="/hipoteca/"><strong>Simulador de hipoteca</strong><span>Cuota, amortización y TAE.</span></a>
+          <a href="/despido/"><strong>Indemnización y finiquito</strong><span>Estimación orientativa.</span></a>
+          <a href="/dias-habiles-2026/"><strong>Días hábiles 2026</strong><span>Contar, sumar y exportar.</span></a>
+          <a href="/validadores/"><strong>Validadores</strong><span>DNI/NIE e IBAN.</span></a>
+          <a href="/intereses/"><strong>Intereses</strong><span>Legal y demora.</span></a>
+          <a href="/paro/"><strong>Prestación</strong><span>Duración y cuantía.</span></a>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="hd">
+          <h1>Calculadora de días hábiles 2026</h1>
+          <p>Cuenta días hábiles y calcula la fecha final al sumar N días.</p>
+        </div>
+
+        <div class="bd">
+          <div class="adslot" data-adslot>Espacio de anuncios (desactivado)</div>
+
+          <section style="margin-top:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field">
+                <label>Comunidad Autónoma</label>
+                <select id="c-ccaa">
+                  <option value="MD" selected>Comunidad de Madrid</option>
+                  <option value="VC">Comunitat Valenciana</option>
+                  <option value="CT">Cataluña</option>
+                  <option value="AN">Andalucía</option>
+                  <option value="PV">País Vasco</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Incluir fecha inicio</label>
+                <select id="c-incStart">
+                  <option value="no" selected>No</option>
+                  <option value="si">Sí</option>
+                </select>
+              </div>
+
+              <div class="field"><label>Fecha inicio</label><input id="c-start" type="date" value="2026-01-01"></div>
+              <div class="field"><label>Fecha fin</label><input id="c-end" type="date" value="2026-02-25"></div>
+
+              <div class="field"><label>Sumar N días hábiles</label><input id="c-n" type="number" value="10" min="0" step="1"></div>
+
+              <div class="field">
+                <label>Exportar festivos</label>
+                <button class="btn" type="button" id="c-exportIcs">Descargar ICS</button>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" type="button" id="c-calc">Calcular</button>
+              <button class="btn" type="button" id="c-copy">Copiar</button>
+            </div>
+
+            <div class="kpis" id="c-kpis"></div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Nota</label>
+              <div class="small">
+                La herramienta funciona con el dataset incluido en el JS. Puedes ampliarlo con todos los festivos 2026 por CCAA.
+              </div>
+            </div>
+          </section>
+
+          <section id="faq" style="margin-top:14px">
+            <h2 style="margin:0;font-size:16px">Preguntas frecuentes</h2>
+            <p class="small"><strong>¿Cuenta fines de semana?</strong><br/>No. Sábados y domingos no se cuentan como hábiles.</p>
+            <p class="small"><strong>¿Incluye festivos?</strong><br/>Sí, si están en la lista de la CCAA seleccionada.</p>
+          </section>
+
+          <div class="adslot" data-adslot style="margin-top:12px">Espacio de anuncios (desactivado)</div>
+
+          <div class="footer">
+            <div class="small">© <span data-year></span> UnaHojaTools</div>
+            <div class="small"><a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="consentbar" style="display:none;margin-top:16px" class="card">
+      <div class="bd">
+        <strong>Cookies y anuncios</strong>
+        <p class="small" style="margin:8px 0 10px 0">Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.</p>
+        <div class="row">
+          <button class="btn" id="consentReject" type="button">Rechazar</button>
+          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
