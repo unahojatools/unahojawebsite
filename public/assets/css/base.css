@@ -312,9 +312,16 @@ body.seo-page .foot {
 }
 
 /* =========================
-   Consent bar (SEO page)
+   MODO LECTURA / SEO
+   Objetivo: contenido claro + header idéntico a home
    ========================= */
 
+body.seo-page{
+  background:#f6f7fb;
+  color:#111827;
+}
+
+/* Skip link: oculto salvo foco */
 body.seo-page .skip-link{
   position:absolute;
   left:-9999px;
@@ -332,12 +339,140 @@ body.seo-page .skip-link:focus{
   background:#ffffff;
   border:1px solid #e5e7eb;
   border-radius:12px;
-  z-index:1001;
+  z-index:2000;
   color:#111827;
   text-decoration:none;
 }
 
-/* Banner */
+/* =========================
+   Header: usa el de la home (topbar)
+   ========================= */
+
+/* No uses estilos antiguos del header SEO (.top) */
+body.seo-page .top{ display:none; }
+
+/* El header topbar se mantiene oscuro (como home) */
+body.seo-page .topbar{
+  color:var(--text);
+}
+
+/* Evita que el modo lectura afecte a enlaces del header */
+body.seo-page .topbar a,
+body.seo-page .topbar button{
+  color:inherit;
+}
+
+/* Asegura que el bloque brand no se subraye en móvil */
+body.seo-page .topbar .brand{
+  text-decoration:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Importante: anula el logo alternativo del SEO (no queremos ::before aquí) */
+body.seo-page .topbar .logo::before{
+  content:none !important;
+}
+
+/* Restaura el logo cuadrado (idéntico a home) */
+body.seo-page .topbar .logo{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  background: linear-gradient(135deg, var(--a), var(--b));
+  box-shadow: 0 18px 45px rgba(124,92,255,.30);
+  display:grid;
+  place-items:center;
+  flex:none;
+}
+
+/* Centrado perfecto de la U */
+body.seo-page .topbar .logo span{
+  display:block;
+  line-height:1;
+  font-weight:950;
+  color:#081022;
+}
+
+/* Asegura textos del brand igual que home */
+body.seo-page .topbar .brand .t{
+  margin:0;
+  font-size:14px;
+  font-weight:950;
+  color:var(--text);
+}
+body.seo-page .topbar .brand .s{
+  margin:2px 0 0 0;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* Botón activo en header (si lo usas) */
+body.seo-page .topbar .btn.active{
+  border-color: rgba(45,212,191,.55);
+  background: linear-gradient(135deg, rgba(45,212,191,.16), rgba(124,92,255,.10));
+}
+
+/* =========================
+   Contenido: modo lectura claro
+   ========================= */
+
+body.seo-page .bd{
+  max-width:860px;
+  margin:0 auto;
+  padding: 24px 16px 64px;
+  font-size:0.95rem;
+  font-weight:500;
+}
+
+/* Separación para que el contenido no “choque” con el sticky header en móvil */
+@media (max-width: 640px){
+  body.seo-page .bd{
+    padding-top: 32px;
+  }
+}
+
+body.seo-page .card{
+  background:#ffffff;
+  border:1px solid #e5e7eb;
+  box-shadow:none;
+}
+
+body.seo-page h1{
+  font-size:2rem;
+  line-height:1.25;
+  margin:0 0 16px 0;
+}
+body.seo-page h2{
+  margin-top:32px;
+  font-size:1.35rem;
+}
+body.seo-page h3{
+  margin-top:20px;
+  font-size:1.05rem;
+}
+
+body.seo-page p,
+body.seo-page li{
+  font-size:1rem;
+  line-height:1.7;
+  color:#1f2937;
+}
+
+body.seo-page ul{ padding-left:1.25rem; }
+
+body.seo-page .adslot{
+  margin:32px 0;
+}
+
+body.seo-page .foot{
+  background:#ffffff;
+  border-top:1px solid #e5e7eb;
+}
+
+/* =========================
+   Consent bar (SEO page)
+   ========================= */
+
 body.seo-page .consentbar{
   position:fixed;
   left:16px;
@@ -346,6 +481,7 @@ body.seo-page .consentbar{
   z-index:1000;
   display:none;
 }
+
 body.seo-page .consentbar__inner{
   max-width:860px;
   margin:0 auto;
@@ -353,26 +489,28 @@ body.seo-page .consentbar__inner{
   border:1px solid #e5e7eb;
   border-radius:16px;
   box-shadow: 0 18px 55px rgba(0,0,0,.10);
-  padding:14px 14px;
+  padding:14px;
   display:flex;
   gap:12px;
   align-items:center;
   justify-content:space-between;
 }
+
 body.seo-page .consentbar__text{
   margin:0;
   color:#1f2937;
   font-size:0.95rem;
   line-height:1.5;
 }
+
 body.seo-page .consentbar__actions{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  flex: none;
+  flex:none;
 }
 
-/* Botones del banner usando el estilo global (.btn / .btn.primary) */
+/* Botones del banner con look coherente en modo lectura */
 body.seo-page .consentbar .btn{
   border:1px solid #e5e7eb;
   background:#ffffff;
@@ -397,7 +535,6 @@ body.seo-page .consentbar .btn.primary{
   color:#081022;
 }
 
-/* Responsive */
 @media (max-width: 720px){
   body.seo-page .consentbar__inner{
     flex-direction:column;
@@ -406,24 +543,4 @@ body.seo-page .consentbar .btn.primary{
   body.seo-page .consentbar__actions{
     justify-content:flex-start;
   }
-}
-
-.btn.active{
-  border-color: rgba(45,212,191,.55);
-  background: linear-gradient(135deg, rgba(45,212,191,.16), rgba(124,92,255,.10));
-}
-
-body.seo-page .topbar,
-body.seo-page .topbar *{
-  color: inherit;
-}
-
-body.seo-page .topbar .logo{
-  display:grid;
-  place-items:center;
-}
-
-body.seo-page .topbar .logo span{font-weight:950;color:#081022}
-.brand .t{margin:0;font-size:14px;font-weight:950}
-.brand .s{margin:2px 0 0 0;font-size:12px;color:var(--muted)}
 }
