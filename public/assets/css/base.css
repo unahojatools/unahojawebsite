@@ -213,3 +213,72 @@ input, select, textarea, button {
   overflow: hidden;
 }
 
+/* =========================
+   MODO LECTURA / SEO
+   ========================= */
+
+body.seo-page {
+  background: #f6f7fb;
+  color: #111827;
+}
+
+body.seo-page .top {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+body.seo-page .logo {
+  color: #111827;
+}
+
+body.seo-page nav a {
+  color: #374151;
+}
+
+body.seo-page .bd {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+body.seo-page .card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: none;
+}
+
+body.seo-page h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+
+body.seo-page h2 {
+  margin-top: 32px;
+  font-size: 1.35rem;
+}
+
+body.seo-page h3 {
+  margin-top: 20px;
+  font-size: 1.05rem;
+}
+
+body.seo-page p,
+body.seo-page li {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1f2937;
+}
+
+body.seo-page ul {
+  padding-left: 1.25rem;
+}
+
+body.seo-page .adslot {
+  margin: 32px 0;
+}
+
+body.seo-page .foot {
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
