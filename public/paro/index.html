@@ -1,1 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <title>Simulador de prestación contributiva: duración y cuantía</title>
+  <meta name="description" content="Estimación orientativa de duración y cuantía de la prestación contributiva según días cotizados y base diaria. Cálculo local." />
+  <link rel="canonical" href="https://unahojatools.com/paro/" />
+
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Simulador de prestación contributiva" />
+  <meta property="og:description" content="Duración y cuantía aproximadas. Cálculo local." />
+  <meta property="og:url" content="https://unahojatools.com/paro/" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/tools-paro.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Simulador de prestación contributiva",
+    "url":"https://unahojatools.com/paro/",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"All",
+    "inLanguage":"es-ES"
+  }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Prestación</p>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="/">Inicio</a>
+        <button class="btn" type="button" data-share>Compartir</button>
+        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <div class="hd"><h2>Herramientas</h2><p>Finanzas, empleo y legal.</p></div>
+        <div class="bd nav">
+          <a href="/hipoteca/"><strong>Simulador de hipoteca</strong><span>Cuota, amortización y TAE.</span></a>
+          <a href="/despido/"><strong>Indemnización y finiquito</strong><span>Estimación orientativa.</span></a>
+          <a href="/dias-habiles-2026/"><strong>Días hábiles 2026</strong><span>Contar, sumar y exportar.</span></a>
+          <a href="/validadores/"><strong>Validadores</strong><span>DNI/NIE e IBAN.</span></a>
+          <a href="/intereses/"><strong>Intereses</strong><span>Legal y demora.</span></a>
+          <a href="/paro/"><strong>Prestación</strong><span>Duración y cuantía.</span></a>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="hd">
+          <h1>Simulador de prestación contributiva</h1>
+          <p>Estimación orientativa según cotización y base diaria.</p>
+        </div>
+
+        <div class="bd">
+          <div class="adslot" data-adslot>Espacio de anuncios (desactivado)</div>
+
+          <section style="margin-top:12px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field"><label>Días cotizados (últimos 6 años)</label><input id="s-cot" type="number" value="900" min="0" step="1"></div>
+              <div class="field"><label>Base reguladora diaria (€)</label><input id="s-base" type="number" value="50" min="0" step="0.1"></div>
+              <div class="field"><label>Hijos a cargo</label><select id="s-hijos"><option value="0" selected>0</option><option value="1">1</option><option value="2">2 o más</option></select></div>
+              <div class="field"><label>Jornada</label><select id="s-jornada"><option value="1" selected>Completa</option><option value="0.75">Parcial 75%</option><option value="0.5">Parcial 50%</option></select></div>
+            </div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" type="button" id="s-calc">Simular</button>
+              <button class="btn" type="button" id="s-copy">Copiar</button>
+            </div>
+
+            <div class="kpis" id="s-kpis"></div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Nota</label>
+              <div class="small">Estimación orientativa. La cuantía real depende de topes y reglas vigentes.</div>
+            </div>
+          </section>
+
+          <div class="adslot" data-adslot style="margin-top:12px">Espacio de anuncios (desactivado)</div>
+
+          <div class="footer">
+            <div class="small">© <span data-year></span> UnaHojaTools</div>
+            <div class="small"><a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="consentbar" style="display:none;margin-top:16px" class="card">
+      <div class="bd">
+        <strong>Cookies y anuncios</strong>
+        <p class="small" style="margin:8px 0 10px 0">Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.</p>
+        <div class="row">
+          <button class="btn" id="consentReject" type="button">Rechazar</button>
+          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
