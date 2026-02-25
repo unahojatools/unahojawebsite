@@ -417,3 +417,15 @@ body.seo-page .topbar,
 body.seo-page .topbar *{
   color: inherit;
 }
+
+body.seo-page .topbar .logo{
+  display:grid;
+  place-items:center;
+}
+
+body.seo-page .topbar .logo span{
+  display:block;
+  line-height:1;
+  font-size:16px;
+  transform: translateY(-0.5px);
+}
