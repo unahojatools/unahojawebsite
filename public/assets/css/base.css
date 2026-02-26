@@ -307,12 +307,12 @@ main #consentbar               { animation-delay: .22s; }
   margin: 0 0 14px;
   font-family: var(--font-display);
   font-size: clamp(28px, 4vw, 44px);
-  font-weight: 900;
-  line-height: 1.15;
-  letter-spacing: -.03em;
+  font-weight: 800;        /* de 900 a 800: menos aplastado */
+  line-height: 1.2;
+  letter-spacing: -.015em; /* de -.03em a -.015em: menos comprimido */
 
-  /* Gradient text */
-  background: linear-gradient(135deg, #fff 30%, rgba(124, 92, 255, .90) 80%);
+  /* Gradient text más suave: blanco limpio con toque violeta al final */
+  background: linear-gradient(135deg, #fff 50%, rgba(160, 130, 255, .85) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
