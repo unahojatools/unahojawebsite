@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Página no encontrada | UnaHojaTools</title>
+  <meta name="robots" content="noindex,follow" />
+
+  <meta name="theme-color" content="#070b16" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+  <link rel="stylesheet"          href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+  <link rel="preload" as="style" href="/assets/css/base.css" />
+  <link rel="stylesheet"         href="/assets/css/base.css" />
+
+  <style>
+    .not-found {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100svh - 70px); /* descuenta el topbar */
+      text-align: center;
+      padding: 40px 22px;
+    }
+
+    .not-found-code {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 18vw, 160px);
+      font-weight: 900;
+      line-height: 1;
+      margin: 0;
+      background: linear-gradient(135deg, var(--a), var(--b));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .not-found-title {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 800;
+      margin: 16px 0 10px;
+      letter-spacing: -.02em;
+    }
+
+    .not-found-desc {
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 44ch;
+      margin: 0 0 32px;
+      line-height: 1.6;
+    }
+
+    .not-found-tools {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 520px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 480px) {
+      .not-found-tools { grid-template-columns: 1fr 1fr; }
+    }
+
+    .not-found-tools a {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--r-sm);
+      background: var(--surface-2);
+      text-decoration: none;
+      transition: border-color .18s ease, background .18s ease, transform .12s var(--ease);
+    }
+
+    .not-found-tools a:hover {
+      border-color: rgba(45, 212, 191, .45);
+      background: rgba(45, 212, 191, .06);
+      transform: translateY(-2px);
+    }
+
+    .not-found-tools a strong {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .not-found-tools a span {
+      font-size: 11px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="UnaHojaTools — ir a inicio">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Calculadoras útiles sin registro</p>
+        </div>
+      </a>
+      <div class="row">
+        <a class="btn primary" href="/">Ir a inicio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="not-found" role="main">
+
+      <p class="not-found-code" aria-hidden="true">404</p>
+
+      <h1 class="not-found-title">Esta página no existe</h1>
+      <p class="not-found-desc">
+        La URL que has introducido no existe o ha cambiado de dirección.
+        Prueba con una de las herramientas de abajo o vuelve al inicio.
+      </p>
+
+      <nav class="not-found-tools" aria-label="Acceso rápido a herramientas">
+        <a href="/hipoteca/">
+          <strong>Hipoteca</strong>
+          <span>Cuota y amortización</span>
+        </a>
+        <a href="/despido/">
+          <strong>Despido</strong>
+          <span>Indemnización y finiquito</span>
+        </a>
+        <a href="/dias-habiles-2026/">
+          <strong>Días hábiles</strong>
+          <span>Contar y exportar</span>
+        </a>
+        <a href="/paro/">
+          <strong>Paro</strong>
+          <span>Prestación y duración</span>
+        </a>
+        <a href="/intereses/">
+          <strong>Intereses</strong>
+          <span>Legal y demora</span>
+        </a>
+        <a href="/validadores/">
+          <strong>Validadores</strong>
+          <span>DNI/NIE e IBAN</span>
+        </a>
+      </nav>
+
+      <a class="btn primary" href="/">← Volver al inicio</a>
+
+    </div>
+  </main>
+
+  <script defer src="/assets/js/app.js"></script>
+</body>
+</html>
