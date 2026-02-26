@@ -185,22 +185,33 @@
       </section>
 
     </div>
-  </main>
 
-<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
          GUÍAS SEO — enlazado interno desde home
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <section class="guides" aria-labelledby="guides-title">
+
       <div class="guides-hd">
         <h2 id="guides-title">Guías y explicaciones</h2>
         <p>Cómo funciona cada cálculo, con ejemplos y normativa actualizada.</p>
       </div>
 
-      <ul class="guides-list" role="list">
+      <!-- Filtros por categoría -->
+      <div class="guides-filters" role="group" aria-label="Filtrar guías por categoría">
+        <button class="filter-btn active" data-filter="all" type="button">Todas</button>
+        <button class="filter-btn" data-filter="Despido"      type="button">Despido</button>
+        <button class="filter-btn" data-filter="Hipoteca"     type="button">Hipoteca</button>
+        <button class="filter-btn" data-filter="Días hábiles" type="button">Días hábiles</button>
+        <button class="filter-btn" data-filter="Paro"         type="button">Paro</button>
+        <button class="filter-btn" data-filter="Intereses"    type="button">Intereses</button>
+        <button class="filter-btn" data-filter="Validadores"  type="button">Validadores</button>
+      </div>
 
-        <li class="guide-card">
+      <ul class="guides-list" role="list" id="guides-list">
+
+        <li class="guide-card" data-category="Despido">
           <span class="guide-tag">Despido</span>
-          <a class="guide-title" href="/indemnización-despido-improcedente/">
+          <a class="guide-title" href="/indemnizacion-despido-improcedente/">
             Indemnización por despido improcedente: cálculo, topes y ejemplo
           </a>
           <p class="guide-desc">
@@ -208,7 +219,7 @@
           </p>
         </li>
 
-        <li class="guide-card">
+        <li class="guide-card" data-category="Despido">
           <span class="guide-tag">Despido</span>
           <a class="guide-title" href="/indemnizacion-despido-objetivo/">
             Indemnización por despido objetivo: cuándo aplica y cómo se calcula
@@ -218,7 +229,7 @@
           </p>
         </li>
 
-        <li class="guide-card">
+        <li class="guide-card" data-category="Despido">
           <span class="guide-tag">Despido</span>
           <a class="guide-title" href="/despido-33-dias-por-ano/">
             Indemnización por despido improcedente: 33 días por año trabajado
@@ -228,47 +239,83 @@
           </p>
         </li>
 
-            <li class="guide-card">
-          <span class="guide-tag">Despido</span>
-          <a class="guide-title" href="/calcular-finiquito/">
-            Calcular finiquito: la guía definitiva
+        <li class="guide-card" data-category="Hipoteca">
+          <span class="guide-tag">Hipoteca</span>
+          <a class="guide-title" href="/como-calcular-cuota-hipoteca/">
+            Cómo calcular la cuota de una hipoteca paso a paso
           </a>
           <p class="guide-desc">
-            Lo que necesitas para calcular correctamente tu indemnización por despido
+            Fórmula francesa, diferencia entre TIN y TAE, y ejemplo con una hipoteca de 200.000 €.
           </p>
         </li>
 
-      <li class="guide-card">
-        <span class="guide-tag">Días hábiles</span>
-        <a class="guide-title" href="/festivos-nacionales-2026/">
-        Festivos nacionales 2026 en España: calendario completo
-      </a>
-      <p class="guide-desc">
-        Lista oficial de los 12 festivos nacionales, día de la semana y efecto en el cómputo de días hábiles.
-      </p>
-    </li>
-  
-    <li class="guide-card">
-      <span class="guide-tag">Paro</span>
-      <a class="guide-title" href="/cuanto-cobra-paro-espana/">
-        ¿Cuánto se cobra de paro en España? Cálculo de la prestación
-      </a>
-      <p class="guide-desc">
-        Base reguladora, porcentajes del 70% y 50%, topes mínimos y máximos con ejemplos reales.
-      </p>
-    </li>
-  
-    <li class="guide-card">
-      <span class="guide-tag">Hipoteca</span>
-      <a class="guide-title" href="/como-calcular-cuota-hipoteca/">
-        Cómo calcular la cuota de una hipoteca paso a paso
-      </a>
-      <p class="guide-desc">
-        Fórmula francesa, diferencia entre TIN y TAE, y ejemplo con una hipoteca de 200.000 €.
-      </p>
-    </li>
-                
+        <li class="guide-card" data-category="Hipoteca">
+          <span class="guide-tag">Hipoteca</span>
+          <a class="guide-title" href="/amortizacion-anticipada-hipoteca/">
+            Amortización anticipada de hipoteca: ¿compensa y cuánto ahorra?
+          </a>
+          <p class="guide-desc">
+            Cuánto se ahorra amortizando capital, comisiones aplicables y cuándo merece la pena hacerlo.
+          </p>
+        </li>
+
+        <li class="guide-card" data-category="Hipoteca">
+          <span class="guide-tag">Hipoteca</span>
+          <a class="guide-title" href="/gastos-hipoteca-compraventa/">
+            Gastos de hipoteca y compraventa: qué paga el comprador en 2026
+          </a>
+          <p class="guide-desc">
+            Notaría, registro, gestoría, tasación e impuestos. Cuánto supone en total sobre el precio de la vivienda.
+          </p>
+        </li>
+
+        <li class="guide-card" data-category="Días hábiles">
+          <span class="guide-tag">Días hábiles</span>
+          <a class="guide-title" href="/festivos-nacionales-2026/">
+            Festivos nacionales 2026 en España: calendario completo
+          </a>
+          <p class="guide-desc">
+            Lista oficial de los 12 festivos nacionales, día de la semana y efecto en el cómputo de días hábiles.
+          </p>
+        </li>
+
+        <li class="guide-card" data-category="Paro">
+          <span class="guide-tag">Paro</span>
+          <a class="guide-title" href="/cuanto-cobra-paro-espana/">
+            ¿Cuánto se cobra de paro en España? Cálculo de la prestación
+          </a>
+          <p class="guide-desc">
+            Base reguladora, porcentajes del 70% y 50%, topes mínimos y máximos con ejemplos reales.
+          </p>
+        </li>
+
+        <li class="guide-card" data-category="Intereses">
+          <span class="guide-tag">Intereses</span>
+          <a class="guide-title" href="/interes-legal-dinero-2026/">
+            Interés legal del dinero 2026: valor oficial y cómo aplicarlo
+          </a>
+          <p class="guide-desc">
+            Tipo fijado en los Presupuestos Generales, diferencia con el interés de demora y usos habituales.
+          </p>
+        </li>
+
+        <li class="guide-card" data-category="Validadores">
+          <span class="guide-tag">Validadores</span>
+          <a class="guide-title" href="/como-validar-dni-nie-espana/">
+            Cómo se valida un DNI o NIE en España: letra de control
+          </a>
+          <p class="guide-desc">
+            Algoritmo oficial para calcular la letra del DNI/NIE y detectar errores tipográficos.
+          </p>
+        </li>
+
       </ul>
+
+      <!-- Mensaje cuando no hay resultados (no debería ocurrir con estos filtros) -->
+      <p class="guides-empty" id="guides-empty" hidden>
+        No hay guías en esta categoría todavía.
+      </p>
+
     </section>
 
     <footer class="footer" role="contentinfo">
@@ -282,9 +329,6 @@
 
   </main>
 
-
-
-  
   <!-- Consent bar: fuera del <main>, es una notificación global -->
   <div
     id="consentbar"
@@ -299,7 +343,7 @@
       <div>
         <strong>Cookies y anuncios</strong>
         <p class="small">
-          Si aceptas, podremos cargar scripts de anuncios para seguir mejorando. Si rechazas, no se cargan.
+          Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.
           Puedes cambiarlo cuando quieras.
         </p>
       </div>
@@ -309,6 +353,10 @@
       </div>
     </div>
   </div>
+
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/guides-filter.js"></script>
 
 </body>
 </html>
