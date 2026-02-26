@@ -8,50 +8,71 @@
   <meta name="description" content="Calculadoras para España: hipoteca, despido, días hábiles 2026, validación DNI/IBAN, intereses y prestación. Cálculo local, sin registro." />
   <link rel="canonical" href="https://unahojatools.com/" />
 
-  <meta property="og:locale" content="es_ES" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="UnaHojaTools: calculadoras útiles sin registro" />
+  <!-- Open Graph / Social -->
+  <meta property="og:locale"      content="es_ES" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="UnaHojaTools: calculadoras útiles sin registro" />
   <meta property="og:description" content="Herramientas rápidas, claras y exportables. Cálculo local." />
-  <meta property="og:url" content="https://unahojatools.com/" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url"         content="https://unahojatools.com/" />
+  <meta property="og:image"       content="https://unahojatools.com/assets/img/og-cover.png" />
+  <meta name="twitter:card"       content="summary_large_image" />
 
+  <!-- Barra del navegador en móvil -->
+  <meta name="theme-color" content="#070b16" />
+
+  <!-- Fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+
+  <!-- CSS -->
+  <link rel="preload" as="style" href="/assets/css/base.css" />
   <link rel="stylesheet" href="/assets/css/base.css" />
+
+  <!-- Scripts -->
   <script defer src="/assets/js/ads.js"></script>
   <script defer src="/assets/js/app.js"></script>
 
   <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"WebSite",
-    "name":"UnaHojaTools",
-    "url":"https://unahojatools.com/",
-    "inLanguage":"es-ES"
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "UnaHojaTools",
+    "url": "https://unahojatools.com/",
+    "inLanguage": "es-ES"
   }
   </script>
 </head>
 
 <body>
+
   <header class="topbar">
     <div class="wrap">
-      <div class="brand">
+      <!-- Brand como enlace a la home -->
+      <a class="brand" href="/" aria-label="UnaHojaTools — ir a inicio">
         <div class="logo" aria-hidden="true"><span>U</span></div>
         <div>
           <p class="t">UnaHojaTools</p>
           <p class="s">Calculadoras útiles sin registro</p>
         </div>
-      </div>
+      </a>
+
       <div class="row">
         <span class="pill">🔒 Cálculo local</span>
         <a class="btn" href="/privacidad/">Privacidad</a>
         <a class="btn" href="/cookies/">Cookies</a>
-        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+        <button class="btn" type="button" data-manage-consent aria-label="Gestionar preferencias de consentimiento">
+          Consentimiento
+        </button>
       </div>
     </div>
   </header>
 
   <main class="wrap">
-    <section class="hero">
-      <h1>Calculadoras que resuelven el resultado en segundos.</h1>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Calculadoras que resuelven el resultado en segundos.</h1>
       <p>
         Herramientas pensadas para España: finanzas, empleo y legal. Sin cuentas, sin backend, sin enviar tus datos.
         Exporta, copia o imprime cuando lo necesites.
@@ -59,38 +80,60 @@
       <div class="row">
         <a class="btn primary" href="/hipoteca/">Abrir simulador de hipoteca</a>
         <a class="btn" href="/dias-habiles-2026/">Contar días hábiles 2026</a>
-        <button class="btn" type="button" data-share>Compartir</button>
+        <button class="btn" type="button" data-share aria-label="Compartir esta página">Compartir</button>
       </div>
     </section>
 
     <div class="grid">
-      <aside class="card">
+
+      <aside class="card" aria-label="Listado de herramientas disponibles">
         <div class="hd">
           <h2>Herramientas</h2>
           <p>Elige la que necesitas ahora.</p>
         </div>
-        <div class="bd nav">
-          <a href="/hipoteca/"><strong>Simulador de hipoteca</strong><span>Cuota, amortización y TAE aproximada.</span></a>
-          <a href="/despido/"><strong>Indemnización y finiquito</strong><span>Estimación orientativa.</span></a>
-          <a href="/dias-habiles-2026/"><strong>Días hábiles 2026</strong><span>Contar, sumar y exportar.</span></a>
-          <a href="/validadores/"><strong>Validadores</strong><span>DNI/NIE e IBAN.</span></a>
-          <a href="/intereses/"><strong>Intereses</strong><span>Legal y demora.</span></a>
-          <a href="/paro/"><strong>Prestación</strong><span>Duración y cuantía.</span></a>
-        </div>
+        <nav class="nav" aria-label="Navegación de herramientas">
+          <a href="/hipoteca/">
+            <strong>Simulador de hipoteca</strong>
+            <span>Cuota, amortización y TAE aproximada.</span>
+          </a>
+          <a href="/despido/">
+            <strong>Indemnización y finiquito</strong>
+            <span>Estimación orientativa.</span>
+          </a>
+          <a href="/dias-habiles-2026/">
+            <strong>Días hábiles 2026</strong>
+            <span>Contar, sumar y exportar.</span>
+          </a>
+          <a href="/validadores/">
+            <strong>Validadores</strong>
+            <span>DNI/NIE e IBAN.</span>
+          </a>
+          <a href="/intereses/">
+            <strong>Intereses</strong>
+            <span>Legal y demora.</span>
+          </a>
+          <a href="/paro/">
+            <strong>Prestación</strong>
+            <span>Duración y cuantía.</span>
+          </a>
+        </nav>
       </aside>
 
-      <section class="card">
+      <section class="card" aria-labelledby="featured-title">
         <div class="hd">
-          <h2>Empieza por la herramienta con más intención</h2>
+          <h2 id="featured-title">Empieza por la herramienta con más intención</h2>
           <p>Estas son las que más suelen buscar los usuarios.</p>
         </div>
         <div class="bd">
-          <div class="adslot" data-adslot style="margin-bottom:12px">Espacio de anuncios (desactivado)</div>
 
-          <div class="card" style="box-shadow:none;margin-bottom:12px">
+          <div class="adslot" data-adslot aria-label="Espacio publicitario">
+            Espacio de anuncios (desactivado)
+          </div>
+
+          <div class="card">
             <div class="bd">
-              <h3 style="margin:0 0 6px 0">Simulador de hipoteca</h3>
-              <p class="small" style="margin:0 0 10px 0">
+              <h3>Simulador de hipoteca</h3>
+              <p class="small">
                 Cuota mensual, intereses, amortización y una TAE aproximada con gastos. Exporta el resumen en CSV.
               </p>
               <div class="row">
@@ -100,10 +143,10 @@
             </div>
           </div>
 
-          <div class="card" style="box-shadow:none;margin-bottom:12px">
+          <div class="card">
             <div class="bd">
-              <h3 style="margin:0 0 6px 0">Días hábiles 2026</h3>
-              <p class="small" style="margin:0 0 10px 0">
+              <h3>Días hábiles 2026</h3>
+              <p class="small">
                 Cuenta días hábiles entre fechas, suma N días hábiles y exporta festivos a calendario.
               </p>
               <div class="row">
@@ -113,10 +156,10 @@
             </div>
           </div>
 
-          <div class="card" style="box-shadow:none;margin-bottom:12px">
+          <div class="card">
             <div class="bd">
-              <h3 style="margin:0 0 6px 0">Indemnización y finiquito</h3>
-              <p class="small" style="margin:0 0 10px 0">
+              <h3>Indemnización y finiquito</h3>
+              <p class="small">
                 Estimación orientativa para despido improcedente/objetivo y vacaciones pendientes.
               </p>
               <div class="row">
@@ -126,30 +169,49 @@
             </div>
           </div>
 
-          <div class="adslot" data-adslot>Espacio de anuncios (desactivado)</div>
-
-          <div class="footer">
-            <div class="small">© <span data-year></span> UnaHojaTools</div>
-            <div class="small">
-              <a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a>
-            </div>
+          <div class="adslot" data-adslot aria-label="Espacio publicitario">
+            Espacio de anuncios (desactivado)
           </div>
+
+          <footer class="footer">
+            <p class="small">© <span data-year>2026</span> UnaHojaTools</p>
+            <p class="small">
+              <a href="/privacidad/">Privacidad</a> ·
+              <a href="/cookies/">Cookies</a>
+            </p>
+          </footer>
+
         </div>
       </section>
-    </div>
 
-    <div id="consentbar" style="display:none;margin-top:16px" class="card">
-      <div class="bd">
-        <strong>Cookies y anuncios</strong>
-        <p class="small" style="margin:8px 0 10px 0">
-          Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan. Puedes cambiarlo cuando quieras.
-        </p>
-        <div class="row">
-          <button class="btn" id="consentReject" type="button">Rechazar</button>
-          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
-        </div>
-      </div>
     </div>
   </main>
+
+  <!-- Consent bar: fuera del <main>, es una notificación global -->
+  <div
+    id="consentbar"
+    class="card"
+    role="dialog"
+    aria-modal="false"
+    aria-label="Gestión de cookies y anuncios"
+    aria-live="polite"
+    style="display:none"
+  >
+    <div class="bd">
+      <div>
+        <strong>Cookies y anuncios</strong>
+        <p class="small">
+          Si aceptas, podremos cargar scripts de anuncios que nos permiten seguir desarrollando. Si rechazas, no se cargan.
+          Puedes cambiarlo cuando quieras.
+        </p>
+      </div>
+      <div class="row">
+        <button class="btn"         id="consentReject" type="button">Rechazar</button>
+        <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
+
