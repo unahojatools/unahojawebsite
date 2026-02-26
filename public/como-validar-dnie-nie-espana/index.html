@@ -1,1 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <title>Cómo se valida un DNI o NIE en España: letra de control | UnaHojaTools</title>
+  <meta name="description" content="Aprende el algoritmo oficial para calcular y validar la letra de control del DNI y NIE. Detecta errores tipográficos al instante. Con calculadora online." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://unahojatools.com/como-validar-dni-nie-espana/" />
+
+  <meta property="og:type"         content="article" />
+  <meta property="og:locale"       content="es_ES" />
+  <meta property="og:title"        content="Cómo se valida un DNI o NIE en España: letra de control" />
+  <meta property="og:description"  content="Algoritmo oficial para calcular la letra del DNI/NIE y detectar errores tipográficos." />
+  <meta property="og:url"          content="https://unahojatools.com/como-validar-dni-nie-espana/" />
+  <meta property="og:image"        content="https://unahojatools.com/assets/img/og/como-validar-dni-nie-espana.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Cómo se valida un DNI o NIE en España: letra de control" />
+  <meta name="twitter:description" content="Algoritmo oficial para calcular la letra del DNI/NIE y detectar errores tipográficos." />
+  <meta name="twitter:image"       content="https://unahojatools.com/assets/img/og/como-validar-dni-nie-espana.png" />
+
+  <meta name="theme-color" content="#070b16" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+  <link rel="stylesheet"          href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+  <link rel="preload" as="style" href="/assets/css/base.css" />
+  <link rel="stylesheet"         href="/assets/css/base.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Cómo se valida un DNI o NIE en España: letra de control",
+    "description": "Algoritmo oficial para calcular y validar la letra de control del DNI y NIE español.",
+    "inLanguage": "es-ES",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://unahojatools.com/como-validar-dni-nie-espana/" },
+    "publisher": { "@type": "Organization", "name": "UnaHojaTools", "url": "https://unahojatools.com" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cómo se calcula la letra del DNI?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Se divide el número del DNI (sin letra) entre 23 y se obtiene el resto. Ese resto corresponde a una posición en la cadena TRWAGMYFPDXBNJZSQVHLCKE. Por ejemplo, si el resto es 0 la letra es T, si es 1 es R, y así sucesivamente." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cómo se valida un NIE?",
+        "acceptedAnswer": { "@type": "Answer", "text": "El NIE empieza por X, Y o Z. Para validarlo se sustituye la primera letra por su equivalente numérico (X=0, Y=1, Z=2) y se aplica el mismo algoritmo que el DNI: se divide entre 23 y se busca el resto en la tabla TRWAGMYFPDXBNJZSQVHLCKE." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué letras nunca pueden aparecer en un DNI?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Las letras I, Ñ, O y U nunca aparecen como letra de control de un DNI o NIE para evitar confusiones visuales con los números 1, 0 y otros caracteres similares. La tabla válida solo contiene las 23 letras: T, R, W, A, G, M, Y, F, P, D, X, B, N, J, Z, S, Q, V, H, L, C, K, E." }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Sirve el validador para comprobar si un DNI es real?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. El validador comprueba que el formato y la letra de control son correctos matemáticamente, pero no verifica que el DNI esté asignado a una persona real ni que exista en los registros oficiales. Para eso sería necesario consultar directamente con la Policía Nacional o el Ministerio del Interior." }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body class="seo-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="UnaHojaTools — ir a inicio">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Calculadoras útiles sin registro</p>
+        </div>
+      </a>
+      <div class="row">
+        <span class="pill">🔒 Cálculo local</span>
+        <a class="btn" href="/privacidad/">Privacidad</a>
+        <a class="btn" href="/cookies/">Cookies</a>
+        <button class="btn" type="button" data-manage-consent aria-label="Gestionar preferencias de consentimiento">Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido" class="bd" role="main">
+
+    <nav aria-label="Ruta de navegación">
+      <ol class="breadcrumb">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/validadores/">Validadores</a></li>
+        <li>Validar DNI / NIE</li>
+      </ol>
+    </nav>
+
+    <article class="card" itemscope itemtype="https://schema.org/Article">
+      <header>
+        <h1 itemprop="headline">Cómo se valida un DNI o NIE en España</h1>
+        <p class="muted">El algoritmo oficial de la letra de control: cómo funciona, cómo calcularlo y por qué detecta errores tipográficos.</p>
+      </header>
+      <section aria-labelledby="intro">
+        <h2 id="intro">La letra de control del DNI</h2>
+        <p itemprop="articleBody">
+          La letra al final del DNI español no es aleatoria: se calcula a partir del número
+          mediante un <strong>algoritmo módulo 23</strong> establecido por el Ministerio del Interior.
+          Su función es detectar errores tipográficos — si alguien escribe mal un dígito,
+          la letra resultante no coincidirá y el error queda en evidencia de inmediato.
+        </p>
+        <p>
+          El NIE (Número de Identidad de Extranjero) usa el mismo algoritmo, con la particularidad
+          de que su primera letra (X, Y o Z) se sustituye por un número antes de aplicar el cálculo.
+        </p>
+      </section>
+    </article>
+
+    <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
+
+    <section class="card" aria-labelledby="algoritmo">
+      <h2 id="algoritmo">El algoritmo paso a paso</h2>
+      <div class="grid">
+        <div class="box">
+          <h3>Para el DNI</h3>
+          <ul>
+            <li>Toma los 8 dígitos numéricos del DNI.</li>
+            <li>Divide entre 23 y obtén el <strong>resto</strong>.</li>
+            <li>Busca ese resto en la tabla de 23 letras.</li>
+            <li>Esa es la letra de control correcta.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Para el NIE</h3>
+          <ul>
+            <li>Sustituye la primera letra: X→0, Y→1, Z→2.</li>
+            <li>Aplica el mismo cálculo que el DNI.</li>
+            <li>La última letra del NIE debe coincidir con el resultado.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" role="note" aria-label="Tabla de letras de control" style="margin-top:16px">
+        <p><strong>Tabla de restos y letras (posición 0–22):</strong></p>
+        <p style="font-family:var(--font-mono);font-size:.9rem;letter-spacing:.05em;margin-top:6px">
+          T · R · W · A · G · M · Y · F · P · D · X · B · N · J · Z · S · Q · V · H · L · C · K · E
+        </p>
+        <p class="muted">Las letras I, Ñ, O y U no aparecen para evitar confusión con dígitos.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="ejemplo">
+      <h2 id="ejemplo">Ejemplo de validación</h2>
+      <p>
+        DNI con número <strong>12345678</strong>:
+      </p>
+      <div class="callout" role="note" aria-label="Ejemplo paso a paso">
+        <p><strong>12345678 ÷ 23 = 536.768... → resto 14</strong></p>
+        <p><strong>Posición 14 en la tabla → letra Z</strong></p>
+        <p><strong>DNI correcto: 12345678-Z</strong></p>
+        <p class="muted">Si la letra del documento no es Z, hay un error en el número o en la letra.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="calculadora">
+      <h2 id="calculadora">Valida un DNI o NIE ahora</h2>
+      <p>Introduce el DNI o NIE completo para comprobar si la letra de control es correcta.</p>
+      <div class="tool-embed" role="region" aria-label="Validador de DNI y NIE" data-tool="validadores">
+        <!-- app.js renderiza aquí el validador -->
+      </div>
+      <aside class="adslot" data-adslot aria-label="Publicidad" style="margin:16px 0;"></aside>
+      <p class="muted">
+        El validador comprueba el formato y la letra matemáticamente. No verifica que el DNI esté
+        asignado a una persona real en los registros oficiales.
+      </p>
+    </section>
+
+    <section class="card" aria-labelledby="faq">
+      <h2 id="faq">Preguntas frecuentes</h2>
+      <details>
+        <summary><strong>¿Cómo se calcula la letra del DNI?</strong></summary>
+        <p>Se divide el número del DNI entre 23 y se obtiene el resto. Ese resto corresponde a una posición en la cadena TRWAGMYFPDXBNJZSQVHLCKE. Por ejemplo, si el resto es 0 la letra es T, si es 1 es R, y así sucesivamente.</p>
+      </details>
+      <details>
+        <summary><strong>¿Cómo se valida un NIE?</strong></summary>
+        <p>El NIE empieza por X, Y o Z. Para validarlo se sustituye la primera letra por su equivalente numérico (X=0, Y=1, Z=2) y se aplica el mismo algoritmo que el DNI: se divide entre 23 y se busca el resto en la tabla TRWAGMYFPDXBNJZSQVHLCKE.</p>
+      </details>
+      <details>
+        <summary><strong>¿Qué letras nunca pueden aparecer en un DNI?</strong></summary>
+        <p>Las letras I, Ñ, O y U nunca aparecen como letra de control de un DNI o NIE para evitar confusiones visuales con los números 1, 0 y otros caracteres similares. La tabla válida solo contiene 23 letras: T, R, W, A, G, M, Y, F, P, D, X, B, N, J, Z, S, Q, V, H, L, C, K, E.</p>
+      </details>
+      <details>
+        <summary><strong>¿Sirve el validador para comprobar si un DNI es real?</strong></summary>
+        <p>No. El validador comprueba que el formato y la letra de control son correctos matemáticamente, pero no verifica que el DNI esté asignado a una persona real ni que exista en los registros oficiales.</p>
+      </details>
+    </section>
+
+    <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
+
+    <section class="card">
+      <p class="see-also">
+        👉 Valida también números de cuenta bancaria con el
+        <a href="/validadores/">validador de IBAN</a>.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="foot" role="contentinfo">
+    <nav aria-label="Enlaces legales">
+      <a href="/">Inicio</a>
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/cookies/">Cookies</a>
+      <a href="/contacto/">Contacto</a>
+    </nav>
+  </footer>
+
+  <div id="consentbar" class="consentbar" role="dialog" aria-modal="false" aria-label="Gestión de cookies y anuncios" aria-live="polite" style="display:none">
+    <div class="consentbar__inner">
+      <p class="consentbar__text">Usamos cookies para medir y mostrar anuncios. Puedes aceptar, rechazar o cambiar tu elección cuando quieras.</p>
+      <div class="consentbar__actions">
+        <button id="consentAccept" type="button" class="btn primary">Aceptar</button>
+        <button id="consentReject" type="button" class="btn">Rechazar</button>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/ads.js"></script>
+</body>
+</html>
