@@ -618,7 +618,7 @@ textarea {
 }
 
 .guides-hd {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .guides-hd h2 {
@@ -635,6 +635,51 @@ textarea {
   color: var(--muted);
 }
 
+/* Filtros */
+.guides-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  width: auto;              /* override del input/button global */
+  white-space: nowrap;
+  transition:
+    background   .15s ease,
+    border-color .15s ease,
+    color        .15s ease,
+    transform    .1s var(--ease);
+}
+
+.filter-btn:hover {
+  border-color: rgba(124, 92, 255, .40);
+  color: var(--text);
+  background: var(--surface-1);
+  transform: translateY(-1px);
+  box-shadow: none;         /* evita el shadow del .btn global */
+}
+
+.filter-btn.active {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--a), var(--b));
+  color: #07101f;
+  box-shadow: 0 2px 12px rgba(124, 92, 255, .30);
+}
+
+/* Grid de tarjetas */
 .guides-list {
   list-style: none;
   margin: 0;
@@ -650,8 +695,11 @@ textarea {
 
 @media (max-width: 520px) {
   .guides-list { grid-template-columns: 1fr; }
+  .guides-filters { gap: 5px; }
+  .filter-btn { font-size: 11px; padding: 5px 10px; }
 }
 
+/* Tarjeta */
 .guide-card {
   display: flex;
   flex-direction: column;
@@ -660,7 +708,16 @@ textarea {
   background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: var(--r);
-  transition: border-color .18s ease, background .18s ease, transform .12s var(--ease);
+  transition:
+    border-color .18s ease,
+    background   .18s ease,
+    transform    .12s var(--ease),
+    opacity      .18s ease;
+  animation: fadeUp .35s var(--ease) both;
+}
+
+.guide-card[hidden] {
+  display: none;
 }
 
 .guide-card:hover {
@@ -689,11 +746,6 @@ textarea {
 
 .guide-title:hover { color: rgba(160, 130, 255, 1); }
 
-/* Hace que toda la card sea clicable visualmente */
-.guide-card:has(.guide-title:hover) {
-  border-color: rgba(124, 92, 255, .45);
-}
-
 .guide-desc {
   margin: 0;
   font-size: 12px;
@@ -701,6 +753,13 @@ textarea {
   line-height: 1.55;
 }
 
+.guides-empty {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  padding: 20px;
+}
 
 
 .seo-page {
