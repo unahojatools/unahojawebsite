@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Cómo calcular la cuota de una hipoteca paso a paso | UnaHojaTools</title>
+  <meta name="description" content="Aprende a calcular la cuota mensual de una hipoteca con la fórmula francesa. Tipo fijo vs variable, qué incluye la TAE y ejemplo con números reales." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://unahojatools.com/como-calcular-cuota-hipoteca/" />
+
+  <meta property="og:type"        content="article" />
+  <meta property="og:locale"      content="es_ES" />
+  <meta property="og:title"       content="Cómo calcular la cuota de una hipoteca paso a paso" />
+  <meta property="og:description" content="Fórmula de la cuota mensual, tipo fijo vs variable, qué incluye la TAE y ejemplo real." />
+  <meta property="og:url"         content="https://unahojatools.com/como-calcular-cuota-hipoteca/" />
+  <meta property="og:image"       content="https://unahojatools.com/assets/img/og/como-calcular-cuota-hipoteca.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Cómo calcular la cuota de una hipoteca paso a paso" />
+  <meta name="twitter:description" content="Fórmula de la cuota mensual, tipo fijo vs variable y ejemplo con números reales." />
+  <meta name="twitter:image"       content="https://unahojatools.com/assets/img/og/como-calcular-cuota-hipoteca.png" />
+
+  <meta name="theme-color" content="#070b16" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+  <link rel="stylesheet"          href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=DM+Sans:wght@400;500;700&display=swap" />
+
+  <link rel="preload" as="style" href="/assets/css/base.css" />
+  <link rel="stylesheet"         href="/assets/css/base.css" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Cómo calcular la cuota de una hipoteca paso a paso",
+    "description": "Aprende a calcular la cuota mensual de una hipoteca con la fórmula francesa. Tipo fijo vs variable, qué incluye la TAE y ejemplo con números reales.",
+    "inLanguage": "es-ES",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://unahojatools.com/como-calcular-cuota-hipoteca/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "UnaHojaTools",
+      "url": "https://unahojatools.com"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Cómo se calcula la cuota mensual de una hipoteca?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La cuota mensual se calcula con la fórmula de amortización francesa: C = P × [r(1+r)^n] / [(1+r)^n - 1], donde P es el capital prestado, r es el tipo de interés mensual (TIN anual dividido entre 12) y n es el número total de cuotas. Esta fórmula mantiene la cuota constante durante toda la vida del préstamo."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué diferencia hay entre TIN y TAE?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "El TIN (Tipo de Interés Nominal) es el interés puro del préstamo, sin incluir otros costes. La TAE (Tasa Anual Equivalente) incluye el TIN más todos los gastos y comisiones asociados al préstamo, como las comisiones de apertura o los productos vinculados. La TAE es el indicador real del coste total de la hipoteca."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto varía la cuota si sube el Euríbor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "En una hipoteca variable, la cuota se recalcula en cada revisión (normalmente anual) aplicando el nuevo Euríbor más el diferencial pactado. Una subida de 1 punto en el Euríbor sobre un préstamo de 150.000 € a 25 años supone aproximadamente 75-85 € más de cuota mensual, dependiendo del capital pendiente."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué porcentaje del sueldo debe destinarse a la hipoteca?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La recomendación general es que la cuota hipotecaria no supere el 30-35% de los ingresos netos mensuales del hogar. Los bancos suelen exigir que la cuota no represente más del 35-40% de los ingresos para aprobar la hipoteca, aunque el porcentaje exacto depende de cada entidad y de la situación financiera del solicitante."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body class="seo-page">
+
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="UnaHojaTools — ir a inicio">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Calculadoras útiles sin registro</p>
+        </div>
+      </a>
+      <div class="row">
+        <span class="pill">🔒 Cálculo local</span>
+        <a class="btn" href="/privacidad/">Privacidad</a>
+        <a class="btn" href="/cookies/">Cookies</a>
+        <button class="btn" type="button" data-manage-consent aria-label="Gestionar preferencias de consentimiento">Consentimiento</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido" class="bd" role="main">
+
+    <nav aria-label="Ruta de navegación">
+      <ol class="breadcrumb">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/hipoteca/">Simulador de hipoteca</a></li>
+        <li>Cómo calcular la cuota</li>
+      </ol>
+    </nav>
+
+    <article class="card" itemscope itemtype="https://schema.org/Article">
+      <header>
+        <h1 itemprop="headline">Cómo calcular la cuota de una hipoteca</h1>
+        <p class="muted">Fórmula paso a paso, diferencia entre TIN y TAE, y ejemplo con una hipoteca real de 200.000 €.</p>
+      </header>
+
+      <section aria-labelledby="intro">
+        <h2 id="intro">Qué determina la cuota mensual</h2>
+        <p itemprop="articleBody">
+          La <strong>cuota mensual de una hipoteca</strong> depende de tres variables: el capital
+          prestado, el tipo de interés (TIN) y el plazo de amortización. La fórmula estándar
+          utilizada en España y en Europa es la <strong>amortización francesa</strong>, que
+          produce cuotas constantes en las que la proporción de intereses va disminuyendo
+          a medida que se devuelve capital.
+        </p>
+        <p>
+          Entender cómo se calcula la cuota te permite comparar ofertas de distintos bancos
+          con criterio, detectar cuánto pagas realmente en intereses y evaluar si una
+          amortización anticipada te conviene.
+        </p>
+      </section>
+    </article>
+
+    <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
+
+    <section class="card" aria-labelledby="formula">
+      <h2 id="formula">La fórmula de la cuota hipotecaria</h2>
+      <p>
+        La cuota mensual constante se obtiene con la <strong>fórmula de amortización francesa</strong>:
+      </p>
+
+      <div class="callout" role="note" aria-label="Fórmula hipotecaria">
+        <p><strong>Cuota = P × [r × (1 + r)ⁿ] / [(1 + r)ⁿ − 1]</strong></p>
+        <p class="muted">Donde P = capital prestado · r = TIN mensual (TIN anual ÷ 12) · n = número total de cuotas (años × 12)</p>
+      </div>
+
+      <div class="grid" style="margin-top:20px">
+        <div class="box">
+          <h3>Hipoteca a tipo fijo</h3>
+          <ul>
+            <li>La cuota no cambia en toda la vida del préstamo.</li>
+            <li>Mayor seguridad frente a subidas de tipos.</li>
+            <li>Habitualmente TIN más alto que la variable al inicio.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Hipoteca a tipo variable</h3>
+          <ul>
+            <li>Cuota = Euríbor + diferencial, revisada cada 6 o 12 meses.</li>
+            <li>Puede bajar si cae el Euríbor, pero también subir.</li>
+            <li>Diferencial habitual en 2026: entre 0,50% y 1,20%.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="ejemplo">
+      <h2 id="ejemplo">Ejemplo: hipoteca de 200.000 € a 25 años</h2>
+      <p>
+        Una hipoteca a tipo fijo del <strong>3,20% TIN</strong> sobre <strong>200.000 €</strong>
+        a <strong>25 años</strong> (300 cuotas):
+      </p>
+
+      <div class="callout" role="note" aria-label="Ejemplo de cálculo">
+        <p><strong>r = 3,20% ÷ 12 = 0,2667% mensual</strong></p>
+        <p><strong>Cuota mensual ≈ 967 €/mes</strong></p>
+        <p><strong>Total intereses pagados ≈ 90.100 €</strong></p>
+        <p class="muted">La TAE real incluiría además comisiones y productos vinculados del banco.</p>
+      </div>
+
+      <p>
+        Sobre esos 967 €, en la primera cuota pagarías unos 533 € de intereses y 434 €
+        de amortización de capital. A medida que pasan los años esta proporción se invierte:
+        al final del préstamo casi toda la cuota es devolución de capital.
+      </p>
+    </section>
+
+    <section class="card" aria-labelledby="tin-tae">
+      <h2 id="tin-tae">TIN vs TAE: cuál importa más</h2>
+      <p>
+        El <strong>TIN</strong> (Tipo de Interés Nominal) es el porcentaje de interés puro
+        que aplica el banco sobre el capital pendiente. La <strong>TAE</strong> (Tasa Anual
+        Equivalente) añade todos los costes asociados: comisiones de apertura, seguros
+        vinculados obligatorios y cualquier otro gasto recurrente.
+      </p>
+
+      <div class="grid">
+        <div class="box">
+          <h3>Usa el TIN para</h3>
+          <ul>
+            <li>Calcular la cuota mensual exacta.</li>
+            <li>Comparar el interés bruto entre ofertas.</li>
+            <li>Hacer simulaciones de amortización anticipada.</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Usa la TAE para</h3>
+          <ul>
+            <li>Comparar el coste real total entre bancos.</li>
+            <li>Evaluar si los productos vinculados compensan.</li>
+            <li>Cumplimiento de la normativa hipotecaria (FEIN).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="calculadora">
+      <h2 id="calculadora">Calcula tu cuota hipotecaria</h2>
+      <p>
+        Introduce el importe, el plazo y el tipo de interés para obtener la cuota mensual,
+        el total de intereses y el cuadro de amortización completo.
+      </p>
+
+      <div
+        class="tool-embed"
+        role="region"
+        aria-label="Simulador de hipoteca"
+        data-tool="hipoteca"
+      >
+        <!-- app.js renderiza aquí el simulador de hipoteca -->
+      </div>
+
+      <aside class="adslot" data-adslot aria-label="Publicidad" style="margin: 16px 0;"></aside>
+
+      <p class="muted">
+        El cálculo es orientativo. Las condiciones finales dependen de la entidad financiera
+        y de tu perfil como solicitante.
+      </p>
+    </section>
+
+    <section class="card" aria-labelledby="faq">
+      <h2 id="faq">Preguntas frecuentes</h2>
+
+      <details>
+        <summary><strong>¿Cómo se calcula la cuota mensual de una hipoteca?</strong></summary>
+        <p>
+          La cuota mensual se calcula con la fórmula de amortización francesa:
+          C = P × [r(1+r)ⁿ] / [(1+r)ⁿ - 1], donde P es el capital prestado,
+          r es el tipo de interés mensual (TIN anual ÷ 12) y n es el número total
+          de cuotas. Esta fórmula mantiene la cuota constante durante toda la vida del préstamo.
+        </p>
+      </details>
+
+      <details>
+        <summary><strong>¿Qué diferencia hay entre TIN y TAE?</strong></summary>
+        <p>
+          El TIN es el interés puro del préstamo, sin incluir otros costes. La TAE incluye
+          el TIN más todos los gastos y comisiones asociados al préstamo. La TAE es el
+          indicador real del coste total de la hipoteca y el que debes usar para comparar
+          ofertas de distintas entidades.
+        </p>
+      </details>
+
+      <details>
+        <summary><strong>¿Cuánto varía la cuota si sube el Euríbor?</strong></summary>
+        <p>
+          En una hipoteca variable, la cuota se recalcula en cada revisión aplicando el
+          nuevo Euríbor más el diferencial pactado. Una subida de 1 punto en el Euríbor
+          sobre un préstamo de 150.000 € a 25 años supone aproximadamente 75-85 € más
+          de cuota mensual, dependiendo del capital pendiente.
+        </p>
+      </details>
+
+      <details>
+        <summary><strong>¿Qué porcentaje del sueldo debe destinarse a la hipoteca?</strong></summary>
+        <p>
+          La recomendación general es que la cuota hipotecaria no supere el 30-35% de los
+          ingresos netos mensuales del hogar. Los bancos suelen exigir que la cuota no
+          represente más del 35-40% de los ingresos para aprobar la hipoteca.
+        </p>
+      </details>
+    </section>
+
+    <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
+
+    <section class="card">
+      <p class="see-also">
+        👉 Simula tu hipoteca completa con cuadro de amortización y TAE aproximada en el
+        <a href="/hipoteca/">simulador de hipoteca</a>.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="foot" role="contentinfo">
+    <nav aria-label="Enlaces legales">
+      <a href="/">Inicio</a>
+      <a href="/privacidad/">Privacidad</a>
+      <a href="/cookies/">Cookies</a>
+      <a href="/contacto/">Contacto</a>
+    </nav>
+  </footer>
+
+  <div id="consentbar" class="consentbar" role="dialog" aria-modal="false" aria-label="Gestión de cookies y anuncios" aria-live="polite" style="display:none">
+    <div class="consentbar__inner">
+      <p class="consentbar__text">Usamos cookies para medir y mostrar anuncios. Puedes aceptar, rechazar o cambiar tu elección cuando quieras.</p>
+      <div class="consentbar__actions">
+        <button id="consentAccept" type="button" class="btn primary">Aceptar</button>
+        <button id="consentReject" type="button" class="btn">Rechazar</button>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/ads.js"></script>
+</body>
+</html>
