@@ -579,30 +579,41 @@ textarea {
 
 
 /* ============================================================
-   CONSENT BAR  (inline, dentro de main)
+   CONSENT BAR  (fixed)
    ============================================================ */
 #consentbar {
-  margin-top: 14px;
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;           /* o top: 16px si lo quieres arriba */
+  z-index: 1000;
+
+  /* Si lo estabas dejando al final con margin-top, ya no aplica */
+  margin-top: 0;
+
+  /* Si quieres que por defecto no se vea y lo active JS */
+  /* display: none; */
 }
 
+/* Si quieres centrarlo y limitar ancho, como tu ejemplo */
 #consentbar .bd {
+  max-width: 860px;
+  margin: 0 auto;
+
   display: flex;
   gap: 16px;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  padding: 14px 16px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--r);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, .10);
 }
 
-#consentbar strong {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 14px;
-}
-
-#consentbar p.small {
-  margin: 6px 0 0;
-}
-
+/* Ajustes mobile similares a los que ya tienes */
 @media (max-width: 640px) {
   #consentbar .bd { flex-direction: column; align-items: stretch; }
   #consentbar .row { justify-content: stretch; }
