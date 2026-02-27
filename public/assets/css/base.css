@@ -583,7 +583,6 @@ textarea {
    ============================================================ */
 #consentbar {
   margin-top: 14px;
-   position: fixed;
 }
 
 #consentbar .bd {
