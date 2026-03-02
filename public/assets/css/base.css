@@ -379,6 +379,11 @@ main #consentbar               { animation-delay: .22s; }
 
 .card .bd { padding: 14px; }
 
+/* Espacio entre cards hermanas (secciones) */
+.card + .card {
+  margin-top: 24px; /* o 32px */
+}
+
 /* Títulos dentro de .bd */
 .card .bd h3 {
   margin: 0 0 6px;
