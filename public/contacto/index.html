@@ -1,87 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Contacto | UnaHojaTools</title>
-  <meta name="description" content="Contacta con UnaHojaTools para dudas, sugerencias o incidencias.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="canonical" href="https://unahojatools.com/contacto/">
-  <link rel="stylesheet" href="/assets/css/base.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Contacto: UnaHojaTools</title>
+  <meta name="description" content="Contacta con UnaHojaTools para dudas, sugerencias o incidencias." />
+  <link rel="canonical" href="https://unahojatools.com/contacto/" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
 </head>
-  
-<header class="top">
-  <a href="/" class="logo">UnaHojaTools</a>
-  <nav>
-    <a href="/">Inicio</a>
-    <a href="/despido/">Calculadora</a>
-    <a href="/privacidad/">Privacidad</a>
-  </nav>
-</header>
 
-<main class="bd">
-
-  <section class="card">
-    <h1>Contacto</h1>
-    <p>
-      Si has encontrado un error, tienes una sugerencia o quieres proponer una mejora,
-      puedes escribirme por email.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2>Email</h2>
-    <p>
-      <strong>contacto@unahojatools.com</strong>
-    </p>
-
-    <div class="row" style="margin-top:12px;gap:10px;flex-wrap:wrap">
-      <a class="btn primary" href="mailto:contacto@unahojatools.com?subject=Consulta%20UnaHojaTools">Enviar email</a>
-      <button class="btn" type="button" id="copyEmail">Copiar email</button>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Contacto</p>
+        </div>
+      </div>
+      <div class="row">
+        <a class="btn" href="/">Inicio</a>
+        <a class="btn" href="/privacidad/">Privacidad</a>
+        <a class="btn" href="/cookies/">Cookies</a>
+      </div>
     </div>
+  </header>
 
-    <p class="small" style="margin-top:12px">
-      Tiempo de respuesta habitual: 24–72 horas laborables.
-    </p>
-  </section>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Contacto</h1>
+      <p>
+        Si has encontrado un error, tienes una sugerencia o quieres proponer una mejora,
+        puedes escribirme por email.
+      </p>
+    </section>
 
-  <section class="card">
-    <h2>Qué información ayuda a resolver más rápido</h2>
-    <ul>
-      <li>La URL exacta donde ocurrió el problema.</li>
-      <li>Tu dispositivo y navegador (por ejemplo: iPhone + Safari).</li>
-      <li>Los datos de ejemplo (sin información personal sensible).</li>
-      <li>Si puedes, una captura de pantalla.</li>
-    </ul>
-    <p class="small">
-      Por privacidad, evita enviar DNI, IBAN completo, nóminas u otros datos personales.
-    </p>
-  </section>
+    <section class="card">
+      <div class="bd">
+        <h2 style="margin:0 0 8px 0;font-size:16px">Email</h2>
+        <p class="small">
+          <strong>contacto@unahojatools.com</strong>
+        </p>
 
-</main>
+        <div class="row" style="margin-top:12px;gap:10px;flex-wrap:wrap">
+          <a class="btn primary" href="mailto:contacto@unahojatools.com?subject=Consulta%20UnaHojaTools">Enviar email</a>
+          <button class="btn" type="button" id="copyEmail">Copiar email</button>
+        </div>
 
-<footer class="foot">
-  <nav>
-    <a href="/privacidad/">Privacidad</a>
-    <a href="/cookies/">Cookies</a>
-    <a href="/contacto/">Contacto</a>
-  </nav>
-</footer>
+        <p class="small" style="margin-top:12px">
+          Tiempo de respuesta habitual: 24–72 horas laborables.
+        </p>
+      </div>
+    </section>
 
-<script>
-  document.getElementById("copyEmail")?.addEventListener("click", async () => {
-    const email = "contacto@unahojatools.com";
-    try {
-      await navigator.clipboard.writeText(email);
-      document.getElementById("copyEmail").textContent = "Copiado";
-      setTimeout(()=>{ document.getElementById("copyEmail").textContent = "Copiar email"; }, 1200);
-    } catch (e) {
-      alert("No se pudo copiar automáticamente. Email: " + email);
-    }
-  });
-</script>
+    <section class="card">
+      <div class="bd">
+        <h2 style="margin:0 0 8px 0;font-size:16px">Qué información ayuda a resolver más rápido</h2>
+        <ul class="small" style="margin:8px 0 0 18px">
+          <li>La URL exacta donde ocurrió el problema.</li>
+          <li>Tu dispositivo y navegador (por ejemplo: iPhone + Safari).</li>
+          <li>Los datos de ejemplo (sin información personal sensible).</li>
+          <li>Si puedes, una captura de pantalla.</li>
+        </ul>
+        <p class="small" style="margin-top:12px">
+          Por privacidad, evita enviar DNI, IBAN completo, nóminas u otros datos personales.
+        </p>
 
-<script defer src="/assets/js/app.js"></script>
-<script defer src="/assets/js/ads.js"></script>
+        <div class="footer" style="margin-top:14px">
+          <div class="small">© <span data-year></span> UnaHojaTools</div>
+          <div class="small"><a href="/privacidad/">Privacidad</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
+  <script>
+    document.getElementById("copyEmail")?.addEventListener("click", async () => {
+      const email = "contacto@unahojatools.com";
+      try {
+        await navigator.clipboard.writeText(email);
+        const btn = document.getElementById("copyEmail");
+        btn.textContent = "Copiado";
+        setTimeout(() => { btn.textContent = "Copiar email"; }, 1200);
+      } catch (e) {
+        alert("No se pudo copiar automáticamente. Email: " + email);
+      }
+    });
+  </script>
 </body>
 </html>
