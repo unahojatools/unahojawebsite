@@ -35,20 +35,25 @@
 <body>
   <header class="topbar">
     <div class="wrap">
-      <div class="brand">
+      <a class="brand" href="/" aria-label="UnaHojaTools — ir a inicio">
         <div class="logo" aria-hidden="true"><span>U</span></div>
         <div>
           <p class="t">UnaHojaTools</p>
-          <p class="s">Días hábiles 2026</p>
+          <p class="s">Calculadoras útiles sin registro</p>
         </div>
-      </div>
+      </a>
       <div class="row">
-        <a class="btn" href="/">Inicio</a>
-        <button class="btn" type="button" data-share>Compartir</button>
-        <button class="btn" type="button" data-manage-consent>Consentimiento</button>
+        <span class="pill">🔒 Cálculo local</span>
+        <a class="btn" href="/privacidad/">Privacidad</a>
+        <a class="btn" href="/cookies/">Cookies</a>
+        <a class="btn" href="/contacto/">Contacto</a>
+        <button class="btn" type="button" data-manage-consent aria-label="Gestionar preferencias de consentimiento">
+          Consentimiento
+        </button>
       </div>
     </div>
   </header>
+
 
   <main class="wrap">
     <div class="grid">
