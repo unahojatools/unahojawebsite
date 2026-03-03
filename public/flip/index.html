@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Calculadora de flip inmobiliario: MAO, beneficio e IRR</title>
+  <meta name="description" content="Calcula MAO, beneficio, margen e IRR para flips con comparables y escenarios. Cálculo local, sin registro." />
+  <link rel="canonical" href="https://unahojatools.com/flip/" />
+
+  <meta property="og:locale" content="es_ES" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Calculadora de flip inmobiliario" />
+  <meta property="og:description" content="MAO, IRR, escenarios y comparables con defaults en gris. Cálculo local." />
+  <meta property="og:url" content="https://unahojatools.com/flip/" />
+
+  <link rel="stylesheet" href="/assets/css/base.css" />
+  <link rel="stylesheet" href="/assets/css/tools-flip.css" />
+
+  <script defer src="/assets/js/ads.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+  <script defer src="/assets/js/tools-flip.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "name":"Calculadora de flip inmobiliario",
+    "url":"https://unahojatools.com/flip/",
+    "applicationCategory":"FinanceApplication",
+    "operatingSystem":"All",
+    "inLanguage":"es-ES"
+  }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="/" aria-label="UnaHojaTools — ir a inicio">
+        <div class="logo" aria-hidden="true"><span>U</span></div>
+        <div>
+          <p class="t">UnaHojaTools</p>
+          <p class="s">Calculadoras útiles sin registro</p>
+        </div>
+      </a>
+      <div class="row">
+        <span class="pill">🔒 Cálculo local</span>
+        <a class="btn" href="/privacidad/">Privacidad</a>
+        <a class="btn" href="/cookies/">Cookies</a>
+        <a class="btn" href="/contacto/">Contacto</a>
+        <button class="btn" type="button" data-manage-consent aria-label="Gestionar preferencias de consentimiento">
+          Consentimiento
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <aside class="card">
+        <div class="hd"><h2>Herramientas</h2><p>Finanzas, empleo y legal.</p></div>
+        <div class="bd nav">
+          <a href="/hipoteca/"><strong>Simulador de hipoteca</strong><span>Cuota, amortización y TAE.</span></a>
+          <a href="/despido/"><strong>Indemnización y finiquito</strong><span>Estimación orientativa.</span></a>
+          <a href="/dias-habiles-2026/"><strong>Días hábiles 2026</strong><span>Contar, sumar y exportar.</span></a>
+          <a href="/validadores/"><strong>Validadores</strong><span>DNI/NIE e IBAN.</span></a>
+          <a href="/intereses/"><strong>Intereses</strong><span>Legal y demora.</span></a>
+          <a href="/paro/"><strong>Prestación</strong><span>Duración y cuantía.</span></a>
+
+          <a class="active" href="/flip/"><strong>Flip inmobiliario</strong><span>MAO, IRR, escenarios y comps.</span></a>
+        </div>
+      </aside>
+
+      <section class="card">
+        <div class="hd">
+          <h1>Calculadora de flip inmobiliario</h1>
+          <p>Comparables → defaults en gris → MAO, beneficio, margen e IRR. Escenarios pesimista/base/optimista.</p>
+        </div>
+
+        <div class="bd">
+          <div class="adslot" data-adslot>Espacio de anuncios (desactivado)</div>
+
+          <section style="margin-top:12px">
+
+            <!-- MERCADO -->
+            <div class="card">
+              <div class="hd"><h3>Mercado y activo</h3><p>Selecciona CCAA y tamaño. Baseline €/m² 2026 + ajuste microzona.</p></div>
+              <div class="bd">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="field">
+                    <label>Comunidad Autónoma</label>
+                    <select id="f-ccaa">
+                      <option>Andalucía</option>
+                      <option>Aragón</option>
+                      <option>Asturias</option>
+                      <option>Baleares</option>
+                      <option>Canarias</option>
+                      <option>Cantabria</option>
+                      <option>Castilla y León</option>
+                      <option>Castilla-La Mancha</option>
+                      <option>Cataluña</option>
+                      <option>Ceuta</option>
+                      <option>Comunitat Valenciana</option>
+                      <option>Euskadi</option>
+                      <option>Extremadura</option>
+                      <option>Galicia</option>
+                      <option>La Rioja</option>
+                      <option>Madrid</option>
+                      <option>Melilla</option>
+                      <option>Murcia</option>
+                      <option>Navarra</option>
+                    </select>
+                    <div class="small" id="f-ccaaHint"></div>
+                  </div>
+
+                  <div class="field">
+                    <label>Fuente baseline €/m²</label>
+                    <select id="f-source">
+                      <option value="idealista_jan2026">idealista (ene 2026)</option>
+                      <option value="fotocasa_feb2026">Fotocasa (feb 2026)</option>
+                    </select>
+                    <div class="small">Si hay comparables suficientes, prevalecen sobre el baseline.</div>
+                  </div>
+
+                  <div class="field">
+                    <label>m² del activo (aprox.)</label>
+                    <input id="f-m2" type="number" value="80" min="10" step="1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Ajuste microzona/calidad (± %)</label>
+                    <input id="f-microAdjPct" type="number" value="0" step="0.1" />
+                    <div class="small">Ej.: +5% si es mejor que la media CCAA; −5% si es peor.</div>
+                  </div>
+
+                  <div class="field">
+                    <label>€/m² de salida (cierre) — sugerido</label>
+                    <input id="f-saleEurM2" type="number" min="0" step="1" />
+                    <div class="small" id="hint-f-saleEurM2"></div>
+                  </div>
+
+                  <div class="field">
+                    <label>Precio de venta esperado (cierre) — sugerido</label>
+                    <input id="f-salePrice" type="number" min="0" step="1000" />
+                    <div class="small" id="hint-f-salePrice"></div>
+                  </div>
+
+                  <div class="field">
+                    <label>Descuento medio negociación (%) — sugerido</label>
+                    <input id="f-saleDiscPct" type="number" min="0" step="0.1" />
+                    <div class="small" id="hint-f-saleDiscPct"></div>
+                  </div>
+
+                  <div class="field">
+                    <label>Meses venta (DOM + cierre) — sugerido</label>
+                    <input id="f-saleMonths" type="number" min="0" step="1" />
+                    <div class="small" id="hint-f-saleMonths"></div>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-top:12px">
+                  <button class="btn" type="button" id="f-recalcSuggestions">Recalcular sugerencias</button>
+                  <span class="pill" id="f-suggestState">Sugerencias activas</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPARABLES -->
+            <div class="card">
+              <div class="hd"><h3>Comparables (comps)</h3><p>Introduce anuncios/cierres y el sistema precarga €/m², precio de salida, meses de venta y buffer de riesgo.</p></div>
+              <div class="bd">
+                <div class="field">
+                  <label>Tabla de comparables</label>
+                  <div style="overflow:auto">
+                    <table class="table comp-table">
+                      <thead>
+                        <tr>
+                          <th>Zona</th>
+                          <th>m²</th>
+                          <th>Anuncio (€)</th>
+                          <th>Cierre (€)</th>
+                          <th>DOM (días)</th>
+                          <th>Adj. (%)</th>
+                          <th>Conf.</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="f-compBody"></tbody>
+                    </table>
+                  </div>
+                  <div class="row" style="margin-top:10px">
+                    <button class="btn" type="button" id="f-addComp">Añadir comp</button>
+                    <button class="btn" type="button" id="f-clearComps">Vaciar comps</button>
+                  </div>
+                  <div class="small" id="f-compStats" style="margin-top:8px"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COSTES + REFORMA + FINANCIACION -->
+            <div class="card">
+              <div class="hd"><h3>Estructura del flip</h3><p>Costes de compra, reforma, holding, financiación y venta. (Impuestos: modo simple y editable).</p></div>
+              <div class="bd">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="field">
+                    <label>Tu oferta / precio compra (€)</label>
+                    <input id="f-offerPrice" type="number" value="0" min="0" step="1000" />
+                    <div class="small">Se usa para evaluar retornos; el MAO se calcula aparte.</div>
+                  </div>
+
+                  <div class="field">
+                    <label>ITP (%)</label>
+                    <input id="f-itpPct" type="number" value="0" min="0" step="0.1" />
+                    <div class="small">Introduce el tipo aplicable según tu caso.</div>
+                  </div>
+
+                  <div class="field">
+                    <label>Otros gastos compra (notaría/registro/gestoría, €)</label>
+                    <input id="f-buyFixed" type="number" value="2000" min="0" step="50" />
+                  </div>
+
+                  <div class="field">
+                    <label>Agencia compra (%)</label>
+                    <input id="f-buyAgencyPct" type="number" value="0" min="0" step="0.1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Reforma €/m² (plantilla) — sugerido</label>
+                    <input id="f-renoEurM2" type="number" min="0" step="10" />
+                    <div class="small" id="hint-f-renoEurM2"></div>
+                  </div>
+
+                  <div class="field">
+                    <label>Reforma total (€) (si la rellenas, manda)</label>
+                    <input id="f-renoTotal" type="number" value="0" min="0" step="500" />
+                  </div>
+
+                  <div class="field">
+                    <label>Contingencia reforma (%)</label>
+                    <input id="f-renoContPct" type="number" value="10" min="0" step="0.5" />
+                  </div>
+
+                  <div class="field">
+                    <label>Meses de obra</label>
+                    <input id="f-renoMonths" type="number" value="4" min="0" step="1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Holding (costes mensuales, €/mes)</label>
+                    <input id="f-holdingMonthly" type="number" value="250" min="0" step="10" />
+                    <div class="small">Comunidad + IBI prorrateado + suministros mínimos + seguro, etc.</div>
+                  </div>
+
+                  <div class="field">
+                    <label>LTV compra (%)</label>
+                    <input id="f-ltvBuy" type="number" value="70" min="0" max="100" step="1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Interés anual compra (%)</label>
+                    <input id="f-rateBuy" type="number" value="9.0" min="0" step="0.1" />
+                  </div>
+
+                  <div class="field">
+                    <label>¿Financiar reforma?</label>
+                    <select id="f-financeReno">
+                      <option value="no">No</option>
+                      <option value="yes">Sí</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>LTV reforma (%)</label>
+                    <input id="f-ltvReno" type="number" value="0" min="0" max="100" step="1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Interés anual reforma (%)</label>
+                    <input id="f-rateReno" type="number" value="11.0" min="0" step="0.1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Comisión agencia venta (%)</label>
+                    <input id="f-sellAgencyPct" type="number" value="3.0" min="0" step="0.1" />
+                  </div>
+
+                  <div class="field">
+                    <label>Otros gastos venta (certificados/gestoría, €)</label>
+                    <input id="f-sellFixed" type="number" value="1500" min="0" step="50" />
+                  </div>
+
+                  <div class="field">
+                    <label>Plusvalía municipal (€) (manual)</label>
+                    <input id="f-plusvalia" type="number" value="0" min="0" step="50" />
+                  </div>
+
+                  <div class="field">
+                    <label>IRPF/IS y otros impuestos (€) (manual)</label>
+                    <input id="f-tax" type="number" value="0" min="0" step="50" />
+                    <div class="small">Modo simple: introduce una estimación o tu cálculo fiscal.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- OBJETIVO + RIESGO -->
+            <div class="card">
+              <div class="hd"><h3>Objetivo y riesgo</h3><p>El motor calcula el MAO resolviendo el precio máximo compatible con tu criterio.</p></div>
+              <div class="bd">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+                  <div class="field">
+                    <label>Objetivo</label>
+                    <select id="f-objMode">
+                      <option value="profit">Beneficio neto mínimo (€)</option>
+                      <option value="margin">Margen neto mínimo (%)</option>
+                      <option value="irr">IRR mínima anual (%)</option>
+                    </select>
+                  </div>
+
+                  <div class="field">
+                    <label>Beneficio mínimo (€)</label>
+                    <input id="f-targetProfit" type="number" value="25000" min="0" step="500" />
+                  </div>
+
+                  <div class="field">
+                    <label>Margen mínimo (%)</label>
+                    <input id="f-targetMarginPct" type="number" value="12" min="0" step="0.5" />
+                  </div>
+
+                  <div class="field">
+                    <label>IRR mínima anual (%)</label>
+                    <input id="f-targetIrrPct" type="number" value="25" min="0" step="0.5" />
+                  </div>
+
+                  <div class="field">
+                    <label>Buffer de riesgo (%) — sugerido</label>
+                    <input id="f-bufferPct" type="number" min="0" step="0.5" />
+                    <div class="small" id="hint-f-bufferPct"></div>
+                  </div>
+
+                  <div class="field">
+                    <label>Score de comparables (0–100)</label>
+                    <input id="f-compScore" type="number" value="0" min="0" max="100" step="1" disabled />
+                    <div class="small">Afecta al buffer sugerido.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ESCENARIOS -->
+            <div class="card">
+              <div class="hd"><h3>Escenarios</h3><p>Multiplicadores simples para ARV, reforma, meses y tipos.</p></div>
+              <div class="bd">
+                <div class="field">
+                  <label>Parámetros de escenarios</label>
+                  <div style="overflow:auto">
+                    <table class="table scen-table">
+                      <thead>
+                        <tr>
+                          <th>Escenario</th>
+                          <th>ARV x</th>
+                          <th>Reforma x</th>
+                          <th>Δ meses</th>
+                          <th>Δ tipo (pp)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Pesimista</td>
+                          <td><input class="in-table" id="f-sc-arv-p" type="number" value="0.90" step="0.01" /></td>
+                          <td><input class="in-table" id="f-sc-reno-p" type="number" value="1.15" step="0.01" /></td>
+                          <td><input class="in-table" id="f-sc-months-p" type="number" value="2" step="1" /></td>
+                          <td><input class="in-table" id="f-sc-rate-p" type="number" value="1.5" step="0.1" /></td>
+                        </tr>
+                        <tr>
+                          <td>Base</td>
+                          <td><input class="in-table" id="f-sc-arv-b" type="number" value="1.00" step="0.01" /></td>
+                          <td><input class="in-table" id="f-sc-reno-b" type="number" value="1.00" step="0.01" /></td>
+                          <td><input class="in-table" id="f-sc-months-b" type="number" value="0" step="1" /></td>
+                          <td><input class="in-table" id="f-sc-rate-b" type="number" value="0.0" step="0.1" /></td>
+                        </tr>
+                        <tr>
+                          <td>Optimista</td>
+                          <td><input class="in-table" id="f-sc-arv-o" type="number" value="1.05" step="0.01" /></td>
+                          <td><input class="in-table" id="f-sc-reno-o" type="number" value="0.90" step="0.01" /></td>
+                          <td><input class="in-table" id="f-sc-months-o" type="number" value="-1" step="1" /></td>
+                          <td><input class="in-table" id="f-sc-rate-o" type="number" value="-0.5" step="0.1" /></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="small" style="margin-top:8px">Δ meses se suma a meses totales (obra+venta). Δ tipo se suma al interés anual.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary" type="button" id="f-calc">Calcular</button>
+              <button class="btn" type="button" id="f-exportCsv">Exportar CSV</button>
+              <button class="btn" type="button" id="f-copy">Copiar</button>
+            </div>
+
+            <div class="kpis" id="f-kpis"></div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Tabla de escenarios</label>
+              <div style="overflow:auto">
+                <table class="table" id="f-table">
+                  <thead>
+                    <tr>
+                      <th>Escenario</th>
+                      <th>ARV (cierre)</th>
+                      <th>Meses</th>
+                      <th>MAO</th>
+                      <th>Beneficio (con tu oferta)</th>
+                      <th>IRR anual (con tu oferta)</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="small" style="margin-top:8px" id="f-note"></div>
+            </div>
+
+            <div class="field" style="margin-top:12px">
+              <label>Sensibilidad rápida (MAO vs ARV)</label>
+              <div style="overflow:auto">
+                <table class="table" id="f-sens">
+                  <thead>
+                    <tr>
+                      <th>ARV x</th>
+                      <th>ARV</th>
+                      <th>MAO</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="small" style="margin-top:8px">Tabla 1D para ver cuánto se mueve el MAO si el ARV cambia.</div>
+            </div>
+
+            <div class="small" style="margin-top:12px">
+              Impuestos: esta herramienta no sustituye un cálculo fiscal profesional; los campos de plusvalía e IRPF/IS son manuales y dependen de tu caso.
+            </div>
+
+          </section>
+
+          <div class="adslot" data-adslot style="margin-top:12px">Espacio de anuncios (desactivado)</div>
+
+          <div class="footer">
+            <div class="small">© <span data-year></span> UnaHojaTools</div>
+            <div class="small"><a href="/privacidad/">Privacidad</a> · <a href="/cookies/">Cookies</a></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="consentbar" style="display:none;margin-top:16px" class="card">
+      <div class="bd">
+        <strong>Cookies y anuncios</strong>
+        <p class="small" style="margin:8px 0 10px 0">Si aceptas, podremos cargar scripts de anuncios. Si rechazas, no se cargan.</p>
+        <div class="row">
+          <button class="btn" id="consentReject" type="button">Rechazar</button>
+          <button class="btn primary" id="consentAccept" type="button">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
