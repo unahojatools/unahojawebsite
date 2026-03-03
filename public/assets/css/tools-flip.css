@@ -48,3 +48,30 @@ select[data-state="confirmed"]{
 #f-suggestState{
   user-select: none;
 }
+
+/* Charts */
+.charts-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+@media (min-width: 980px){
+  .charts-grid{
+    grid-template-columns:1fr 1fr;
+  }
+  .chart-wide{
+    grid-column:1 / -1;
+  }
+}
+.chart-card{
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  padding: 10px;
+  background: rgba(255,255,255,.02);
+}
+.chart-card canvas{
+  width: 100%;
+  height: auto;
+  display:block;
+  margin-top:6px;
+}
