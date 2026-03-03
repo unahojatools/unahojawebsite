@@ -914,6 +914,43 @@
     return items;
   }
 
+   function waterfallItemsAggregated(base){
+     const offer = base.offer;
+   
+     const itp = offer * base.itpPct;
+     const buyAgency = offer * base.buyAgencyPct;
+     const buyTotal = offer + itp + buyAgency + base.buyFixed;
+   
+     const months = base.monthsTotal;
+     const holding = base.holdingMonthly * months;
+   
+     const sellAgency = base.salePriceClose * base.sellAgencyPct;
+     const sellTotal = sellAgency + base.sellFixed;
+   
+     const buffer = base.salePriceClose * base.bufferPct;
+   
+     const loanBuy = offer * base.ltvBuy;
+     const loanReno = (base.financeReno ? base.renoTotal * base.ltvReno : 0);
+   
+     const intBuy = loanBuy * base.rateBuy * (months / 12);
+     const intReno = loanReno * base.rateReno * ((base.renoMonths * 0.5 + base.saleMonths * 1.0) / 12);
+     const interest = intBuy + intReno;
+   
+     const items = [
+       { label:"Venta", v: base.salePriceClose, type:"in" },
+       { label:"Costes venta", v: -sellTotal, type:"out" },
+       { label:"Impuestos", v: -(base.plusvalia + base.taxOther), type:"out" },
+       { label:"Buffer", v: -buffer, type:"out" },
+       { label:"Compra total", v: -buyTotal, type:"out" },
+       { label:"Reforma", v: -base.renoTotal, type:"out" },
+       { label:"Holding + int.", v: -(holding + interest), type:"out" },
+     ];
+   
+     const total = items.reduce((s,x)=>s+x.v,0);
+     items.push({ label:"Beneficio", v: total, type:"total" });
+     return items;
+   }
+
   function renderWaterfallBase(out) {
     const canvas = $("ch-waterfall");
     if (!canvas) return;
@@ -923,7 +960,10 @@
     const pad = { l: 54, r: 16, t: 20, b: 34 };
     const x0 = pad.l, y0 = pad.t, x1 = w - pad.r, y1 = h - pad.b;
 
-    const items = waterfallItemsBase(out.base, out.maoBase, out.baseRes);
+    const isSmall = window.innerWidth < 640;
+      const items = isSmall
+        ? waterfallItemsAggregated(out.base)
+        : waterfallItemsBase(out.base, out.maoBase, out.baseRes);
 
     let acc = 0;
     let minAcc = 0;
@@ -984,8 +1024,20 @@
       ctx.strokeStyle = "rgba(255,255,255,.20)";
       ctx.strokeRect(x, yTop, barW, bh);
 
-      const short = it.label.length > 12 ? it.label.slice(0, 12) + "…" : it.label;
-      drawSmall(ctx, short, x + barW / 2, y1 + 22, "center");
+      const label = it.label.length > 14 ? it.label.slice(0, 14) + "…" : it.label;
+      
+      if (isSmall) {
+        // Etiqueta vertical (móvil)
+        ctx.save();
+        ctx.translate(x + barW/2, y1 + 30);
+        ctx.rotate(-Math.PI/2);
+        drawSmall(ctx, label, 0, 0, "left");
+        ctx.restore();
+      } else {
+        // Etiqueta horizontal (desktop)
+        drawSmall(ctx, label, x + barW/2, y1 + 22, "center");
+      }
+       
     });
 
     drawSmall(ctx, "Cascada basada en tu oferta (incluye buffer).", x0, y0 - 4, "left");
