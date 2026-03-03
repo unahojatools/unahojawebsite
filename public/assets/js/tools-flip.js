@@ -965,6 +965,9 @@
         ? waterfallItemsAggregated(out.base)
         : waterfallItemsBase(out.base, out.maoBase, out.baseRes);
 
+     // Decidimos si usamos etiquetas verticales
+      const useVerticalLabels = items.length > 7;
+
     let acc = 0;
     let minAcc = 0;
     let maxAcc = 0;
@@ -982,6 +985,7 @@
     function yMap(v) {
       return y1 - ((v - minAcc) / span) * (y1 - y0);
     }
+ 
 
     drawAxes(ctx, x0, y0, x1, y1);
 
@@ -1037,7 +1041,19 @@
         // Etiqueta horizontal (desktop)
         drawSmall(ctx, label, x + barW/2, y1 + 22, "center");
       }
-       
+
+      const useVerticalLabels = items.length > 7;
+
+      if (useVerticalLabels) {
+        ctx.save();
+        ctx.translate(x + barW/2, y1 + 28);
+        ctx.rotate(-Math.PI/2);
+        drawSmall(ctx, label, 0, 0, "left");
+        ctx.restore();
+      } else {
+        drawSmall(ctx, label, x + barW/2, y1 + 22, "center");
+      }
+              
     });
 
     drawSmall(ctx, "Cascada basada en tu oferta (incluye buffer).", x0, y0 - 4, "left");
