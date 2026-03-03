@@ -1,817 +1,752 @@
 /* ============================================================
-   UnaHojaTools — Flip
-   - Cálculo local (sin backend)
-   - Sugerido vs Confirmado
-   - Comparables -> defaults a campos posteriores
-   - MAO por bisección (objetivo: profit/margin/IRR)
+   tools-flip.js — Calculadora avanzada de flips + gráficos (Canvas)
+   Estructura compatible con tu web (sin init(), cálculo local)
+   Requisitos en HTML:
+   - Inputs con ids f-...
+   - Contenedores: #f-kpis, #f-table tbody
+   - Canvas (gráficos): #chart-scenarios, #chart-mao, #chart-waterfall
+   - Botones: #f-calc, #f-copy, #f-exportCsv
    ============================================================ */
 
-function fmtEur(n){
-  if (!isFinite(n)) return "—";
-  return new Intl.NumberFormat("es-ES", { style:"currency", currency:"EUR", maximumFractionDigits:0 }).format(n);
-}
-function fmtEur2(n){
-  if (!isFinite(n)) return "—";
-  return new Intl.NumberFormat("es-ES", { style:"currency", currency:"EUR", maximumFractionDigits:2 }).format(n);
-}
-function fmtPct(n){
-  if (!isFinite(n)) return "—";
-  return new Intl.NumberFormat("es-ES", { style:"percent", maximumFractionDigits:2 }).format(n);
-}
-function fmtNum(n, d=0){
-  if (!isFinite(n)) return "—";
-  return new Intl.NumberFormat("es-ES", { maximumFractionDigits:d }).format(n);
-}
-function clamp(x, a, b){ return Math.max(a, Math.min(b, x)); }
+(function () {
+  "use strict";
 
-function $(id){ return document.getElementById(id); }
-function num(id){
-  const v = Number($(id)?.value ?? 0);
-  return isFinite(v) ? v : 0;
-}
-function str(id){ return String($(id)?.value ?? ""); }
+  /* =======================
+     Helpers de formato
+     ======================= */
+  function fmtEur(n) {
+    if (!isFinite(n)) return "—";
+    return new Intl.NumberFormat("es-ES", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 0,
+    }).format(n);
+  }
 
-function setSuggested(id, value, sourceLabel){
-  const el = $(id);
-  if (!el) return;
-  if (el.dataset.state === "confirmed") return;
-  el.value = (value ?? "");
-  el.dataset.state = "suggested";
-  if (sourceLabel) el.dataset.source = sourceLabel;
-  const hint = $("hint-" + id);
-  if (hint) hint.textContent = sourceLabel ? ("Sugerido: " + sourceLabel) : "Sugerido";
-}
-function setConfirmed(el){
-  if (!el) return;
-  el.dataset.state = "confirmed";
-  delete el.dataset.source;
-  const hint = $("hint-" + el.id);
-  if (hint) hint.textContent = "Confirmado";
-}
-function clearStateHint(id){
-  const hint = $("hint-" + id);
-  if (hint) hint.textContent = "";
-}
+  function fmtEur2(n) {
+    if (!isFinite(n)) return "—";
+    return new Intl.NumberFormat("es-ES", {
+      style: "currency",
+      currency: "EUR",
+      maximumFractionDigits: 2,
+    }).format(n);
+  }
 
-/* ============================================================
-   Baselines mercado (€/m²) — 2026
-   ============================================================ */
+  function fmtPct(n) {
+    if (!isFinite(n)) return "—";
+    return new Intl.NumberFormat("es-ES", {
+      style: "percent",
+      maximumFractionDigits: 2,
+    }).format(n);
+  }
 
-const MARKET = {
-  idealista_jan2026: {
-    label: "Baseline idealista (ene 2026) por CCAA",
-    ccaa: {
-      "Andalucía": 2784,
-      "Aragón": 1617,
-      "Asturias": 1714,
-      "Baleares": 5194,
-      "Canarias": 3200,
-      "Cantabria": 2047,
-      "Castilla y León": 1287,
-      "Castilla-La Mancha": 1048,
-      "Cataluña": 2776,
-      "Ceuta": 2447,
-      "Comunitat Valenciana": 2422,
-      "Euskadi": 3460,
-      "Extremadura": 1040,
-      "Galicia": 1505,
-      "La Rioja": 1451,
-      "Madrid": 4585,
-      "Melilla": 2048,
-      "Murcia": 1696,
-      "Navarra": 1867,
-      "España": 2650
-    }
-  },
-  fotocasa_feb2026: {
-    label: "Baseline Fotocasa (feb 2026) por CCAA",
-    ccaa: {
-      "Andalucía": 2797,
-      "Aragón": 1876,
-      "Asturias": 2274,
-      "Baleares": 5317,
-      "Canarias": 3356,
-      "Cantabria": 2543,
-      "Castilla y León": 1713,
-      "Castilla-La Mancha": 1357,
-      "Cataluña": 3313,
-      "Comunitat Valenciana": 2649,  // “Valencia” en tabla
-      "Euskadi": 3709,               // “País Vasco” en tabla
-      "Extremadura": 1312,
-      "Galicia": 2178,
-      "La Rioja": 1815,
-      "Madrid": 5297,
-      "Murcia": 1945,
-      "Navarra": 2309,
-      "España": 2950
-      // Ceuta/Melilla no vienen en esa tabla; se gestiona como fallback
+  function clamp(n, a, b) {
+    return Math.max(a, Math.min(b, n));
+  }
+
+  function num(id, fallback = 0) {
+    const el = document.getElementById(id);
+    const v = el ? Number(el.value) : NaN;
+    return isFinite(v) ? v : fallback;
+  }
+
+  function txt(id) {
+    const el = document.getElementById(id);
+    return el ? String(el.value || "").trim() : "";
+  }
+
+  function setText(id, s) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = s;
+  }
+
+  function setHTML(id, html) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+
+  function safeDiv(a, b) {
+    if (!isFinite(a) || !isFinite(b) || b === 0) return NaN;
+    return a / b;
+  }
+
+  /* =======================
+     Defaults "suaves" desde comparables
+     - Modo: si existe valor manual en el campo destino (y no está vacío), NO se pisa.
+     - Si está vacío o 0, se rellena con el valor sugerido.
+     ======================= */
+  function applySoftDefault(targetId, value) {
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    const raw = String(el.value ?? "").trim();
+    const asNum = Number(raw);
+
+    const shouldApply =
+      raw === "" || (!isFinite(asNum)) || asNum === 0;
+
+    if (shouldApply && isFinite(value)) {
+      el.value = String(value);
+      el.dataset.soft = "1";
     }
   }
-};
 
-/* ============================================================
-   Comparables — render y lectura
-   ============================================================ */
-
-let compAutoId = 0;
-
-function compRowHtml(id){
-  return `
-    <tr data-comp="${id}">
-      <td><input class="in-table" type="text" data-k="zone" placeholder="Barrio/zona"></td>
-      <td><input class="in-table" type="number" data-k="m2" min="1" step="1" value=""></td>
-      <td><input class="in-table" type="number" data-k="ask" min="0" step="1000" value=""></td>
-      <td><input class="in-table" type="number" data-k="close" min="0" step="1000" value=""></td>
-      <td><input class="in-table" type="number" data-k="dom" min="0" step="1" value=""></td>
-      <td><input class="in-table" type="number" data-k="adj" step="0.1" value="0"></td>
-      <td>
-        <select class="in-table" data-k="conf">
-          <option value="high">Alta</option>
-          <option value="mid" selected>Media</option>
-          <option value="low">Baja</option>
-        </select>
-      </td>
-      <td style="text-align:right">
-        <button class="btn btn-del" type="button" data-del="${id}">✕</button>
-      </td>
-    </tr>
-  `;
-}
-
-function addCompRow(){
-  const id = (++compAutoId);
-  $("f-compBody").insertAdjacentHTML("beforeend", compRowHtml(id));
-}
-
-function clearComps(){
-  $("f-compBody").innerHTML = "";
-  compAutoId = 0;
-}
-
-function readComps(){
-  const rows = Array.from(document.querySelectorAll("#f-compBody tr"));
-  const comps = [];
-  for (const tr of rows){
-    const get = (k) => tr.querySelector(`[data-k="${k}"]`)?.value ?? "";
-    const zone = String(get("zone")).trim();
-    const m2 = Number(get("m2")||0);
-    const ask = Number(get("ask")||0);
-    const close = Number(get("close")||0);
-    const dom = Number(get("dom")||0);
-    const adj = Number(get("adj")||0);
-    const conf = String(get("conf")||"mid");
-
-    const priceEff = (close>0 ? close : ask);
-    if (!(m2>0 && priceEff>0)) continue;
-
-    const eurM2 = (priceEff / m2) * (1 + (adj/100));
-    const disc = (ask>0 && close>0 && close<=ask) ? (ask-close)/ask : NaN;
-
-    const w =
-      conf==="high" ? 1.0 :
-      conf==="low"  ? 0.4 : 0.7;
-
-    comps.push({ zone, m2, ask, close, dom:(dom>0?dom:NaN), adj, conf, eurM2, disc, w });
-  }
-  return comps;
-}
-
-function percentile(arr, p){
-  if (!arr.length) return NaN;
-  const a = arr.slice().sort((x,y)=>x-y);
-  const idx = (a.length-1)*p;
-  const lo = Math.floor(idx), hi = Math.ceil(idx);
-  if (lo===hi) return a[lo];
-  const t = idx-lo;
-  return a[lo]*(1-t)+a[hi]*t;
-}
-
-function std(arr){
-  if (arr.length<2) return 0;
-  const m = arr.reduce((s,x)=>s+x,0)/arr.length;
-  const v = arr.reduce((s,x)=>s+(x-m)*(x-m),0)/(arr.length-1);
-  return Math.sqrt(v);
-}
-
-function computeCompsStats(){
-  const comps = readComps();
-  const eur = comps.map(c=>c.eurM2);
-  const dom = comps.map(c=>c.dom).filter(x=>isFinite(x) && x>0);
-  const disc = comps.map(c=>c.disc).filter(x=>isFinite(x) && x>=0 && x<1);
-
-  const wSum = comps.reduce((s,c)=>s+c.w,0);
-  const wMean = wSum>0 ? comps.reduce((s,c)=>s+c.w*c.eurM2,0)/wSum : NaN;
-
-  const mean = eur.length ? eur.reduce((s,x)=>s+x,0)/eur.length : NaN;
-  const cv = (isFinite(mean) && mean>0) ? std(eur)/mean : NaN;
-
-  // Score simple: cantidad + dispersión
-  const nScore = clamp(comps.length/8, 0, 1);
-  const dScore = isFinite(cv) ? clamp(1 - (cv/0.15), 0, 1) : 0; // 0.15 ~ dispersión “alta”
-  const score = Math.round(100*(0.55*nScore + 0.45*dScore));
-
-  const buffer =
-    score>=80 ? 3 :
-    score>=60 ? 6 :
-    score>=40 ? 9 : 12;
-
-  return {
-    n: comps.length,
-    wMeanEurM2: wMean,
-    p25: percentile(eur, 0.25),
-    p50: percentile(eur, 0.50),
-    p75: percentile(eur, 0.75),
-    domP50: percentile(dom, 0.50),
-    discP50: percentile(disc, 0.50),
-    cv,
-    score,
-    buffer
-  };
-}
-
-/* ============================================================
-   IRR y MAO
-   ============================================================ */
-
-function irrMensualBiseccion(flows){
-  let lo = -0.99, hi = 1.5;
-  const npv = (r) => flows.reduce((s, cf, t)=> s + cf / Math.pow(1+r, t), 0);
-
-  let fLo = npv(lo), fHi = npv(hi);
-  if (!isFinite(fLo) || !isFinite(fHi) || (fLo*fHi > 0)) return NaN;
-
-  for (let i=0; i<90; i++){
-    const mid = (lo+hi)/2;
-    const fMid = npv(mid);
-    if (Math.abs(fMid) < 1e-8) return mid;
-    if (fLo*fMid <= 0){ hi = mid; fHi=fMid; }
-    else { lo = mid; fLo=fMid; }
-  }
-  return (lo+hi)/2;
-}
-
-function buildEquityFlows(params){
-  const {
-    purchasePrice,
-    itpPct,
-    buyFixed,
-    buyAgencyPct,
-    renoTotal,
-    renoMonths,
-    holdingMonthly,
-    saleMonths,
-    salePriceClose,
-    sellAgencyPct,
-    sellFixed,
-    plusvalia,
-    taxOther,
-    ltvBuy,
-    rateBuy,
-    financeReno,
-    ltvReno,
-    rateReno,
-    bufferPct
-  } = params;
-
-  const monthsReform = Math.max(0, Math.round(renoMonths));
-  const monthsSale = Math.max(0, Math.round(saleMonths));
-  const totalMonths = monthsReform + monthsSale;
-
-  // Compra
-  const buyTaxes = purchasePrice * (itpPct/100);
-  const buyAgency = purchasePrice * (buyAgencyPct/100);
-  const acquisitionCosts = buyTaxes + buyFixed + buyAgency;
-
-  // Reforma + contingencia ya aplicada fuera
-  const renoPerMonth = monthsReform>0 ? (renoTotal / monthsReform) : 0;
-
-  // Financiación
-  const loanBuy = purchasePrice * (ltvBuy/100);
-  const equityBuy = purchasePrice - loanBuy;
-
-  const loanReno = financeReno ? (renoTotal * (ltvReno/100)) : 0;
-  const equityRenoTotal = renoTotal - loanReno;
-
-  const rBuyM = (rateBuy/100)/12;
-  const rRenoM = (rateReno/100)/12;
-
-  // Venta
-  const sellAgency = salePriceClose * (sellAgencyPct/100);
-  const buffer = salePriceClose * (bufferPct/100); // buffer aplicado como “colchón” contra el resultado
-
-  const netSaleCashBeforeDebt =
-    salePriceClose
-    - sellAgency
-    - sellFixed
-    - plusvalia
-    - taxOther
-    - buffer;
-
-  // Flujos de equity
-  const flows = [];
-
-  // Mes 0: equity downpayment + gastos compra (no financiados)
-  flows.push(-(equityBuy + acquisitionCosts));
-
-  // Meses 1..monthsReform: aportación de equity a reforma + holding + intereses
-  for (let m=1; m<=monthsReform; m++){
-    const equityRenoM = monthsReform>0 ? (equityRenoTotal / monthsReform) : 0;
-
-    // Draw de préstamo reforma: lineal durante meses obra
-    const renoOutstanding = (monthsReform>0) ? (loanReno * (m/monthsReform)) : 0;
-
-    const interest = (loanBuy*rBuyM) + (renoOutstanding*rRenoM);
-    const out = equityRenoM + holdingMonthly + interest;
-    flows.push(-out);
+  function clearSoftFlag(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    delete el.dataset.soft;
   }
 
-  // Meses de venta: holding + intereses (préstamo reforma ya 100% dispuesto si existe)
-  for (let m=1; m<=monthsSale; m++){
-    const interest = (loanBuy*rBuyM) + (loanReno*rRenoM);
-    const out = holdingMonthly + interest;
-    flows.push(-out);
+  function markManualOnInput(ids) {
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener("input", () => clearSoftFlag(id));
+      el.addEventListener("change", () => clearSoftFlag(id));
+    });
   }
 
-  // Mes final: cobro neto y repago principal de deuda
-  const debtRepay = loanBuy + loanReno;
-  const equityIn = netSaleCashBeforeDebt - debtRepay;
-  flows.push(equityIn);
-
-  return { flows, totalMonths, acquisitionCosts, buyTaxes, buyAgency, sellAgency, buffer, loanBuy, loanReno };
-}
-
-function evaluateAtPurchase(purchasePrice, base){
-  const p = { ...base, purchasePrice };
-  const { flows, totalMonths, acquisitionCosts, buyTaxes, buyAgency, sellAgency, buffer, loanBuy, loanReno } = buildEquityFlows(p);
-  const irrM = irrMensualBiseccion(flows);
-  const irrA = isFinite(irrM) ? (Math.pow(1+irrM, 12) - 1) : NaN;
-
-  const equityOut = -flows.filter(x=>x<0).reduce((s,x)=>s+x,0);
-  const equityProfit = flows.reduce((s,x)=>s+x,0);
-
-  // Unlevered profit aproximado (sin financiación): venta - (compra + gastos compra + reforma + holding + gastos venta + impuestos + buffer)
-  const unleveredCost =
-    purchasePrice
-    + (purchasePrice*(p.itpPct/100) + p.buyFixed + purchasePrice*(p.buyAgencyPct/100))
-    + p.renoTotal
-    + (p.holdingMonthly * (p.renoMonths + p.saleMonths))
-    + (p.salePriceClose*(p.sellAgencyPct/100) + p.sellFixed)
-    + p.plusvalia + p.taxOther
-    + buffer;
-
-  const unleveredProfit = p.salePriceClose - unleveredCost;
-
-  return {
-    irrA,
-    irrM,
-    equityOut,
-    equityProfit,
-    totalMonths,
-    acquisitionCosts,
-    buyTaxes,
-    buyAgency,
-    sellAgency,
-    buffer,
-    loanBuy,
-    loanReno,
-    unleveredProfit
-  };
-}
-
-function solveMAO(base){
-  const mode = str("f-objMode");
-  const targetProfit = num("f-targetProfit");
-  const targetMarginPct = num("f-targetMarginPct");
-  const targetIrrPct = num("f-targetIrrPct")/100;
-
-  const sale = base.salePriceClose;
-  const profitGoal = (mode==="margin") ? sale*(targetMarginPct/100) : targetProfit;
-
-  // f(price) = metric - target
-  function f(price){
-    const r = evaluateAtPurchase(price, base);
-    if (mode==="irr") return (r.irrA - targetIrrPct);
-    return (r.equityProfit - profitGoal);
-  }
-
-  // Intervalo razonable
-  let lo = 0;
-  let hi = Math.max(1, sale*0.98);
-
-  let fLo = f(lo);
-  let fHi = f(hi);
-
-  // Si incluso a 0 no llegas al objetivo, no hay MAO (NaN)
-  if (!isFinite(fLo) || fLo < 0) return NaN;
-
-  // Si a hi aún cumples, sube hi un poco (pero acotado)
-  for (let k=0; k<10 && isFinite(fHi) && fHi > 0; k++){
-    hi *= 1.10;
-    if (hi > sale*1.20) break;
-    fHi = f(hi);
-  }
-
-  // Si no hay cambio de signo, bisección no es aplicable
-  if (!isFinite(fHi) || fLo*fHi > 0) return NaN;
-
-  for (let i=0; i<80; i++){
-    const mid = (lo+hi)/2;
-    const fMid = f(mid);
-    if (!isFinite(fMid)) break;
-    if (Math.abs(fMid) < 1e-6) return mid;
-    if (fLo*fMid <= 0){ hi = mid; fHi=fMid; }
-    else { lo = mid; fLo=fMid; }
-  }
-  return (lo+hi)/2;
-}
-
-/* ============================================================
-   Sugerencias: baseline + comps -> campos
-   ============================================================ */
-
-function getBaselineEurM2(sourceKey, ccaa){
-  const src = MARKET[sourceKey];
-  if (!src) return NaN;
-  const v = src.ccaa[ccaa];
-  if (isFinite(v)) return v;
-  // fallback: si Fotocasa no trae Ceuta/Melilla, usa idealista
-  if (sourceKey==="fotocasa_feb2026"){
-    const v2 = MARKET.idealista_jan2026.ccaa[ccaa];
-    if (isFinite(v2)) return v2;
-  }
-  return NaN;
-}
-
-function applySuggestions(){
-  const ccaa = str("f-ccaa");
-  const sourceKey = str("f-source");
-  const m2 = Math.max(1, num("f-m2"));
-  const microAdj = num("f-microAdjPct")/100;
-
-  const baseline = getBaselineEurM2(sourceKey, ccaa);
-  const stats = computeCompsStats();
-
-  // Reforma €/m² (plantilla) sugerida (editable)
-  // Midpoints orientativos (no “dato real”, solo plantilla)
-  // - integral media-baja: 500
-  // - integral media: 850
-  // - alta/premium: 1100
-  // Se deja en 850 por defecto para no sesgar a extremos.
-  setSuggested("f-renoEurM2", 850, "Plantilla €/m² (editable)");
-
-  // Sale discount default si no hay cierres suficientes
-  const disc = isFinite(stats.discP50) ? (stats.discP50*100) : 3.0;
-
-  // Meses venta: si hay DOM mediano, usa DOM/30 + 1 mes escrituras; si no, 3
-  const saleMonths =
-    isFinite(stats.domP50) ? Math.max(1, Math.ceil(stats.domP50/30) + 1) : 3;
-
-  // €/m² sugerido: comps (si n>=3) else baseline
-  const eurM2FromComps = (stats.n >= 3 && isFinite(stats.wMeanEurM2)) ? stats.wMeanEurM2 : NaN;
-  const eurM2 = isFinite(eurM2FromComps) ? eurM2FromComps : baseline;
-
-  // Ajuste microzona
-  const eurM2Adj = isFinite(eurM2) ? eurM2*(1+microAdj) : NaN;
-
-  // Precio cierre sugerido:
-  // - Si comps: wMean * m² (y luego aplicamos descuento “informativo” para listing)
-  // - Si baseline: baseline * m²
-  const saleClose = isFinite(eurM2Adj) ? (eurM2Adj*m2) : NaN;
-
-  // Buffer sugerido por score
-  const bufferPct = isFinite(stats.buffer) ? stats.buffer : 8;
-
-  // Hints de CCAA y baseline
-  const srcLabel = MARKET[sourceKey]?.label ?? "Baseline";
-  if ($("f-ccaaHint")){
-    const v = isFinite(baseline) ? fmtNum(baseline,0)+" €/m²" : "—";
-    $("f-ccaaHint").textContent = `${srcLabel}: ${v} (${ccaa})`;
-  }
-
-  // Aplica sugeridos (si no confirmados)
-  setSuggested("f-saleEurM2", isFinite(eurM2Adj) ? Math.round(eurM2Adj) : "", stats.n>=3 ? "Comparables (media ponderada)" : "Baseline CCAA 2026");
-  setSuggested("f-salePrice", isFinite(saleClose) ? Math.round(saleClose) : "", stats.n>=3 ? "€/m² comps × m²" : "€/m² CCAA × m²");
-  setSuggested("f-saleDiscPct", disc.toFixed(1), isFinite(stats.discP50) ? "Mediana (cierre vs anuncio)" : "Default");
-  setSuggested("f-saleMonths", saleMonths, isFinite(stats.domP50) ? "DOM mediano + 1 mes" : "Default");
-
-  setSuggested("f-bufferPct", bufferPct, stats.n>=3 ? ("Por score comps ("+stats.score+")") : "Default por falta de comps");
-
-  // Score comps (solo visual)
-  if ($("f-compScore")) $("f-compScore").value = isFinite(stats.score) ? stats.score : 0;
-
-  // Stats comps
-  if ($("f-compStats")){
-    if (stats.n===0){
-      $("f-compStats").textContent = "Añade comparables para precargar métricas (mínimo recomendado: 3).";
-    } else {
-      const txt =
-        `Comps válidos: ${stats.n}. ` +
-        `€/m² P50: ${fmtNum(stats.p50,0)} (P25: ${fmtNum(stats.p25,0)}, P75: ${fmtNum(stats.p75,0)}). ` +
-        `Dispersión (CV): ${isFinite(stats.cv)?fmtNum(stats.cv,2):"—"}. ` +
-        `Score: ${stats.score}/100 → buffer sugerido: ${stats.buffer}%.`;
-      $("f-compStats").textContent = txt;
-    }
-  }
-}
-
-/* ============================================================
-   Cálculo principal
-   ============================================================ */
-
-function getScenarioParams(tag){
-  return {
-    arvMult: num(`f-sc-arv-${tag}`),
-    renoMult: num(`f-sc-reno-${tag}`),
-    monthsDelta: Math.round(num(`f-sc-months-${tag}`)),
-    rateDelta: num(`f-sc-rate-${tag}`)
-  };
-}
-
-function flipCalculate(){
-  // recalcula sugerencias antes de calcular (pero respeta confirmados)
-  applySuggestions();
-
-  const m2 = Math.max(1, num("f-m2"));
-  const saleEurM2 = num("f-saleEurM2");
-  const salePrice = num("f-salePrice");
-  const saleDiscPct = num("f-saleDiscPct"); // informativo para listing si se usa después
-  const saleMonths = Math.max(0, Math.round(num("f-saleMonths")));
-
-  const offerPrice = num("f-offerPrice");
-  const itpPct = num("f-itpPct");
-  const buyFixed = num("f-buyFixed");
-  const buyAgencyPct = num("f-buyAgencyPct");
-
-  const renoEurM2 = num("f-renoEurM2");
-  const renoTotalManual = num("f-renoTotal");
-  const renoContPct = num("f-renoContPct")/100;
-  const renoMonths = Math.max(0, Math.round(num("f-renoMonths")));
-  const holdingMonthly = num("f-holdingMonthly");
-
-  const ltvBuy = clamp(num("f-ltvBuy"), 0, 100);
-  const rateBuy = num("f-rateBuy");
-  const financeReno = (str("f-financeReno")==="yes");
-  const ltvReno = clamp(num("f-ltvReno"), 0, 100);
-  const rateReno = num("f-rateReno");
-
-  const sellAgencyPct = num("f-sellAgencyPct");
-  const sellFixed = num("f-sellFixed");
-  const plusvalia = num("f-plusvalia");
-  const taxOther = num("f-tax");
-
-  const bufferPct = num("f-bufferPct");
-
-  const renoBase = (renoTotalManual>0) ? renoTotalManual : (renoEurM2*m2);
-  const renoTotal = renoBase * (1 + renoContPct);
-
-  const base = {
-    purchasePrice: offerPrice,
-    itpPct, buyFixed, buyAgencyPct,
-    renoTotal, renoMonths,
-    holdingMonthly,
-    saleMonths,
-    salePriceClose: salePrice,
-    sellAgencyPct, sellFixed,
-    plusvalia, taxOther,
-    ltvBuy, rateBuy,
-    financeReno, ltvReno, rateReno,
-    bufferPct
-  };
-
-  const scenarios = [
-    { name:"Pesimista", tag:"p", p:getScenarioParams("p") },
-    { name:"Base", tag:"b", p:getScenarioParams("b") },
-    { name:"Optimista", tag:"o", p:getScenarioParams("o") }
+  /* =======================
+     Modelo de escenarios
+     ======================= */
+  const SCENARIOS = [
+    { key: "pesimista", label: "Pesimista", arvAdj: -0.06, ttmAdj: +0.20, reformAdj: +0.10, sellFeesAdj: +0.10 },
+    { key: "moderado",  label: "Moderado",  arvAdj:  0.00, ttmAdj:  0.00, reformAdj:  0.00, sellFeesAdj:  0.00 },
+    { key: "optimista", label: "Optimista", arvAdj: +0.04, ttmAdj: -0.15, reformAdj: -0.05, sellFeesAdj: -0.05 },
   ];
 
-  const results = [];
+  /* =======================
+     Cálculo financiero básico (interés simple proporcional)
+     ======================= */
+  function financingCost({
+    totalNeed,
+    ltv,               // % deuda sobre totalNeed (0..1)
+    annualRate,        // TIN anual (0..1)
+    months,            // time to market
+    entryFees,         // € gastos apertura/estudio/etc.
+    monthlyFees,       // € fees mensuales
+  }) {
+    const debt = Math.max(0, totalNeed * clamp(ltv, 0, 1));
+    const equity = Math.max(0, totalNeed - debt);
 
-  for (const s of scenarios){
-    const saleAdj = base.salePriceClose * (s.p.arvMult || 1);
-    const renoAdj = base.renoTotal * (s.p.renoMult || 1);
+    const m = Math.max(0, months);
+    const interest = debt * annualRate * (m / 12);
+    const fees = (isFinite(entryFees) ? entryFees : 0) + (isFinite(monthlyFees) ? monthlyFees : 0) * m;
 
-    const monthsTotalBase = base.renoMonths + base.saleMonths;
-    const monthsTotalAdj = Math.max(0, monthsTotalBase + (s.p.monthsDelta || 0));
+    return { debt, equity, interest, fees, total: interest + fees };
+  }
 
-    // Reparto simple: ajusta meses de venta, manteniendo meses de obra si no quieres tocar obra.
-    const renoMonthsAdj = base.renoMonths;
-    const saleMonthsAdj = Math.max(0, monthsTotalAdj - renoMonthsAdj);
+  /* =======================
+     Núcleo: calcular un escenario
+     ======================= */
+  function computeScenario(base, s) {
+    // Ajustes del escenario
+    const arv = base.arv * (1 + s.arvAdj);
+    const ttmMonths = base.ttmMonths * (1 + s.ttmAdj);
+    const reform = base.reformCost * (1 + s.reformAdj);
 
-    const rateBuyAdj = Math.max(0, base.rateBuy + (s.p.rateDelta || 0));
-    const rateRenoAdj = Math.max(0, base.rateReno + (s.p.rateDelta || 0));
+    const sellFeesPct = base.sellFeesPct * (1 + s.sellFeesAdj);
+    const sellFees = arv * sellFeesPct;
 
-    const scBase = {
-      ...base,
-      salePriceClose: saleAdj,
-      renoTotal: renoAdj,
-      renoMonths: renoMonthsAdj,
-      saleMonths: saleMonthsAdj,
-      rateBuy: rateBuyAdj,
-      rateReno: rateRenoAdj
-    };
+    const purchaseCosts = base.purchaseCosts; // gastos compra fijos
+    const holdingMonthly = base.holdingMonthly; // holding €/mes (IBI+comunidad+seguros+utilidades)
+    const holding = holdingMonthly * ttmMonths;
 
-    const rOffer = evaluateAtPurchase(scBase.purchasePrice, scBase);
-    const mao = solveMAO(scBase);
+    const totalNeed = base.purchasePrice + purchaseCosts + reform + base.contingency + holding;
 
-    results.push({
-      name: s.name,
-      arv: scBase.salePriceClose,
-      months: rOffer.totalMonths,
+    const fin = financingCost({
+      totalNeed,
+      ltv: base.ltv,
+      annualRate: base.annualRate,
+      months: ttmMonths,
+      entryFees: base.finEntryFees,
+      monthlyFees: base.finMonthlyFees,
+    });
+
+    const totalCostsAllIn =
+      base.purchasePrice +
+      purchaseCosts +
+      reform +
+      base.contingency +
+      holding +
+      fin.total +
+      sellFees;
+
+    const profit = arv - totalCostsAllIn;
+    const roiEquity = safeDiv(profit, fin.equity);
+    const margin = safeDiv(profit, arv);
+
+    // MAO (maximum allowable offer)
+    // Idea: dado un objetivo de margen sobre ARV (base.targetMargin),
+    // MAO = ARV*(1 - targetMargin - sellFeesPct) - (purchaseCosts + reform + contingency + holding + financing)
+    const mao =
+      arv * (1 - base.targetMargin - sellFeesPct) -
+      (purchaseCosts + reform + base.contingency + holding + fin.total);
+
+    // Redondeo suave
+    const maoRounded = isFinite(mao) ? Math.floor(mao / 1000) * 1000 : NaN;
+
+    return {
+      key: s.key,
+      label: s.label,
+      arv,
+      ttmMonths,
+      reform,
+      sellFeesPct,
+      sellFees,
+      holding,
+      totalNeed,
+      fin,
+      totalCostsAllIn,
+      profit,
+      roiEquity,
+      margin,
       mao,
-      profit: rOffer.equityProfit,
-      irrA: rOffer.irrA
-    });
+      maoRounded,
+    };
   }
 
-  // KPIs (base)
-  const baseRes = results.find(x=>x.name==="Base") || results[0];
-  const diff = (isFinite(baseRes.mao) ? (offerPrice - baseRes.mao) : NaN);
-  const ok = isFinite(diff) ? (diff <= 0) : false;
+  /* =======================
+     Lectura inputs + comparables → defaults
+     ======================= */
+  function pullComparablesAndApplyDefaults() {
+    // Comparables (inputs opcionales)
+    // Esperado (si existen):
+    // c-price (€/m2), c-arv (€/m2), c-dom (días), c-discount (% compra vs mercado), c-sellFees (%), c-reform (€/m2)
+    const compPriceM2 = num("c-price", NaN);
+    const compArvM2 = num("c-arv", NaN);
+    const compDomDays = num("c-dom", NaN);
+    const compSellFeesPct = num("c-sellFees", NaN) / 100;
+    const compReformM2 = num("c-reform", NaN);
+    const compDiscountPct = num("c-discount", NaN) / 100;
 
-  $("f-kpis").innerHTML = `
-    <div class="kpi">
-      <div class="k">MAO (Base)</div>
-      <div class="v">${isFinite(baseRes.mao)?fmtEur(baseRes.mao):"—"}</div>
-      <div class="small">${isFinite(diff)?(ok?'<span class="ok">Tu oferta está dentro</span>':'<span class="bad">Tu oferta supera el MAO</span>'):""}</div>
-    </div>
-    <div class="kpi">
-      <div class="k">Beneficio neto (Base, con tu oferta)</div>
-      <div class="v">${fmtEur(baseRes.profit)}</div>
-      <div class="small">Equity-only (incluye intereses/holding).</div>
-    </div>
-    <div class="kpi">
-      <div class="k">IRR anual (Base, con tu oferta)</div>
-      <div class="v">${isFinite(baseRes.irrA)?fmtPct(baseRes.irrA):"—"}</div>
-      <div class="small">IRR sobre flujos mensuales.</div>
-    </div>
-    <div class="kpi">
-      <div class="k">€/m² salida y descuento</div>
-      <div class="v">${isFinite(saleEurM2)?fmtNum(saleEurM2,0):"—"}</div>
-      <div class="small">Desc. negociación: ${isFinite(saleDiscPct)?fmtNum(saleDiscPct,1)+"%":"—"}</div>
-    </div>
-  `;
+    // Inputs base necesarios (si existen)
+    const area = num("f-area", NaN);
 
-  // Tabla escenarios
-  document.querySelector("#f-table tbody").innerHTML = results.map(r=>`
-    <tr>
-      <td>${r.name}</td>
-      <td>${fmtEur(r.arv)}</td>
-      <td>${fmtNum(r.months,0)}</td>
-      <td>${isFinite(r.mao)?fmtEur(r.mao):"—"}</td>
-      <td>${fmtEur(r.profit)}</td>
-      <td>${isFinite(r.irrA)?fmtPct(r.irrA):"—"}</td>
-    </tr>
-  `).join("");
+    // Defaults suaves hacia campos de la calculadora
+    // - ARV: si hay compArvM2 y area
+    if (isFinite(compArvM2) && isFinite(area)) {
+      applySoftDefault("f-arv", compArvM2 * area);
+    }
 
-  // Nota resumen
-  const listPrice = (saleDiscPct>=0 && saleDiscPct<100) ? (salePrice / (1 - saleDiscPct/100)) : NaN;
-  $("f-note").textContent =
-    `Precio publicación orientativo: ${isFinite(listPrice)?fmtEur(listPrice):"—"} (cierre ${fmtEur(salePrice)}). ` +
-    `Reforma total (con contingencia): ${fmtEur(renoTotal)}. Meses totales (base): ${fmtNum(renoMonths+saleMonths,0)}.`;
+    // - Precio compra objetivo: si hay compPriceM2, descuento, y area
+    if (isFinite(compPriceM2) && isFinite(area)) {
+      const impliedMarket = compPriceM2 * area;
+      const impliedOffer = isFinite(compDiscountPct) ? impliedMarket * (1 - compDiscountPct) : impliedMarket;
+      applySoftDefault("f-purchasePrice", impliedOffer);
+    }
 
-  // Sensibilidad rápida MAO vs ARV (sobre escenario Base)
-  const sensMults = [0.90, 0.95, 1.00, 1.05, 1.10];
-  const sensRows = sensMults.map(mult=>{
-    const sc = { ...base, salePriceClose: base.salePriceClose*mult };
-    const mao = solveMAO(sc);
-    return { mult, arv: sc.salePriceClose, mao };
-  });
+    // - TTM por DOM (días → meses aprox)
+    if (isFinite(compDomDays)) {
+      const months = compDomDays / 30.4;
+      applySoftDefault("f-ttmMonths", months);
+    }
 
-  document.querySelector("#f-sens tbody").innerHTML = sensRows.map(x=>`
-    <tr>
-      <td>${fmtNum(x.mult,2)}</td>
-      <td>${fmtEur(x.arv)}</td>
-      <td>${isFinite(x.mao)?fmtEur(x.mao):"—"}</td>
-    </tr>
-  `).join("");
+    // - Sell fees %
+    if (isFinite(compSellFeesPct)) {
+      applySoftDefault("f-sellFeesPct", compSellFeesPct * 100);
+    }
 
-  return { base, results };
-}
-
-/* ============================================================
-   Eventos
-   ============================================================ */
-
-function wireConfirmOnEdit(){
-  const els = Array.from(document.querySelectorAll("input,select,textarea"));
-  for (const el of els){
-    // Ignora campos disabled
-    if (el.disabled) continue;
-
-    el.addEventListener("change", ()=>{
-      // Si el usuario cambia algo, se considera confirmado
-      if (el.id && el.id.startsWith("f-")){
-        setConfirmed(el);
-      }
-    });
+    // - Reforma por €/m2
+    if (isFinite(compReformM2) && isFinite(area)) {
+      applySoftDefault("f-reformCost", compReformM2 * area);
+    }
   }
-}
 
-function wireCompsEvents(){
-  $("f-addComp")?.addEventListener("click", ()=>{
-    addCompRow();
-  });
+  function readBase() {
+    pullComparablesAndApplyDefaults();
 
-  $("f-clearComps")?.addEventListener("click", ()=>{
-    clearComps();
-    // Recalcular sugerencias tras vaciar
-    applySuggestions();
-    flipCalculate();
-  });
+    const purchasePrice = num("f-purchasePrice", 0);
+    const arv = num("f-arv", 0);
+    const area = num("f-area", 0);
 
-  $("f-compBody")?.addEventListener("click", (e)=>{
-    const btn = e.target?.closest("[data-del]");
-    if (!btn) return;
-    const id = btn.getAttribute("data-del");
-    const row = document.querySelector(`#f-compBody tr[data-comp="${id}"]`);
-    row?.remove();
-    applySuggestions();
-  });
+    const purchaseCosts = num("f-purchaseCosts", 0);
+    const reformCost = num("f-reformCost", 0);
+    const contingency = num("f-contingency", 0);
 
-  $("f-compBody")?.addEventListener("input", ()=>{
-    // Mientras editas comps, recomputa sugerencias (sin pisar confirmados)
-    applySuggestions();
-  });
-}
+    const ttmMonths = num("f-ttmMonths", 6);
+    const holdingMonthly = num("f-holdingMonthly", 0);
 
-function init(){
-  // Defaults iniciales
-  if ($("f-ccaa")) $("f-ccaa").value = "Comunitat Valenciana";
-  if ($("f-source")) $("f-source").value = "idealista_jan2026";
+    const sellFeesPct = num("f-sellFeesPct", 3) / 100;
 
-  // 3 filas vacías por defecto
-  clearComps();
-  addCompRow(); addCompRow(); addCompRow();
+    const ltv = num("f-ltv", 70) / 100;
+    const annualRate = num("f-annualRate", 8) / 100;
+    const finEntryFees = num("f-finEntryFees", 0);
+    const finMonthlyFees = num("f-finMonthlyFees", 0);
 
-  // Wire
-  wireConfirmOnEdit();
-  wireCompsEvents();
+    const targetMargin = num("f-targetMargin", 0.12) / 100; // en % en UI
 
-  $("f-recalcSuggestions")?.addEventListener("click", ()=>{
-    // Al recalcular, no tocamos confirmados; solo re-evaluamos sugeridos
-    applySuggestions();
-    flipCalculate();
-  });
+    return {
+      purchasePrice,
+      arv,
+      area,
+      purchaseCosts,
+      reformCost,
+      contingency,
+      ttmMonths,
+      holdingMonthly,
+      sellFeesPct,
+      ltv,
+      annualRate,
+      finEntryFees,
+      finMonthlyFees,
+      targetMargin,
+    };
+  }
 
-  $("f-calc")?.addEventListener("click", ()=>flipCalculate());
+  /* =======================
+     UI: KPIs + tabla
+     ======================= */
+  function renderKpis(base, scenarios) {
+    // KPI principal basado en Moderado
+    const mid = scenarios.find((x) => x.key === "moderado") || scenarios[0];
 
-  // Cambios de mercado recalculan sugerencias y resultados
-  ["f-ccaa","f-source","f-m2","f-microAdjPct"].forEach(id=>{
-    $(id)?.addEventListener("change", ()=>{
-      applySuggestions();
-      flipCalculate();
+    const kpisHtml = `
+      <div class="kpi"><div class="k">MAO (moderado)</div><div class="v">${isFinite(mid.maoRounded) ? fmtEur(mid.maoRounded) : "—"}</div></div>
+      <div class="kpi"><div class="k">Beneficio (moderado)</div><div class="v">${fmtEur2(mid.profit)}</div></div>
+      <div class="kpi"><div class="k">Margen (moderado)</div><div class="v">${fmtPct(mid.margin)}</div></div>
+      <div class="kpi"><div class="k">ROI (equity, moderado)</div><div class="v">${fmtPct(mid.roiEquity)}</div></div>
+    `;
+    setHTML("f-kpis", kpisHtml);
+
+    const tbody = document.querySelector("#f-table tbody");
+    if (!tbody) return;
+
+    const rows = scenarios
+      .map((s) => {
+        return `
+          <tr>
+            <td>${s.label}</td>
+            <td>${fmtEur(s.arv)}</td>
+            <td>${fmtEur(s.totalCostsAllIn)}</td>
+            <td>${fmtEur2(s.profit)}</td>
+            <td>${fmtPct(s.margin)}</td>
+            <td>${isFinite(s.maoRounded) ? fmtEur(s.maoRounded) : "—"}</td>
+          </tr>
+        `;
+      })
+      .join("");
+
+    tbody.innerHTML = rows;
+  }
+
+  /* =======================
+     Gráficos (Canvas) — sin librerías
+     ======================= */
+
+  function getCanvas(id) {
+    const c = document.getElementById(id);
+    if (!c || !(c instanceof HTMLCanvasElement)) return null;
+    return c;
+  }
+
+  function fitCanvasToCssSize(canvas) {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    const w = Math.max(220, Math.floor(rect.width));
+    const h = Math.max(140, Math.floor(rect.height || 220));
+    const pxW = Math.floor(w * dpr);
+    const pxH = Math.floor(h * dpr);
+    if (canvas.width !== pxW || canvas.height !== pxH) {
+      canvas.width = pxW;
+      canvas.height = pxH;
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w, h };
+  }
+
+  function drawAxes(ctx, w, h, pad) {
+    ctx.save();
+    ctx.globalAlpha = 0.7;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(pad, pad);
+    ctx.lineTo(pad, h - pad);
+    ctx.lineTo(w - pad, h - pad);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawBarsScenarios(scenarios) {
+    const canvas = getCanvas("chart-scenarios");
+    if (!canvas) return;
+
+    const { ctx, w, h } = fitCanvasToCssSize(canvas);
+    ctx.clearRect(0, 0, w, h);
+
+    const pad = 22;
+    drawAxes(ctx, w, h, pad);
+
+    const values = scenarios.map((s) => s.profit);
+    const minV = Math.min(...values, 0);
+    const maxV = Math.max(...values, 0);
+    const span = maxV - minV || 1;
+
+    const n = scenarios.length;
+    const barGap = 10;
+    const plotW = w - pad * 2;
+    const barW = (plotW - barGap * (n - 1)) / n;
+
+    function yFor(v) {
+      const t = (v - minV) / span;
+      return (h - pad) - t * (h - pad * 2);
+    }
+
+    const zeroY = yFor(0);
+
+    // Grid horizontal suave
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    for (let i = 0; i <= 4; i++) {
+      const yy = pad + ((h - pad * 2) * i) / 4;
+      ctx.beginPath();
+      ctx.moveTo(pad, yy);
+      ctx.lineTo(w - pad, yy);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Barras
+    scenarios.forEach((s, i) => {
+      const x = pad + i * (barW + barGap);
+      const y = yFor(s.profit);
+      const top = Math.min(y, zeroY);
+      const bot = Math.max(y, zeroY);
+      const height = Math.max(1, bot - top);
+
+      // Barra
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillRect(x, top, barW, height);
+      ctx.restore();
+
+      // Etiqueta
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.font = "12px ui-sans-serif, system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(s.label, x + barW / 2, h - pad + 4);
+      ctx.restore();
     });
-  });
 
-  // Export CSV
-  $("f-exportCsv")?.addEventListener("click", ()=>{
-    const out = flipCalculate();
-    const rows = [
-      ["Campo","Valor"],
-      ["CCAA", str("f-ccaa")],
-      ["Fuente baseline", str("f-source")],
-      ["m2", num("f-m2")],
-      ["Venta (cierre)", num("f-salePrice")],
-      ["Oferta", num("f-offerPrice")],
-      ["Reforma total", out.base.renoTotal],
-      ["Meses (obra)", out.base.renoMonths],
-      ["Meses (venta)", out.base.saleMonths],
-      ["LTV compra", out.base.ltvBuy],
-      ["Tipo compra", out.base.rateBuy],
-      ["Buffer %", out.base.bufferPct],
-      ["---","---"],
-      ["Escenario","ARV","Meses","MAO","Beneficio (oferta)","IRR anual (oferta)"],
-      ...out.results.map(r=>[r.name, r.arv, r.months, r.mao, r.profit, r.irrA])
+    // Línea cero
+    ctx.save();
+    ctx.globalAlpha = 0.4;
+    ctx.beginPath();
+    ctx.moveTo(pad, zeroY);
+    ctx.lineTo(w - pad, zeroY);
+    ctx.stroke();
+    ctx.restore();
+
+    // Título
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.font = "13px ui-sans-serif, system-ui, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("Beneficio por escenario", pad, 6);
+    ctx.restore();
+  }
+
+  function drawLineMaoVsArv(scenarios) {
+    const canvas = getCanvas("chart-mao");
+    if (!canvas) return;
+
+    const { ctx, w, h } = fitCanvasToCssSize(canvas);
+    ctx.clearRect(0, 0, w, h);
+
+    const pad = 26;
+    drawAxes(ctx, w, h, pad);
+
+    // Serie: puntos (ARV, MAO)
+    const xs = scenarios.map((s) => s.arv);
+    const ys = scenarios.map((s) => s.mao);
+
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+
+    const spanX = maxX - minX || 1;
+    const spanY = maxY - minY || 1;
+
+    function xFor(v) {
+      const t = (v - minX) / spanX;
+      return pad + t * (w - pad * 2);
+    }
+    function yFor(v) {
+      const t = (v - minY) / spanY;
+      return (h - pad) - t * (h - pad * 2);
+    }
+
+    // Grid
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    for (let i = 0; i <= 4; i++) {
+      const yy = pad + ((h - pad * 2) * i) / 4;
+      ctx.beginPath();
+      ctx.moveTo(pad, yy);
+      ctx.lineTo(w - pad, yy);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Línea
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    scenarios.forEach((s, i) => {
+      const x = xFor(s.arv);
+      const y = yFor(s.mao);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.restore();
+
+    // Puntos + labels
+    scenarios.forEach((s) => {
+      const x = xFor(s.arv);
+      const y = yFor(s.mao);
+
+      ctx.save();
+      ctx.globalAlpha = 0.95;
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.font = "12px ui-sans-serif, system-ui, sans-serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText(s.label, x + 8, y);
+      ctx.restore();
+    });
+
+    // Título
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.font = "13px ui-sans-serif, system-ui, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("MAO vs ARV (escenarios)", pad, 6);
+    ctx.restore();
+  }
+
+  function drawWaterfallBase(mid) {
+    const canvas = getCanvas("chart-waterfall");
+    if (!canvas) return;
+
+    const { ctx, w, h } = fitCanvasToCssSize(canvas);
+    ctx.clearRect(0, 0, w, h);
+
+    const pad = 22;
+    drawAxes(ctx, w, h, pad);
+
+    // Cascada: ARV -> restas de costes -> Profit
+    const items = [
+      { label: "ARV", value: mid.arv, type: "total" },
+      { label: "Compra", value: -mid.base.purchasePrice, type: "delta" },
+      { label: "Gastos compra", value: -mid.base.purchaseCosts, type: "delta" },
+      { label: "Reforma", value: -mid.reform, type: "delta" },
+      { label: "Contingencia", value: -mid.base.contingency, type: "delta" },
+      { label: "Holding", value: -mid.holding, type: "delta" },
+      { label: "Financiación", value: -mid.fin.total, type: "delta" },
+      { label: "Venta", value: -mid.sellFees, type: "delta" },
+      { label: "Beneficio", value: mid.profit, type: "total" },
     ];
 
-    const csv = rows.map(r=>r.map(x=>String(x).replaceAll(";","")).join(";")).join("\n");
-    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+    // Acumulados
+    let running = 0;
+    const bars = [];
+    items.forEach((it, idx) => {
+      if (idx === 0) {
+        running = it.value;
+        bars.push({ label: it.label, start: 0, end: running });
+        return;
+      }
+      if (it.type === "delta") {
+        const start = running;
+        running = running + it.value;
+        bars.push({ label: it.label, start, end: running });
+        return;
+      }
+      // total final (beneficio)
+      bars.push({ label: it.label, start: 0, end: it.value });
+    });
+
+    const ends = bars.map((b) => b.end);
+    const minV = Math.min(...ends, 0);
+    const maxV = Math.max(...ends, 0);
+    const span = maxV - minV || 1;
+
+    function yFor(v) {
+      const t = (v - minV) / span;
+      return (h - pad) - t * (h - pad * 2);
+    }
+
+    const n = bars.length;
+    const gap = 8;
+    const plotW = w - pad * 2;
+    const barW = (plotW - gap * (n - 1)) / n;
+
+    // Grid
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    for (let i = 0; i <= 4; i++) {
+      const yy = pad + ((h - pad * 2) * i) / 4;
+      ctx.beginPath();
+      ctx.moveTo(pad, yy);
+      ctx.lineTo(w - pad, yy);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // Barras
+    bars.forEach((b, i) => {
+      const x = pad + i * (barW + gap);
+      const y1 = yFor(b.start);
+      const y2 = yFor(b.end);
+      const top = Math.min(y1, y2);
+      const height = Math.max(1, Math.abs(y2 - y1));
+
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.fillRect(x, top, barW, height);
+      ctx.restore();
+
+      // Labels
+      ctx.save();
+      ctx.globalAlpha = 0.85;
+      ctx.font = "10px ui-sans-serif, system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(b.label, x + barW / 2, h - pad + 4);
+      ctx.restore();
+    });
+
+    // Título
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.font = "13px ui-sans-serif, system-ui, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("Cascada de costes (moderado)", pad, 6);
+    ctx.restore();
+  }
+
+  function renderCharts(base, scenarios) {
+    // Nota: los ctx usan el color actual del canvas (heredado),
+    // si quieres colores exactos del sistema, dime y lo adaptamos a variables CSS.
+    drawBarsScenarios(scenarios);
+    drawLineMaoVsArv(scenarios);
+
+    const mid = scenarios.find((x) => x.key === "moderado") || scenarios[0];
+    drawWaterfallBase({ ...mid, base });
+  }
+
+  /* =======================
+     Cálculo principal
+     ======================= */
+  function flipCalculate() {
+    const base = readBase();
+
+    // Guard clauses mínimos
+    const scenarios = SCENARIOS.map((s) => computeScenario(base, s));
+
+    // Render UI
+    renderKpis(base, scenarios);
+
+    // Charts
+    renderCharts(base, scenarios);
+
+    return { base, scenarios };
+  }
+
+  /* =======================
+     Copy + CSV
+     ======================= */
+  function makeCopyText(r) {
+    const mid = r.scenarios.find((x) => x.key === "moderado") || r.scenarios[0];
+    return `Flip (moderado)
+Compra: ${fmtEur(r.base.purchasePrice)}
+ARV: ${fmtEur(mid.arv)}
+TTM: ${mid.ttmMonths.toFixed(1)} meses
+Reforma: ${fmtEur(mid.reform)}
+Coste total: ${fmtEur(mid.totalCostsAllIn)}
+Beneficio: ${fmtEur2(mid.profit)}
+Margen: ${isFinite(mid.margin) ? (mid.margin * 100).toFixed(2) + "%" : "—"}
+ROI (equity): ${isFinite(mid.roiEquity) ? (mid.roiEquity * 100).toFixed(2) + "%" : "—"}
+MAO: ${isFinite(mid.maoRounded) ? fmtEur(mid.maoRounded) : "—"}`;
+  }
+
+  function exportCsv(r) {
+    const rows = [
+      ["Escenario", "ARV", "Coste total", "Beneficio", "Margen", "MAO"],
+      ...r.scenarios.map((s) => [
+        s.label,
+        s.arv,
+        s.totalCostsAllIn,
+        s.profit,
+        s.margin,
+        s.maoRounded,
+      ]),
+    ];
+
+    const csv = rows.map((x) => x.join(";")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "flip_resumen.csv";
+    a.download = "flip_escenarios.csv";
     a.click();
-  });
+  }
 
-  // Copiar resumen
-  $("f-copy")?.addEventListener("click", ()=>{
-    const out = flipCalculate();
-    const baseRes = out.results.find(x=>x.name==="Base") || out.results[0];
-    const text =
-`Calculadora de flip inmobiliario
-CCAA: ${str("f-ccaa")}
-Venta (cierre): ${fmtEur(out.base.salePriceClose)}
-Tu oferta: ${fmtEur(out.base.purchasePrice)}
-MAO (Base): ${isFinite(baseRes.mao)?fmtEur(baseRes.mao):"—"}
-Beneficio (Base, con tu oferta): ${fmtEur(baseRes.profit)}
-IRR anual (Base, con tu oferta): ${isFinite(baseRes.irrA)?(baseRes.irrA*100).toFixed(2)+"%":"—"}
-Meses totales (Base): ${(out.base.renoMonths + out.base.saleMonths)} meses
-Buffer riesgo: ${out.base.bufferPct}%`;
-    navigator.clipboard?.writeText(text);
-  });
+  /* =======================
+     Bindings
+     ======================= */
+  function bind() {
+    document.getElementById("f-calc")?.addEventListener("click", () => flipCalculate());
 
-  // Primer render
-  applySuggestions();
+    document.getElementById("f-copy")?.addEventListener("click", () => {
+      const r = flipCalculate();
+      const text = makeCopyText(r);
+      navigator.clipboard?.writeText(text);
+    });
+
+    document.getElementById("f-exportCsv")?.addEventListener("click", () => {
+      const r = flipCalculate();
+      exportCsv(r);
+    });
+
+    // Si existen comparables, al cambiar recalculamos y además aplicamos defaults suaves
+    const compIds = ["c-price", "c-arv", "c-dom", "c-discount", "c-sellFees", "c-reform"];
+    compIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener("input", () => flipCalculate());
+      el.addEventListener("change", () => flipCalculate());
+    });
+
+    // Cuando el usuario toca campos clave, se consideran manuales (para no sobrescribir)
+    markManualOnInput([
+      "f-purchasePrice",
+      "f-arv",
+      "f-ttmMonths",
+      "f-sellFeesPct",
+      "f-reformCost",
+      "f-area",
+    ]);
+
+    // Redibujar al cambiar tamaño (responsive)
+    window.addEventListener("resize", () => {
+      flipCalculate();
+    });
+  }
+
+  bind();
   flipCalculate();
-}
-
-init();
+})();
