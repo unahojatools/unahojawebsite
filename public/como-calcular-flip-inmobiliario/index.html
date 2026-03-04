@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Cómo calcular un flip inmobiliario: la guía definitiva (MAO, ARV, IRR) | UnaHojaTools</title>
-  <meta name="description" content="Guía completa para calcular un flip inmobiliario en España: fórmula MAO, qué es el ARV, cómo estimar la reforma, costes reales, impuestos y cómo usar la IRR para decidir si un flip merece la pena." />
+  <title>Cómo calcular un flip inmobiliario: guía definitiva (MAO, ARV, IRR) | UnaHojaTools</title>
+  <meta name="description" content="Guía completa para calcular un flip inmobiliario en España: fórmula MAO, qué es el ARV, cómo estimar la reforma, costes reales de compra y venta, impuestos y cómo interpretar la IRR para decidir si una operación merece la pena." />
   <meta name="robots" content="index,follow,max-image-preview:large" />
   <link rel="canonical" href="https://unahojatools.com/como-calcular-flip-inmobiliario/" />
 
@@ -20,7 +20,7 @@
 
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:title"       content="Cómo calcular un flip inmobiliario: guía definitiva (MAO, ARV, IRR)" />
-  <meta name="twitter:description" content="Todo lo que necesitas saber para calcular si un flip inmobiliario es rentable en España." />
+  <meta name="twitter:description" content="Todo lo que necesitas para calcular si un flip inmobiliario es rentable en España." />
   <meta name="twitter:image"       content="https://unahojatools.com/assets/img/og/como-calcular-flip-inmobiliario.png" />
 
   <meta name="theme-color" content="#070b16" />
@@ -33,226 +33,12 @@
   <link rel="preload" as="style" href="/assets/css/base.css" />
   <link rel="stylesheet"         href="/assets/css/base.css" />
 
-  <style>
-    /* ── Overrides y extras para esta página ── */
-    :root {
-      --accent: #e8c96a;
-      --accent-dim: rgba(232,201,106,.15);
-      --text-muted: rgba(170,185,220,.75);
-      --border: rgba(255,255,255,.08);
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: var(--accent-dim);
-      border: 1px solid rgba(232,201,106,.35);
-      color: var(--accent);
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 14px;
-    }
-
-    .toc {
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 24px;
-      margin: 24px 0;
-    }
-    .toc h2 { font-size: 1rem; margin: 0 0 12px; opacity: .7; letter-spacing: .04em; text-transform: uppercase; }
-    .toc ol  { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
-    .toc ol li a { color: var(--accent); text-decoration: none; font-size: .93rem; }
-    .toc ol li a:hover { text-decoration: underline; }
-
-    .formula-box {
-      background: linear-gradient(135deg, rgba(232,201,106,.10) 0%, rgba(232,201,106,.04) 100%);
-      border: 1px solid rgba(232,201,106,.30);
-      border-radius: 10px;
-      padding: 20px 24px;
-      margin: 18px 0;
-      font-family: 'Courier New', Courier, monospace;
-    }
-    .formula-box .formula-main { font-size: 1.1rem; font-weight: 700; color: #fff; letter-spacing: .02em; }
-    .formula-box .formula-vars { margin-top: 10px; font-size: .84rem; color: var(--text-muted); line-height: 1.8; }
-
-    .step-list { counter-reset: steps; list-style: none; padding: 0; margin: 18px 0; display: flex; flex-direction: column; gap: 14px; }
-    .step-list li {
-      counter-increment: steps;
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 14px;
-      align-items: start;
-    }
-    .step-list li::before {
-      content: counter(steps);
-      background: var(--accent-dim);
-      border: 1px solid rgba(232,201,106,.35);
-      color: var(--accent);
-      font-weight: 800;
-      font-size: .85rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-    .step-list li > div strong { display: block; margin-bottom: 4px; }
-
-    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin: 20px 0; }
-    .kpi-card {
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      text-align: center;
-    }
-    .kpi-card .kpi-label { font-size: .75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-    .kpi-card .kpi-val   { font-size: 1.4rem; font-weight: 800; color: var(--accent); font-family: 'Outfit', sans-serif; }
-    .kpi-card .kpi-sub   { font-size: .78rem; color: var(--text-muted); margin-top: 3px; }
-
-    .cost-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 16px 0; }
-    .cost-table th { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; }
-    .cost-table td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; }
-    .cost-table tr:last-child td { border-bottom: none; }
-    .cost-table .cost-total td { font-weight: 700; border-top: 1px solid var(--border); background: rgba(255,255,255,.03); }
-    .cost-table .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .72rem; font-weight: 700; }
-    .cost-table .tag-high { background: rgba(239,68,68,.15); color: #f87171; }
-    .cost-table .tag-med  { background: rgba(251,191,36,.15); color: #fbbf24; }
-    .cost-table .tag-low  { background: rgba(52,211,153,.15); color: #34d399; }
-
-    .warning-box {
-      background: rgba(239,68,68,.08);
-      border: 1px solid rgba(239,68,68,.25);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin: 18px 0;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .warning-box .icon { font-size: 1.2rem; flex-shrink: 0; }
-    .warning-box p { margin: 0; font-size: .9rem; }
-
-    .tip-box {
-      background: rgba(52,211,153,.06);
-      border: 1px solid rgba(52,211,153,.22);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin: 18px 0;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .tip-box .icon { font-size: 1.2rem; flex-shrink: 0; }
-    .tip-box p { margin: 0; font-size: .9rem; }
-
-    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
-    @media (max-width: 640px) { .comparison-grid { grid-template-columns: 1fr; } }
-    .comparison-card { border-radius: 10px; padding: 18px 20px; }
-    .comparison-card.good { background: rgba(52,211,153,.06); border: 1px solid rgba(52,211,153,.22); }
-    .comparison-card.bad  { background: rgba(239,68,68,.06);  border: 1px solid rgba(239,68,68,.22); }
-    .comparison-card h4   { margin: 0 0 10px; font-size: .95rem; }
-    .comparison-card ul   { margin: 0; padding-left: 18px; font-size: .87rem; line-height: 1.7; }
-
-    .example-block {
-      background: rgba(255,255,255,.03);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 24px;
-      margin: 18px 0;
-    }
-    .example-block h4 { margin: 0 0 14px; font-size: 1rem; }
-    .example-block dl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin: 0; font-size: .88rem; }
-    @media (max-width: 480px) { .example-block dl { grid-template-columns: 1fr; } }
-    .example-block dt { color: var(--text-muted); }
-    .example-block dd { font-weight: 600; margin: 0; }
-    .example-block dd.positive { color: #34d399; }
-    .example-block dd.negative { color: #f87171; }
-    .example-block dd.accent   { color: var(--accent); }
-
-    .checklist { list-style: none; padding: 0; margin: 14px 0; display: flex; flex-direction: column; gap: 8px; }
-    .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; }
-    .checklist li::before { content: "✓"; color: #34d399; font-weight: 700; flex-shrink: 0; }
-
-    .rule-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 18px 0; }
-    @media (max-width: 600px) { .rule-row { grid-template-columns: 1fr; } }
-    .rule-card {
-      background: rgba(255,255,255,.04);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 18px;
-      text-align: center;
-    }
-    .rule-card .rule-pct { font-size: 2rem; font-weight: 900; color: var(--accent); font-family: 'Outfit', sans-serif; line-height: 1; margin-bottom: 6px; }
-    .rule-card .rule-name { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 8px; }
-    .rule-card p { font-size: .82rem; margin: 0; line-height: 1.5; }
-
-    .anchor-cta {
-      background: linear-gradient(135deg, rgba(232,201,106,.12) 0%, rgba(232,201,106,.05) 100%);
-      border: 1px solid rgba(232,201,106,.30);
-      border-radius: 12px;
-      padding: 22px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin: 24px 0;
-    }
-    .anchor-cta p { margin: 0; font-size: .95rem; }
-    .anchor-cta a.btn-cta {
-      background: var(--accent);
-      color: #070b16;
-      font-weight: 800;
-      font-size: .9rem;
-      padding: 10px 22px;
-      border-radius: 8px;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: opacity .15s;
-    }
-    .anchor-cta a.btn-cta:hover { opacity: .85; }
-
-    .irr-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 14px 0; }
-    .irr-table th { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; text-align: left; }
-    .irr-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,.04); }
-    .irr-table tr:last-child td { border-bottom: none; }
-    .irr-table .good { color: #34d399; font-weight: 700; }
-    .irr-table .ok   { color: var(--accent); font-weight: 700; }
-    .irr-table .bad  { color: #f87171; font-weight: 700; }
-
-    .ccaa-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin: 16px 0; }
-    .ccaa-item { background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: .84rem; display: flex; justify-content: space-between; }
-    .ccaa-item .ccaa-name { color: var(--text-muted); }
-    .ccaa-item .ccaa-val  { font-weight: 700; color: #fff; }
-
-    details { border-bottom: 1px solid var(--border); }
-    details:first-of-type { border-top: 1px solid var(--border); }
-    details summary { cursor: pointer; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; align-items: center; }
-    details summary::after { content: "+"; font-size: 1.2rem; color: var(--accent); font-weight: 700; transition: transform .2s; flex-shrink: 0; }
-    details[open] summary::after { content: "−"; }
-    details p { padding: 0 0 16px; margin: 0; font-size: .91rem; line-height: 1.7; }
-
-    .see-also { font-size: .95rem; margin: 0; }
-    .see-also a { color: var(--accent); }
-
-    .muted { color: var(--text-muted); }
-    .small  { font-size: .82rem; }
-  </style>
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "Cómo calcular un flip inmobiliario: la guía definitiva (MAO, ARV, IRR)",
-    "description": "Guía completa para calcular un flip inmobiliario en España: fórmula MAO, ARV, reforma, costes reales, impuestos y cómo interpretar la IRR para decidir si un flip es rentable.",
+    "description": "Guía completa para calcular un flip inmobiliario en España: fórmula MAO, ARV, reforma, costes reales, impuestos e IRR.",
     "inLanguage": "es-ES",
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -276,7 +62,7 @@
         "name": "¿Qué es un flip inmobiliario?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Un flip inmobiliario es la estrategia de comprar una propiedad por debajo de mercado, reformarla o mejorarla, y venderla en un plazo corto (normalmente 6-18 meses) obteniendo un beneficio. La rentabilidad depende de acertar el precio de compra (MAO), controlar la reforma y vender al precio de mercado real (ARV)."
+          "text": "Un flip inmobiliario es la estrategia de comprar una propiedad por debajo de mercado, reformarla o mejorarla, y venderla en un plazo corto (normalmente 6-18 meses) para obtener un beneficio. La rentabilidad depende de acertar el precio de compra (MAO), controlar la reforma y vender al precio de mercado real (ARV)."
         }
       },
       {
@@ -284,7 +70,7 @@
         "name": "¿Cómo se calcula el MAO de un flip inmobiliario?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "El MAO (Maximum Allowable Offer) es el precio máximo que puedes pagar para que el flip sea rentable según tu objetivo. La fórmula base es: MAO = ARV × Factor − Costes fijos − Reforma. El factor más usado es el 70% del ARV, que deja margen para costes de transacción, holding e imprevistos. Para afinar el MAO debes definir primero tu objetivo: beneficio neto mínimo, margen sobre venta o IRR anual mínima."
+          "text": "El MAO (Maximum Allowable Offer) es el precio máximo que puedes pagar para que el flip sea rentable. La fórmula completa es: MAO = ARV − Reforma − Costes de compra − Costes de venta − Holding − Buffer − Beneficio objetivo. El atajo popular (regla del 70%) es: MAO = ARV × 0,70 − Reforma, aunque en España con ITP alto conviene usar 0,65."
         }
       },
       {
@@ -292,7 +78,7 @@
         "name": "¿Qué es el ARV en un flip?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "El ARV (After Repair Value) es el valor de mercado estimado del inmueble una vez terminadas las obras y puesto a la venta en condiciones óptimas. Es la variable más crítica del flip porque de ella depende todo lo demás. Se calcula analizando comparables reales: propiedades similares vendidas (no anunciadas) en la misma zona en los últimos 3-6 meses, ajustando por superficie, estado, planta y orientación."
+          "text": "El ARV (After Repair Value) es el valor de mercado estimado del inmueble una vez terminadas las obras. Es la variable más crítica del flip. Se calcula analizando comparables reales: propiedades similares vendidas en la misma zona en los últimos 3-6 meses, ajustando por superficie, estado, planta y orientación."
         }
       },
       {
@@ -300,7 +86,7 @@
         "name": "¿Cuánto hay que presupuestar para la reforma de un flip?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "En España, una reforma integral de un piso estándar (cocina, baños, suelos, instalaciones) oscila entre 700 y 1.400 €/m² dependiendo de la calidad y el estado del inmueble. Las reformas cosméticas ligeras pueden rondar los 300-500 €/m². A estos costes hay que añadir siempre una contingencia del 10-20% para imprevistos estructurales, de licencias o de suministros."
+          "text": "En España, una reforma integral estándar oscila entre 700 y 1.100 euros por metro cuadrado para calidades medias. Las reformas cosméticas ligeras pueden rondar los 150-350 euros por metro cuadrado. Añade siempre una contingencia del 10-20% para imprevistos."
         }
       },
       {
@@ -308,7 +94,7 @@
         "name": "¿Qué impuestos se pagan en un flip inmobiliario en España?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "En la compra pagarás ITP (entre el 6% y el 10% según la comunidad autónoma) si es segunda mano, o IVA + AJD si es obra nueva. En la venta, el beneficio tributa como ganancia patrimonial en el IRPF a tipos que van del 19% al 28% según el importe ganado. Si el flip se realiza de forma habitual, Hacienda puede considerarlo actividad económica y tributar en rendimientos de actividades económicas. Además, hay que prever la plusvalía municipal, que varía según el municipio y los años de tenencia."
+          "text": "En la compra pagarás ITP (entre el 4% y el 10% según la CCAA) si es segunda mano, o IVA (10%) más AJD si es obra nueva. En la venta, el beneficio tributa como ganancia patrimonial en el IRPF a tipos del 19% al 28%. Si realizas flips de forma habitual, Hacienda puede considerarlo actividad económica. Consulta siempre con un asesor fiscal especializado."
         }
       },
       {
@@ -316,7 +102,7 @@
         "name": "¿Qué es la IRR en un flip y cómo se interpreta?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "La IRR (Internal Rate of Return, Tasa Interna de Retorno) mide la rentabilidad anualizada del capital invertido, teniendo en cuenta el tiempo. Un flip de 6 meses con un 15% de beneficio neto tiene una IRR anual del ~30%, porque duplicas el ciclo al año. En España, para un flip residencial se considera aceptable una IRR anual del 20-30%, buena por encima del 30%, y excepcional por encima del 40%. Valores por debajo del 15% anual raramente compensan el riesgo."
+          "text": "La IRR (Internal Rate of Return) mide la rentabilidad anualizada del capital invertido teniendo en cuenta el tiempo. Un flip de 6 meses con un 15% de beneficio neto tiene una IRR anual del 41% aproximadamente, porque puedes hacer dos ciclos al año. En España, se considera aceptable una IRR del 20-30% anual, buena por encima del 30% y excepcional por encima del 40%."
         }
       },
       {
@@ -324,15 +110,15 @@
         "name": "¿Cuál es la regla del 70% en flips inmobiliarios?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "La regla del 70% establece que nunca deberías pagar más del 70% del ARV menos el coste de la reforma: MAO = ARV × 0,70 − Reforma. El 30% restante cubre los costes de compra (ITP, notaría, registro), los gastos de venta (agencia, plusvalía), el holding (IBI, comunidad, préstamo puente) y el margen de beneficio. En mercados españoles con ITP alto o reformas caras, muchos flippers usan el 65% como referencia más conservadora."
+          "text": "La regla del 70% establece que no deberías pagar más del 70% del ARV menos el coste de la reforma: MAO = ARV × 0,70 − Reforma. En España, dado el ITP más alto, muchos flippers usan el 65% como referencia más conservadora. Es un atajo de filtrado rápido, no un modelo de decisión completo."
         }
       },
       {
         "@type": "Question",
-        "name": "¿Es mejor hacer un flip con o sin financiación bancaria?",
+        "name": "¿Es mejor hacer un flip con o sin financiación?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Financiar un flip mejora la IRR sobre el capital propio (efecto apalancamiento), pero aumenta el riesgo: si la operación se alarga o el ARV baja, los intereses se comen el margen. En España, los préstamos puente para flips suelen tener tipos del 8-12% anual. Con financiación, la regla de decisión cambia: lo relevante es la IRR sobre equity, no sobre el total invertido. El simulador de UnaHojaTools permite modelar ambos escenarios."
+          "text": "Financiar un flip mejora la IRR sobre el capital propio (efecto apalancamiento), pero también amplifica las pérdidas. En España, los préstamos puente para flips tienen tipos del 8-12% anual en 2026. Solo apalanca cuando el margen sin financiación ya es sólido."
         }
       }
     ]
@@ -368,667 +154,591 @@
     <nav aria-label="Ruta de navegación">
       <ol class="breadcrumb">
         <li><a href="/">Inicio</a></li>
-        <li><a href="/flip/">Calculadora de flip inmobiliario</a></li>
+        <li><a href="/flip/">Simulador de flip inmobiliario</a></li>
         <li>Guía definitiva del flip</li>
       </ol>
     </nav>
 
-    <!-- ══════════════════════════════════════════════════
-         HERO
-    ══════════════════════════════════════════════════ -->
+    <!-- ══════════════════════════════════════
+         HERO / ARTÍCULO
+    ══════════════════════════════════════ -->
     <article class="card" itemscope itemtype="https://schema.org/Article">
       <header>
-        <div class="hero-badge">Guía completa · 2026</div>
         <h1 itemprop="headline">Cómo calcular un flip inmobiliario: la guía definitiva</h1>
-        <p class="muted" style="font-size:1rem; line-height:1.6; max-width: 680px;">
-          MAO, ARV, IRR, costes reales de compra y venta en España, cómo presupuestar la reforma,
-          qué impuestos pagas y cómo interpretar los números para decidir si una operación merece la pena.
-          Con ejemplos reales y acceso al simulador gratuito.
-        </p>
+        <p class="muted">MAO, ARV, IRR, costes reales de compra y venta en España, cómo presupuestar la reforma, qué impuestos pagas y cómo interpretar los números para decidir si una operación merece la pena. Con ejemplos reales y simulador gratuito.</p>
       </header>
 
-      <!-- Tabla de contenidos -->
-      <nav class="toc" aria-label="Índice de contenidos">
-        <h2>Índice</h2>
-        <ol>
-          <li><a href="#que-es-flip">¿Qué es un flip inmobiliario?</a></li>
-          <li><a href="#arv">ARV: el número que lo determina todo</a></li>
-          <li><a href="#mao">MAO: el precio máximo que puedes pagar</a></li>
-          <li><a href="#regla-70">La regla del 70% y sus variantes</a></li>
-          <li><a href="#costes-compra">Costes de compra en España (ITP, notaría, registro)</a></li>
-          <li><a href="#reforma">Cómo presupuestar la reforma</a></li>
-          <li><a href="#costes-holding">Costes de holding: lo que se come el tiempo</a></li>
-          <li><a href="#costes-venta">Costes de venta y agencia</a></li>
-          <li><a href="#impuestos">Impuestos: IRPF, plusvalía y actividad económica</a></li>
-          <li><a href="#irr">IRR: cómo medir la rentabilidad real del capital</a></li>
-          <li><a href="#financiacion">Financiación y efecto apalancamiento</a></li>
-          <li><a href="#escenarios">Escenarios pesimista, base y optimista</a></li>
-          <li><a href="#ejemplo">Ejemplo completo: piso en Madrid de 200.000 €</a></li>
-          <li><a href="#errores">Los 7 errores más caros en un flip</a></li>
-          <li><a href="#ccaa">Precios por CCAA: dónde buscar en 2026</a></li>
-          <li><a href="#faq">Preguntas frecuentes</a></li>
+      <nav aria-label="Índice de contenidos" style="margin-top:24px">
+        <p style="font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;margin:0 0 10px;font-weight:700;">Índice</p>
+        <ol style="margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:5px;">
+          <li style="font-size:.9rem"><a href="#que-es-flip" style="color:#6366f1;text-decoration:none">¿Qué es un flip inmobiliario?</a></li>
+          <li style="font-size:.9rem"><a href="#arv" style="color:#6366f1;text-decoration:none">ARV: el número que lo determina todo</a></li>
+          <li style="font-size:.9rem"><a href="#mao" style="color:#6366f1;text-decoration:none">MAO: el precio máximo que puedes pagar</a></li>
+          <li style="font-size:.9rem"><a href="#regla-70" style="color:#6366f1;text-decoration:none">La regla del 70% y sus variantes españolas</a></li>
+          <li style="font-size:.9rem"><a href="#costes-compra" style="color:#6366f1;text-decoration:none">Costes de compra: ITP, notaría y registro</a></li>
+          <li style="font-size:.9rem"><a href="#reforma" style="color:#6366f1;text-decoration:none">Cómo presupuestar la reforma</a></li>
+          <li style="font-size:.9rem"><a href="#holding" style="color:#6366f1;text-decoration:none">Costes de holding: lo que se come el tiempo</a></li>
+          <li style="font-size:.9rem"><a href="#costes-venta" style="color:#6366f1;text-decoration:none">Costes de venta y agencia</a></li>
+          <li style="font-size:.9rem"><a href="#impuestos" style="color:#6366f1;text-decoration:none">Impuestos: IRPF, plusvalía y actividad económica</a></li>
+          <li style="font-size:.9rem"><a href="#irr" style="color:#6366f1;text-decoration:none">IRR: cómo medir la rentabilidad real del capital</a></li>
+          <li style="font-size:.9rem"><a href="#financiacion" style="color:#6366f1;text-decoration:none">Financiación y efecto apalancamiento</a></li>
+          <li style="font-size:.9rem"><a href="#escenarios" style="color:#6366f1;text-decoration:none">Escenarios: pesimista, base y optimista</a></li>
+          <li style="font-size:.9rem"><a href="#ejemplo" style="color:#6366f1;text-decoration:none">Ejemplo completo: piso en Madrid de 200.000 €</a></li>
+          <li style="font-size:.9rem"><a href="#errores" style="color:#6366f1;text-decoration:none">Los 7 errores más caros en un flip</a></li>
+          <li style="font-size:.9rem"><a href="#ccaa" style="color:#6366f1;text-decoration:none">Precios por CCAA en 2026</a></li>
+          <li style="font-size:.9rem"><a href="#faq" style="color:#6366f1;text-decoration:none">Preguntas frecuentes</a></li>
         </ol>
       </nav>
     </article>
 
     <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          1. QUÉ ES UN FLIP
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="que-es-flip">
       <h2 id="que-es-flip">1. ¿Qué es un flip inmobiliario?</h2>
       <p itemprop="articleBody">
-        Un <strong>flip inmobiliario</strong> (del inglés <em>house flipping</em>) es la estrategia de
-        comprar una propiedad por debajo de su valor de mercado, mejorarla o reformarla,
-        y venderla en un plazo corto —normalmente entre 6 y 18 meses— para obtener un beneficio neto.
+        Un <strong>flip inmobiliario</strong> (del inglés <em>house flipping</em>) es la estrategia de comprar una propiedad por debajo de su valor de mercado, mejorarla o reformarla, y venderla en un plazo corto —normalmente entre 6 y 18 meses— para obtener un beneficio neto.
       </p>
       <p>
-        A diferencia del alquiler, que genera renta recurrente, el flip busca una <strong>ganancia de capital</strong>
-        concentrada en una sola operación. Eso lo hace más intensivo en gestión, pero también más
-        predecible si se calculan bien los números antes de comprar.
+        A diferencia del alquiler, que genera renta recurrente, el flip busca una <strong>ganancia de capital concentrada en una sola operación</strong>. Eso lo hace más intensivo en gestión, pero también más predecible si se calculan bien los números antes de comprar.
       </p>
       <p>
-        El margen de beneficio no se crea en el momento de la venta: <strong>se crea en el momento de la compra</strong>.
-        Si pagas de más, ninguna reforma o estrategia de marketing te salvará. Por eso el cálculo del
-        precio máximo de compra —el MAO— es la piedra angular de cualquier flip profesional.
+        El margen de beneficio no se crea en el momento de la venta: <strong>se crea en el momento de la compra</strong>. Si pagas de más, ninguna reforma ni estrategia de marketing te salvará. Por eso el cálculo del precio máximo de compra —el MAO— es la piedra angular de cualquier flip profesional.
       </p>
 
-      <div class="comparison-grid">
-        <div class="comparison-card good">
-          <h4>✅ Cuándo tiene sentido un flip</h4>
+      <div class="grid" style="margin-top:20px">
+        <div class="box">
+          <h3>✅ Cuándo tiene sentido un flip</h3>
           <ul>
-            <li>El inmueble está en un mercado con demanda real (no solo por especulación)</li>
+            <li>El inmueble está en un mercado con demanda real y liquidez</li>
             <li>Puedes acceder a propiedades con descuento real del 15–25%</li>
             <li>Tienes red de proveedores de reforma fiables y a precio competitivo</li>
             <li>Dispones de capital suficiente para aguantar imprevistos</li>
-            <li>El plazo de obra + venta es predecible (zona con liquidez)</li>
+            <li>El plazo de obra y venta es predecible en esa zona</li>
           </ul>
         </div>
-        <div class="comparison-card bad">
-          <h4>⚠️ Señales de peligro</h4>
+        <div class="box">
+          <h3>⚠️ Señales de peligro</h3>
           <ul>
             <li>Compras "porque está barato" sin conocer el ARV real</li>
-            <li>El presupuesto de reforma lo has hecho sin visitar el inmueble</li>
-            <li>Cuentas con vender al precio de Idealista sin descuento</li>
+            <li>Has presupuestado la reforma sin visitar el inmueble</li>
+            <li>Cuentas con vender al precio de anuncio sin descuento</li>
             <li>No has incluido ITP, notaría ni agencia de venta en los costes</li>
-            <li>No tienes colchón para 3-6 meses extra de holding</li>
+            <li>No tienes colchón para 3–6 meses extra de holding</li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          2. ARV
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="arv">
       <h2 id="arv">2. ARV: el número que lo determina todo</h2>
       <p>
-        El <strong>ARV</strong> (<em>After Repair Value</em>, valor tras la reforma) es el precio al que
-        razonablemente puedes vender el inmueble una vez terminadas las obras y presentado en condiciones
-        óptimas. Es la variable más importante del flip porque de ella derivan todos los demás cálculos.
+        El <strong>ARV</strong> (<em>After Repair Value</em>, valor tras la reforma) es el precio al que razonablemente puedes vender el inmueble una vez terminadas las obras y presentado en condiciones óptimas. Es la variable más importante del flip porque de ella derivan todos los demás cálculos.
       </p>
 
-      <div class="warning-box">
-        <span class="icon">⚠️</span>
-        <p>
-          El ARV no es el precio al que está anunciado un piso similar en Idealista. Es el precio al que
-          se ha <strong>cerrado la venta</strong> de inmuebles comparables. La diferencia entre precio de
-          anuncio y precio real de cierre en España oscila entre el 2% y el 8%, y puede superar el 10%
-          en mercados con poca liquidez.
-        </p>
+      <div class="callout" role="note">
+        <p><strong>El ARV no es el precio de anuncio.</strong> Es el precio al que se ha <em>cerrado la venta</em> de inmuebles comparables. La diferencia entre precio de anuncio y precio real de cierre en España oscila entre el 2% y el 8%, y puede superar el 10% en mercados con poca liquidez.</p>
       </div>
 
       <h3>Cómo calcular el ARV paso a paso</h3>
-      <ol class="step-list">
-        <li>
-          <div>
-            <strong>Selecciona comparables ("comps") reales</strong>
-            Busca en el Registro de la Propiedad, en la Agencia Tributaria (si tienes acceso) o
-            en portales que publiquen precios de cierre (Fotocasa, IDEALISTA en zonas con datos de transacción).
-            Ideal: 3–6 ventas cerradas en radio de 500 m en los últimos 6 meses.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Ajusta por diferencias objetivas</strong>
-            Superficie (€/m²), planta (ascensor vs sin ascensor), orientación, estado del edificio,
-            terraza, parking. Cada variable tiene un impacto en precio; tus comps deben ser lo más
-            parecidos posible al inmueble reformado.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Aplica el descuento de negociación</strong>
-            Si los comparables son precios de anuncio, aplica un descuento estimado del 3–6%.
-            Si son precios de cierre ya registrados, no apliques descuento adicional.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Calcula el precio de cierre esperado</strong>
-            ARV = Media ponderada de comps ajustados × (1 − descuento negociación). Usa pesos
-            según la calidad de cada comparable: alta = 1.0, media = 0.7, baja = 0.4.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Valida la dispersión</strong>
-            Si el coeficiente de variación de tus comps supera el 15–20%, la zona tiene poca
-            homogeneidad de precios. Aumenta el buffer de riesgo y sé más conservador en el ARV.
-          </div>
-        </li>
+      <ol>
+        <li style="margin-bottom:10px"><strong>Selecciona comparables ("comps") reales.</strong> Busca ventas cerradas en radio de 500 m en los últimos 6 meses. Lo ideal son 3–6 ventas con precio de cierre conocido, no de anuncio.</li>
+        <li style="margin-bottom:10px"><strong>Ajusta por diferencias objetivas.</strong> Superficie, planta, ascensor, orientación, estado del edificio, terraza y parking. Tus comps deben parecerse al inmueble <em>reformado</em>, no al actual.</li>
+        <li style="margin-bottom:10px"><strong>Aplica el descuento de negociación.</strong> Si los comparables son precios de anuncio, aplica un descuento del 3–6%. Si son precios de cierre registrados, no apliques descuento adicional.</li>
+        <li style="margin-bottom:10px"><strong>Calcula la media ponderada.</strong> Usa pesos según la calidad de cada comparable: confianza alta = 1,0; media = 0,7; baja = 0,4.</li>
+        <li><strong>Valida la dispersión.</strong> Si el coeficiente de variación de tus comps supera el 15–20%, la zona tiene poca homogeneidad. Aumenta el buffer de riesgo y sé más conservador en el ARV.</li>
       </ol>
 
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          El simulador de flip de UnaHojaTools incluye una tabla de comparables con pesos por
-          confianza y calcula automáticamente el ARV ponderado, la dispersión y el DOM medio.
-          Si tienes menos de 3 comps con cierre, usa el baseline de €/m² por comunidad autónoma
-          como punto de partida.
-        </p>
+      <div class="grid" style="margin-top:16px">
+        <div class="box">
+          <h3>Fuentes para comps en España</h3>
+          <ul>
+            <li>Registro de la Propiedad (nota simple)</li>
+            <li>Fotocasa e Idealista (histórico de precios)</li>
+            <li>Agentes locales con acceso a precios de cierre</li>
+            <li>Tasadores homologados (AEV)</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Qué ajustar en cada comparable</h3>
+          <ul>
+            <li>+/− por diferencia de m² útiles</li>
+            <li>+/− por planta y ascensor</li>
+            <li>+/− por orientación y terraza</li>
+            <li>+/− por estado del edificio y zona exacta</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="anchor-cta">
-        <p>🏠 Calcula el ARV con tus comparables en el simulador gratuito</p>
-        <a class="btn-cta" href="/flip/">Ir al simulador →</a>
-      </div>
+      <p class="see-also" style="margin-top:18px">
+        👉 El <a href="/flip/">simulador de flip</a> incluye tabla de comparables con pesos por confianza, cálculo automático del ARV ponderado y dispersión, y baseline de €/m² por CCAA cuando no tienes comps propios.
+      </p>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          3. MAO
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="mao">
       <h2 id="mao">3. MAO: el precio máximo que puedes pagar</h2>
       <p>
-        El <strong>MAO</strong> (<em>Maximum Allowable Offer</em>) es el precio máximo de compra que
-        mantiene la operación dentro de tus objetivos de rentabilidad. Pagar un euro más ya hace que
-        el flip no cumpla tu criterio. Pagar menos mejora tu margen o reduce tu riesgo.
+        El <strong>MAO</strong> (<em>Maximum Allowable Offer</em>) es el precio máximo de compra que mantiene la operación dentro de tus objetivos de rentabilidad. Pagar un euro más ya hace que el flip no cumpla tu criterio. Pagar menos mejora tu margen o reduce tu riesgo.
       </p>
 
-      <h3>Fórmula general del MAO</h3>
-      <div class="formula-box">
-        <div class="formula-main">MAO = ARV − Reforma − Costes de compra − Costes de venta − Holding − Buffer − Beneficio objetivo</div>
-        <div class="formula-vars">
-          ARV = Valor de venta estimado tras la reforma (precio de cierre)<br>
-          Reforma = Presupuesto completo de obra + contingencia<br>
-          Costes de compra = ITP/IVA + notaría + registro + agencia compradora<br>
-          Costes de venta = Agencia vendedora + plusvalía municipal + gastos escritura<br>
-          Holding = IBI + comunidad + seguro + intereses del préstamo × meses<br>
-          Buffer = % sobre ARV para imprevistos no cuantificables (típico: 10–15%)<br>
-          Beneficio objetivo = Tu meta: importe fijo, % sobre ARV o IRR anual mínima
-        </div>
+      <div class="callout" role="note" aria-label="Fórmula MAO completa">
+        <p><strong>MAO = ARV − Reforma − Costes de compra − Costes de venta − Holding − Buffer − Beneficio objetivo</strong></p>
+        <p class="muted">Donde ARV es el precio de cierre estimado; reforma incluye contingencia; costes de compra incluyen ITP, notaría y registro; buffer es un % sobre ARV para imprevistos no cuantificables.</p>
       </div>
 
-      <h3>Tres formas de definir el objetivo de beneficio</h3>
-      <div class="rule-row">
-        <div class="rule-card">
-          <div class="rule-pct">€</div>
-          <div class="rule-name">Beneficio neto fijo</div>
-          <p>Defines un importe mínimo (ej. 25.000 €). Sencillo y fácil de comunicar. No considera el tiempo invertido ni el capital empleado.</p>
+      <h3>Tres formas de definir el objetivo de rentabilidad</h3>
+      <div class="grid">
+        <div class="box">
+          <h3>Beneficio neto fijo (€)</h3>
+          <p>Defines un importe mínimo (p. ej. 25.000 €). Sencillo y fácil de comunicar, pero no considera el tiempo invertido ni el capital empleado. Dos flips con 25.000 € de beneficio no son iguales si uno dura 6 meses y otro 18.</p>
         </div>
-        <div class="rule-card">
-          <div class="rule-pct">%</div>
-          <div class="rule-name">Margen sobre venta</div>
-          <p>Defines un % sobre el ARV (ej. 12%). Escala con el precio del inmueble. Tampoco considera el tiempo, pero es más consistente entre proyectos.</p>
-        </div>
-        <div class="rule-card">
-          <div class="rule-pct">IRR</div>
-          <div class="rule-name">Rentabilidad anual</div>
-          <p>Defines una IRR mínima (ej. 25% anual). Es el criterio más riguroso: penaliza las operaciones largas y premia las rápidas. El simulador lo calcula automáticamente.</p>
+        <div class="box">
+          <h3>Margen sobre venta (%)</h3>
+          <p>Defines un % sobre el ARV (p. ej. 12%). Escala con el precio del inmueble y es más consistente al comparar proyectos. Tampoco penaliza las operaciones largas, pero es más robusto que el beneficio fijo.</p>
         </div>
       </div>
-
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          El simulador de UnaHojaTools resuelve el MAO por <strong>bisección numérica</strong>:
-          dado tu objetivo (beneficio, margen o IRR), calcula iterativamente el precio máximo de compra
-          que lo cumple exactamente. No hace falta que hagas la álgebra a mano.
-        </p>
+      <div class="grid" style="margin-top:0">
+        <div class="box">
+          <h3>IRR anual mínima (%)</h3>
+          <p>Defines una tasa interna de retorno mínima (p. ej. 25% anual). Es el criterio más riguroso: penaliza las operaciones largas y premia las rápidas. Un flip de 6 meses tiene el doble de IRR que uno de 12 meses con el mismo beneficio absoluto.</p>
+        </div>
+        <div class="box">
+          <h3>Cómo lo resuelve el simulador</h3>
+          <p>El simulador de UnaHojaTools resuelve el MAO por bisección numérica: dado tu objetivo (beneficio, margen o IRR), calcula iterativamente el precio máximo de compra que lo cumple exactamente. Sin álgebra manual.</p>
+        </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          4. REGLA DEL 70%
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="regla-70">
       <h2 id="regla-70">4. La regla del 70% y sus variantes españolas</h2>
       <p>
-        La <strong>regla del 70%</strong> es un atajo práctico de origen anglosajón que sirve para
-        hacer un primer filtro rápido sin necesidad de un modelo completo:
+        La <strong>regla del 70%</strong> es un atajo de origen anglosajón para hacer un primer filtro rápido sin necesidad de un modelo completo:
       </p>
 
-      <div class="formula-box">
-        <div class="formula-main">MAO = ARV × 0,70 − Coste de reforma</div>
-        <div class="formula-vars">
-          El 30% reservado cubre: costes de transacción (≈5–10%), holding (≈2–4%), beneficio objetivo (≈10–15%) y buffer de riesgo (≈5%).
-        </div>
+      <div class="callout" role="note" aria-label="Regla del 70%">
+        <p><strong>MAO = ARV × 0,70 − Coste de reforma</strong></p>
+        <p class="muted">El 30% reservado cubre: costes de transacción (≈5–10%), holding (≈2–4%), beneficio objetivo (≈10–15%) y buffer de riesgo (≈5%).</p>
       </div>
 
       <p>
-        <strong>¿Funciona en España?</strong> Con matices. En EE.UU., los costes de transacción son
-        del 3–5%. En España, el ITP puede ser del 8–10% solo en la compra. Eso obliga a ajustar el
-        factor hacia abajo.
+        <strong>¿Funciona en España?</strong> Con matices. En EE.UU., los costes de transacción son del 3–5%. En España, el ITP puede ser del 8–10% <em>solo en la compra</em>. Eso obliga a ajustar el factor hacia abajo.
       </p>
 
-      <table class="cost-table">
-        <thead>
-          <tr><th>Factor</th><th>Contexto</th><th>Cuándo usarlo</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><strong>70%</strong></td><td>Estándar EE.UU.</td><td>Referencia teórica. Demasiado generoso para España con ITP alto.</td></tr>
-          <tr><td><strong>65%</strong></td><td>España, CCAA con ITP 8%</td><td>Buen punto de partida para la mayoría de operaciones estándar.</td></tr>
-          <tr><td><strong>60%</strong></td><td>España, reforma muy cara o mercado lento</td><td>Cuando la reforma supera 800 €/m² o el tiempo de venta estimado es largo.</td></tr>
-          <tr><td><strong>Modelo completo</strong></td><td>Cualquier mercado</td><td>El método correcto. No uses atajos para operaciones reales.</td></tr>
-        </tbody>
-      </table>
-
-      <div class="warning-box">
-        <span class="icon">⚠️</span>
-        <p>
-          La regla del 70% es un <strong>filtro de primer vistazo</strong>, no una metodología de inversión.
-          Úsala para descartar operaciones claramente no viables en 30 segundos, pero nunca para cerrar una compra.
-          El modelo completo (con ITP, agencia, plusvalía e IRR) es lo que te protege de verdad.
-        </p>
+      <div class="grid">
+        <div class="box">
+          <h3>Factor 70% — EE.UU.</h3>
+          <p>Referencia teórica. Demasiado generoso para España con ITP alto. Úsalo solo para descartar rápido operaciones claramente inviables.</p>
+        </div>
+        <div class="box">
+          <h3>Factor 65% — España estándar</h3>
+          <p>Buen punto de partida para la mayoría de operaciones con ITP del 6–8%. Válido como filtro inicial antes de hacer el modelo completo.</p>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:0">
+        <div class="box">
+          <h3>Factor 60% — Reforma cara o mercado lento</h3>
+          <p>Cuando la reforma supera 900 €/m², el ITP es del 10% o el tiempo de venta estimado supera los 6 meses.</p>
+        </div>
+        <div class="box">
+          <h3>Modelo completo — siempre para decisiones reales</h3>
+          <p>La regla del 70% es un filtro de vistazo, no una metodología de inversión. Para cerrar una compra, usa siempre el modelo con ITP, agencia, plusvalía e IRR.</p>
+        </div>
       </div>
     </section>
 
     <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          5. COSTES DE COMPRA
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="costes-compra">
       <h2 id="costes-compra">5. Costes de compra en España: ITP, notaría y registro</h2>
       <p>
-        Uno de los mayores errores de los flippers novatos es subestimar los costes de compra.
-        En España, comprar una propiedad de segunda mano implica pagar entre el <strong>8% y el 14%
-        del precio de compra</strong> solo en impuestos y gastos.
+        Uno de los mayores errores de los flippers novatos es subestimar los costes de compra. En España, comprar una propiedad de segunda mano implica pagar entre el <strong>8% y el 14% del precio de compra</strong> solo en impuestos y gastos.
       </p>
 
-      <table class="cost-table">
+      <table class="table" style="margin-top:16px">
         <thead>
-          <tr><th>Concepto</th><th>Importe estimado</th><th>Nivel</th><th>Notas</th></tr>
+          <tr>
+            <th>Concepto</th>
+            <th>Importe estimado</th>
+            <th>Notas</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>ITP (2.ª mano)</strong></td>
             <td>6–10% del precio</td>
-            <td><span class="tag tag-high">Alto</span></td>
-            <td>Varía por CCAA: Euskadi 4%, Castilla-La Mancha 9%, Cataluña 10%. Ver tabla por CCAA.</td>
+            <td>Varía por CCAA. Euskadi 4%, Madrid 6%, Cataluña y C. Valenciana 10%.</td>
           </tr>
           <tr>
             <td><strong>IVA + AJD (obra nueva)</strong></td>
             <td>10% IVA + 0,5–1,5% AJD</td>
-            <td><span class="tag tag-high">Alto</span></td>
             <td>Solo si el vendedor es promotor. AJD varía por CCAA.</td>
           </tr>
           <tr>
             <td><strong>Notaría</strong></td>
             <td>600–1.200 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
-            <td>Escala arancelaria regulada. Depende del precio de compra.</td>
+            <td>Arancel regulado. Escala con el precio de compra.</td>
           </tr>
           <tr>
             <td><strong>Registro de la Propiedad</strong></td>
             <td>300–700 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
             <td>Aranceles fijados por RD 1427/1989.</td>
           </tr>
           <tr>
             <td><strong>Gestoría</strong></td>
             <td>300–600 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
-            <td>Opcional pero recomendable para liquidar ITP y evitar errores.</td>
+            <td>Recomendable para liquidar ITP y evitar errores formales.</td>
           </tr>
           <tr>
-            <td><strong>Agencia compradora</strong></td>
+            <td><strong>Agencia compradora / sourcer</strong></td>
             <td>0–3% del precio</td>
-            <td><span class="tag tag-med">Medio</span></td>
-            <td>Habitual en compras off-market o a través de sourcer.</td>
+            <td>Habitual en compras off-market o a través de intermediario.</td>
           </tr>
           <tr>
             <td><strong>Tasación</strong></td>
             <td>300–600 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
-            <td>Necesaria si hay financiación bancaria.</td>
+            <td>Necesaria si hay financiación bancaria o préstamo puente.</td>
+          </tr>
+          <tr>
+            <td><strong>Total estimado</strong></td>
+            <td><strong>8–14% del precio</strong></td>
+            <td>Para una compra de 150.000 €: entre 12.000 y 21.000 € en costes fijos.</td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr class="cost-total">
-            <td><strong>Total estimado</strong></td>
-            <td><strong>8–14% del precio de compra</strong></td>
-            <td></td>
-            <td>Para una compra de 150.000 €: 12.000–21.000 € en costes fijos.</td>
-          </tr>
-        </tfoot>
       </table>
 
       <h3>ITP por Comunidad Autónoma (2026)</h3>
-      <div class="ccaa-grid">
-        <div class="ccaa-item"><span class="ccaa-name">Andalucía</span><span class="ccaa-val">7%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Aragón</span><span class="ccaa-val">8%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Asturias</span><span class="ccaa-val">8%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Baleares</span><span class="ccaa-val">8–11%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Canarias</span><span class="ccaa-val">6,5%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Cantabria</span><span class="ccaa-val">10%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Castilla y León</span><span class="ccaa-val">8%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Castilla-La Mancha</span><span class="ccaa-val">9%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Cataluña</span><span class="ccaa-val">10%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">C. Valenciana</span><span class="ccaa-val">10%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Euskadi</span><span class="ccaa-val">4%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Extremadura</span><span class="ccaa-val">8%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Galicia</span><span class="ccaa-val">10%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">La Rioja</span><span class="ccaa-val">7%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Madrid</span><span class="ccaa-val">6%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Murcia</span><span class="ccaa-val">8%</span></div>
-        <div class="ccaa-item"><span class="ccaa-name">Navarra</span><span class="ccaa-val">6%</span></div>
+      <div class="grid">
+        <div class="box">
+          <ul>
+            <li>Andalucía: <strong>7%</strong></li>
+            <li>Aragón: <strong>8%</strong></li>
+            <li>Asturias: <strong>8%</strong></li>
+            <li>Baleares: <strong>8–11%</strong> (progresivo)</li>
+            <li>Canarias: <strong>6,5%</strong></li>
+            <li>Cantabria: <strong>10%</strong></li>
+            <li>Castilla y León: <strong>8%</strong></li>
+            <li>Castilla-La Mancha: <strong>9%</strong></li>
+            <li>Cataluña: <strong>10%</strong></li>
+          </ul>
+        </div>
+        <div class="box">
+          <ul>
+            <li>C. Valenciana: <strong>10%</strong></li>
+            <li>Euskadi: <strong>4%</strong></li>
+            <li>Extremadura: <strong>8%</strong></li>
+            <li>Galicia: <strong>10%</strong></li>
+            <li>La Rioja: <strong>7%</strong></li>
+            <li>Madrid: <strong>6%</strong></li>
+            <li>Murcia: <strong>8%</strong></li>
+            <li>Navarra: <strong>6%</strong></li>
+          </ul>
+        </div>
       </div>
-      <p class="muted small">* Tipos generales vigentes en 2026. Pueden existir tipos reducidos para primeras viviendas, jóvenes o determinadas situaciones. Consulta con tu gestor. Baleares aplica tipos progresivos según precio.</p>
+      <p class="muted" style="margin-top:10px">Tipos generales vigentes en 2026. Pueden existir tipos reducidos para determinados compradores o situaciones. Consulta siempre con tu gestor o asesor fiscal.</p>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          6. REFORMA
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="reforma">
       <h2 id="reforma">6. Cómo presupuestar la reforma de un flip</h2>
       <p>
-        La reforma es el coste más variable y el que con mayor frecuencia se subestima. Una estimación
-        incorrecta puede destruir completamente el margen de la operación.
+        La reforma es el coste más variable y el que con mayor frecuencia se subestima. Una estimación incorrecta puede destruir completamente el margen de la operación.
       </p>
 
-      <table class="cost-table">
+      <table class="table" style="margin-top:16px">
         <thead>
-          <tr><th>Tipo de intervención</th><th>Coste aproximado (€/m²)</th><th>Nivel</th></tr>
+          <tr>
+            <th>Tipo de intervención</th>
+            <th>Coste aproximado (€/m²)</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>Cosmética ligera</strong> (pintura, suelos laminados, accesorios)</td>
+            <td>Cosmética ligera (pintura, suelos laminados, accesorios)</td>
             <td>150–350 €/m²</td>
-            <td><span class="tag tag-low">Bajo</span></td>
           </tr>
           <tr>
-            <td><strong>Reforma parcial</strong> (cocina o baño + pintura + suelos)</td>
+            <td>Reforma parcial (cocina o baño + pintura + suelos)</td>
             <td>400–700 €/m²</td>
-            <td><span class="tag tag-med">Medio</span></td>
           </tr>
           <tr>
-            <td><strong>Reforma integral estándar</strong> (cocina + baños + instalaciones + suelos)</td>
+            <td>Reforma integral estándar (cocina + baños + instalaciones + suelos)</td>
             <td>700–1.100 €/m²</td>
-            <td><span class="tag tag-med">Medio</span></td>
           </tr>
           <tr>
-            <td><strong>Reforma integral premium</strong> (calidades altas, diseño, domótica)</td>
+            <td>Reforma integral premium (calidades altas, diseño, domótica)</td>
             <td>1.100–1.600 €/m²</td>
-            <td><span class="tag tag-high">Alto</span></td>
           </tr>
           <tr>
-            <td><strong>Rehabilitación estructural</strong> (vigas, cubierta, estructura)</td>
+            <td>Rehabilitación estructural (vigas, cubierta, estructura)</td>
             <td>800–2.000+ €/m²</td>
-            <td><span class="tag tag-high">Alto</span></td>
           </tr>
         </tbody>
       </table>
 
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          <strong>Regla de los tres presupuestos:</strong> pide siempre al menos tres presupuestos
-          detallados por partidas antes de cerrar la compra. El presupuesto más alto y el más bajo
-          suelen ser señales (uno puede estar sobreestimando para marginar, el otro puede no haber
-          visto el trabajo real). Toma el del medio como base y añade un 15% de contingencia.
-        </p>
+      <h3>Las partidas que más se disparan</h3>
+      <div class="grid" style="margin-top:12px">
+        <div class="box">
+          <ul>
+            <li>Instalación eléctrica (actualización a normativa: 3.000–8.000 € en 80 m²)</li>
+            <li>Fontanería y saneamiento (problemas ocultos en paredes y suelo)</li>
+            <li>Humedades y filtraciones (especialmente en bajos y áticos)</li>
+          </ul>
+        </div>
+        <div class="box">
+          <ul>
+            <li>Licencia de obra (2–6 semanas en obra menor; meses en obra mayor)</li>
+            <li>Suministros (alta variabilidad de precio en materiales)</li>
+            <li>Gestión de residuos (container, transporte y tasa municipal)</li>
+          </ul>
+        </div>
       </div>
 
-      <h3>Partidas que más suelen dispararse</h3>
-      <ul class="checklist">
-        <li>Instalación eléctrica (actualización a normativa actual: 3.000–8.000 € en un piso de 80 m²)</li>
-        <li>Fontanería y saneamiento (problemas ocultos en paredes y suelo)</li>
-        <li>Humedades y filtraciones (especialmente en bajos y áticos)</li>
-        <li>Licencia de obra (tarda 2–6 semanas en obra menor; meses en obra mayor)</li>
-        <li>Suministros (materiales de construcción con alta variabilidad de precio)</li>
-        <li>Gestión de residuos (container, transporte y tasa municipal)</li>
-      </ul>
-
-      <h3>La contingencia: no es opcional</h3>
-      <p>
-        Incluye siempre una <strong>partida de contingencia del 10–20%</strong> sobre el presupuesto base.
-        No es pesimismo: es matemáticamente necesaria porque en el 80% de los flips aparecen imprevistos
-        no visibles en la visita inicial. Sin contingencia, cada imprevisto reduce directamente tu beneficio.
-      </p>
-      <p>
-        El simulador de UnaHojaTools aplica automáticamente la contingencia sobre el presupuesto de
-        reforma y la suma al coste total antes de calcular el MAO.
-      </p>
+      <div class="callout" role="note" style="margin-top:16px">
+        <p><strong>La contingencia no es opcional.</strong> Incluye siempre un 10–20% sobre el presupuesto base. No es pesimismo: en el 80% de los flips aparecen imprevistos no visibles en la visita inicial. Sin contingencia, cada imprevisto reduce directamente tu beneficio.</p>
+        <p class="muted">Pide siempre al menos tres presupuestos detallados por partidas antes de cerrar la compra. El simulador aplica la contingencia automáticamente sobre el presupuesto de reforma y la suma al coste total antes de calcular el MAO.</p>
+      </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          7. HOLDING
-    ══════════════════════════════════════════════════ -->
-    <section class="card" aria-labelledby="costes-holding">
-      <h2 id="costes-holding">7. Costes de holding: lo que se come el tiempo</h2>
+    ══════════════════════════════════════ -->
+    <section class="card" aria-labelledby="holding">
+      <h2 id="holding">7. Costes de holding: lo que se come el tiempo</h2>
       <p>
-        El <strong>holding</strong> son los costes recurrentes mensuales que se acumulan desde el día
-        de la compra hasta el día del cierre de la venta. A menudo son invisibles en los cálculos rápidos,
-        pero en una operación de 12 meses pueden representar 5.000–15.000 € o más.
+        El <strong>holding</strong> son los costes recurrentes que se acumulan desde el día de la compra hasta el día del cierre de la venta. A menudo son invisibles en los cálculos rápidos, pero en una operación de 12 meses pueden representar 5.000–15.000 € o más.
       </p>
 
-      <table class="cost-table">
+      <table class="table" style="margin-top:16px">
         <thead>
-          <tr><th>Concepto</th><th>Frecuencia</th><th>Importe típico</th></tr>
+          <tr>
+            <th>Concepto</th>
+            <th>Frecuencia</th>
+            <th>Importe típico</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>IBI (prorateado)</td><td>Anual / mensual</td><td>30–120 €/mes según municipio y valor catastral</td></tr>
-          <tr><td>Comunidad de propietarios</td><td>Mensual</td><td>50–200 €/mes</td></tr>
-          <tr><td>Seguro de hogar (vacío)</td><td>Anual / mensual</td><td>20–60 €/mes</td></tr>
-          <tr><td>Suministros (mínimos)</td><td>Mensual</td><td>30–80 €/mes (aunque la obra consuma más)</td></tr>
-          <tr><td>Gestoría / asesoría</td><td>Mensual</td><td>100–300 €/mes si externalizas la gestión</td></tr>
-          <tr><td>Intereses préstamo puente</td><td>Mensual</td><td>Variable; ver sección de financiación</td></tr>
-        </tbody>
-        <tfoot>
-          <tr class="cost-total">
+          <tr>
+            <td>IBI (prorateado)</td>
+            <td>Anual / mensual</td>
+            <td>30–120 €/mes según municipio y valor catastral</td>
+          </tr>
+          <tr>
+            <td>Comunidad de propietarios</td>
+            <td>Mensual</td>
+            <td>50–200 €/mes</td>
+          </tr>
+          <tr>
+            <td>Seguro de hogar (vacío)</td>
+            <td>Anual / mensual</td>
+            <td>20–60 €/mes</td>
+          </tr>
+          <tr>
+            <td>Suministros mínimos</td>
+            <td>Mensual</td>
+            <td>30–80 €/mes durante la obra</td>
+          </tr>
+          <tr>
+            <td>Gestoría / asesoría</td>
+            <td>Mensual</td>
+            <td>100–300 €/mes si externalizas la gestión</td>
+          </tr>
+          <tr>
+            <td>Intereses préstamo puente</td>
+            <td>Mensual</td>
+            <td>Variable; ver sección de financiación</td>
+          </tr>
+          <tr>
             <td><strong>Total holding típico</strong></td>
             <td></td>
-            <td><strong>200–500 €/mes</strong> (sin intereses de financiación)</td>
+            <td><strong>200–500 €/mes</strong> sin intereses de financiación</td>
           </tr>
-        </tfoot>
+        </tbody>
       </table>
 
-      <div class="warning-box">
-        <span class="icon">⚠️</span>
-        <p>
-          Cada mes extra de obra o venta que no tenías planificado cuesta dinero directo. Si tu
-          plan era 8 meses y tardas 12, el holding adicional (4 meses × 350 €) son 1.400 €,
-          más los intereses del préstamo. Sé conservador en tus estimaciones de plazo.
-        </p>
+      <div class="callout" role="note" style="margin-top:16px">
+        <p><strong>Cada mes extra cuesta dinero real.</strong> Si tu plan era 8 meses y tardas 12, el holding adicional (4 meses × 350 €) son 1.400 €, más los intereses del préstamo. Sé conservador en tus estimaciones de plazo.</p>
       </div>
     </section>
 
     <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          8. COSTES DE VENTA
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="costes-venta">
       <h2 id="costes-venta">8. Costes de venta y agencia</h2>
       <p>
         Al vender también incurres en costes que reducen tu ARV neto. Los más importantes:
       </p>
 
-      <table class="cost-table">
+      <table class="table" style="margin-top:16px">
         <thead>
-          <tr><th>Concepto</th><th>Importe</th><th>Nivel</th></tr>
+          <tr>
+            <th>Concepto</th>
+            <th>Importe</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
             <td><strong>Agencia inmobiliaria vendedora</strong></td>
             <td>2–5% del precio de venta</td>
-            <td><span class="tag tag-high">Alto</span></td>
           </tr>
           <tr>
-            <td><strong>Gastos de notaría y registro (cancelación)</strong></td>
+            <td>Notaría y registro (cancelación hipoteca si aplica)</td>
             <td>500–1.500 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
           </tr>
           <tr>
-            <td><strong>Certificado energético</strong></td>
+            <td>Certificado energético</td>
             <td>150–400 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
           </tr>
           <tr>
-            <td><strong>Home staging profesional</strong></td>
+            <td>Home staging profesional</td>
             <td>1.500–5.000 €</td>
-            <td><span class="tag tag-med">Medio</span></td>
           </tr>
           <tr>
-            <td><strong>Fotografía y marketing</strong></td>
+            <td>Fotografía profesional y marketing</td>
             <td>300–800 €</td>
-            <td><span class="tag tag-low">Bajo</span></td>
           </tr>
           <tr>
-            <td><strong>Plusvalía municipal</strong></td>
-            <td>Variable</td>
-            <td><span class="tag tag-med">Medio</span></td>
+            <td>Plusvalía municipal (IIVTNU)</td>
+            <td>Variable según municipio y tiempo de tenencia</td>
           </tr>
         </tbody>
       </table>
 
-      <p>
-        La plusvalía municipal (IIVTNU) se calcula sobre el incremento del valor catastral del suelo
-        durante el tiempo de tenencia. Dado que los flips son operaciones cortas, el impacto puede ser
-        limitado —a veces cero si el valor catastral no ha subido— pero conviene calcularlo con
-        el simulador del Ayuntamiento correspondiente antes de cerrar la compra.
+      <p style="margin-top:14px">
+        La plusvalía municipal se calcula sobre el incremento del valor catastral del suelo durante el tiempo de tenencia. En flips cortos (menos de 2 años), el impacto puede ser limitado, pero conviene calcularlo con el simulador del Ayuntamiento correspondiente antes de cerrar la compra.
       </p>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          9. IMPUESTOS
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="impuestos">
       <h2 id="impuestos">9. Impuestos: IRPF, plusvalía y actividad económica</h2>
       <p>
-        La fiscalidad del flip inmobiliario en España es uno de los aspectos más complejos y donde
-        más dinero se pierde por una planificación deficiente. Aquí los puntos clave:
+        La fiscalidad del flip inmobiliario en España es uno de los aspectos más complejos y donde más dinero se pierde por una planificación deficiente.
       </p>
 
-      <h3>Ganancia patrimonial en IRPF</h3>
+      <h3>Ganancia patrimonial en el IRPF</h3>
       <p>
-        Si vendes como persona física y el flip no constituye tu actividad económica habitual,
-        el beneficio tributa como <strong>ganancia patrimonial en la base del ahorro</strong>:
+        Si vendes como persona física y el flip no constituye tu actividad económica habitual, el beneficio tributa como <strong>ganancia patrimonial en la base del ahorro</strong>:
       </p>
 
-      <table class="irr-table">
+      <table class="table" style="margin-top:10px">
         <thead>
-          <tr><th>Ganancia patrimonial</th><th>Tipo IRPF (2026)</th></tr>
+          <tr>
+            <th>Tramo de ganancia</th>
+            <th>Tipo IRPF (2026)</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>Hasta 6.000 €</td><td class="ok">19%</td></tr>
-          <tr><td>6.000 € – 50.000 €</td><td class="ok">21%</td></tr>
-          <tr><td>50.000 € – 200.000 €</td><td class="ok">23%</td></tr>
-          <tr><td>200.000 € – 300.000 €</td><td class="bad">27%</td></tr>
-          <tr><td>Más de 300.000 €</td><td class="bad">28%</td></tr>
+          <tr><td>Hasta 6.000 €</td><td>19%</td></tr>
+          <tr><td>6.000 € – 50.000 €</td><td>21%</td></tr>
+          <tr><td>50.000 € – 200.000 €</td><td>23%</td></tr>
+          <tr><td>200.000 € – 300.000 €</td><td>27%</td></tr>
+          <tr><td>Más de 300.000 €</td><td>28%</td></tr>
         </tbody>
       </table>
 
-      <div class="warning-box">
-        <span class="icon">⚠️</span>
-        <p>
-          <strong>Atención con la calificación fiscal:</strong> si Hacienda considera que realizas
-          flips de forma habitual y organizada (varios al año, estructura profesional, dedicación
-          continuada), puede calificar el beneficio como <strong>rendimiento de actividad económica</strong>
-          en lugar de ganancia patrimonial. Esto implica tributar a tipos marginales del IRPF o del
-          Impuesto de Sociedades (si operas vía sociedad), y cotizar a la Seguridad Social como autónomo.
-          Consulta siempre con un asesor fiscal especializado en inmobiliario.
-        </p>
+      <div class="callout" role="note" style="margin-top:16px">
+        <p><strong>Atención con la calificación fiscal.</strong> Si Hacienda considera que realizas flips de forma habitual y organizada (varios al año, estructura profesional, dedicación continuada), puede calificar el beneficio como <strong>rendimiento de actividad económica</strong> en lugar de ganancia patrimonial. Esto implica tributar a tipos marginales del IRPF o del Impuesto de Sociedades y cotizar a la Seguridad Social como autónomo.</p>
+        <p class="muted">Consulta siempre con un asesor fiscal especializado en inmobiliario antes de la primera operación, no después de la venta.</p>
       </div>
 
-      <h3>Ventajas fiscales de operar a través de sociedad</h3>
+      <h3>Cómo incluir los impuestos en el cálculo del MAO</h3>
       <p>
-        Operar vía SL o SA puede tener sentido cuando el volumen de operaciones justifica la estructura.
-        El IS tributa al 25% (o 15% en el primer periodo como empresa de nueva creación), y permite
-        compensar pérdidas entre ejercicios. Sin embargo, la distribución de dividendos genera tributación
-        adicional y los costes de gestión son más elevados.
-      </p>
-
-      <h3>¿Cómo incluir los impuestos en el cálculo del MAO?</h3>
-      <p>
-        El método más conservador es estimar el beneficio bruto esperado, calcular el impuesto aproximado
-        sobre ese beneficio y restar el resultado antes de definir el MAO. Así te aseguras de que tu
-        beneficio objetivo es siempre el <strong>neto después de impuestos</strong>.
+        El método más conservador es estimar el beneficio bruto esperado, calcular el impuesto aproximado sobre ese beneficio y restar el resultado antes de definir el MAO. Así te aseguras de que tu objetivo de beneficio es siempre el <strong>neto después de impuestos</strong>.
       </p>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          10. IRR
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="irr">
       <h2 id="irr">10. IRR: cómo medir la rentabilidad real del capital</h2>
       <p>
-        El <strong>margen neto</strong> (beneficio / precio de venta) es una métrica útil pero incompleta.
-        Dos flips con el mismo margen del 12% tienen rentabilidades muy distintas si uno dura 6 meses
-        y otro 18 meses.
+        El <strong>margen neto</strong> (beneficio / precio de venta) es una métrica útil pero incompleta. Dos flips con el mismo margen del 12% tienen rentabilidades muy distintas si uno dura 6 meses y otro 18 meses.
       </p>
       <p>
-        La <strong>IRR</strong> (<em>Internal Rate of Return</em>, Tasa Interna de Retorno) es la tasa
-        de descuento que hace que el valor presente neto de todos los flujos de caja de la inversión
-        sea cero. Expresada de forma anualizada, es el equivalente a la rentabilidad de un depósito
-        que generara el mismo resultado en el mismo periodo.
+        La <strong>IRR</strong> (<em>Internal Rate of Return</em>, Tasa Interna de Retorno) es la tasa de descuento que hace que el valor presente neto de todos los flujos de caja de la inversión sea cero. Expresada de forma anualizada, equivale a la rentabilidad de un depósito que generara el mismo resultado en el mismo periodo.
       </p>
 
-      <div class="formula-box">
-        <div class="formula-main">Σ [ CFₜ / (1 + IRR)ᵗ ] = 0</div>
-        <div class="formula-vars">
-          CFₜ = Flujo de caja en el mes t (negativo en la compra, positivo en la venta)<br>
-          t = Mes de la operación (0 = compra, N = venta)<br>
-          La IRR mensual se convierte a anual: IRR_anual = (1 + IRR_mensual)¹² − 1
-        </div>
+      <div class="callout" role="note" aria-label="Fórmula IRR">
+        <p><strong>Σ [ CFₜ / (1 + IRR)ᵗ ] = 0</strong></p>
+        <p class="muted">CFₜ = Flujo de caja en el mes t (negativo en la compra, positivo en la venta) · La IRR mensual se convierte a anual: IRR_anual = (1 + IRR_mensual)¹² − 1</p>
       </div>
 
       <h3>Cómo interpretar la IRR en un flip</h3>
-      <table class="irr-table">
+      <table class="table" style="margin-top:10px">
         <thead>
-          <tr><th>IRR anual</th><th>Valoración</th><th>Contexto típico</th></tr>
+          <tr>
+            <th>IRR anual</th>
+            <th>Valoración</th>
+            <th>Contexto típico</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>&lt; 15%</td><td class="bad">No compensa el riesgo</td><td>El capital estaría mejor en fondos o REITs sin el trabajo de gestionar la obra.</td></tr>
-          <tr><td>15% – 25%</td><td class="ok">Aceptable</td><td>Operación viable si el riesgo está controlado y el capital no tiene mejor uso.</td></tr>
-          <tr><td>25% – 40%</td><td class="good">Buena</td><td>Objetivo razonable para un flipper profesional en España.</td></tr>
-          <tr><td>&gt; 40%</td><td class="good">Excelente</td><td>Operaciones de ciclo corto (6 meses) con buen descuento de compra o en mercados calientes.</td></tr>
+          <tr>
+            <td>Menos del 15%</td>
+            <td class="bad">No compensa el riesgo</td>
+            <td>El capital estaría mejor en fondos o REITs sin el trabajo de gestionar una obra.</td>
+          </tr>
+          <tr>
+            <td>15% – 25%</td>
+            <td>Aceptable</td>
+            <td>Operación viable si el riesgo está controlado y el capital no tiene mejor uso.</td>
+          </tr>
+          <tr>
+            <td>25% – 40%</td>
+            <td class="ok">Buena</td>
+            <td>Objetivo razonable para un flipper profesional en España.</td>
+          </tr>
+          <tr>
+            <td>Más del 40%</td>
+            <td class="ok">Excelente</td>
+            <td>Operaciones de ciclo corto (6 meses) con buen descuento en mercados líquidos.</td>
+          </tr>
         </tbody>
       </table>
 
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          Un flip de 6 meses con 15.000 € de beneficio neto sobre 80.000 € de equity invertido tiene
-          un margen aparente del 18,75%, pero una <strong>IRR anual del ~41%</strong> porque puedes hacer
-          dos ciclos por año. Un flip de 18 meses con el mismo beneficio tiene una IRR del ~13% anual.
-          El tiempo es el factor crítico.
-        </p>
+      <div class="callout" role="note" style="margin-top:16px">
+        <p>Un flip de 6 meses con 15.000 € de beneficio neto sobre 80.000 € de equity invertido tiene un margen aparente del 18,75%, pero una <strong>IRR anual del ~41%</strong> porque puedes hacer dos ciclos por año. El mismo flip a 18 meses tiene una IRR del ~13% anual. El tiempo es el factor crítico.</p>
       </div>
 
-      <div class="anchor-cta">
-        <p>📊 El simulador calcula la IRR anual automáticamente con tus datos reales</p>
-        <a class="btn-cta" href="/flip/">Calcular mi IRR →</a>
-      </div>
+      <p class="see-also" style="margin-top:18px">
+        👉 El <a href="/flip/">simulador de flip de UnaHojaTools</a> calcula la IRR anual automáticamente usando bisección numérica sobre los flujos mensuales reales de la operación.
+      </p>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          11. FINANCIACIÓN
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="financiacion">
       <h2 id="financiacion">11. Financiación y efecto apalancamiento</h2>
       <p>
-        Operar con financiación amplifica la IRR sobre el capital propio (efecto palanca), pero
-        también amplifica las pérdidas si la operación va mal. En España, las opciones más habituales para flips son:
+        Operar con financiación amplifica la IRR sobre el capital propio (efecto palanca), pero también amplifica las pérdidas si la operación va mal.
       </p>
 
-      <h3>Opciones de financiación para flips en España</h3>
-      <div class="grid">
+      <div class="grid" style="margin-top:16px">
         <div class="box">
-          <h4>Préstamo puente o hipoteca flipping</h4>
+          <h3>Préstamo puente o hipoteca flipping</h3>
           <ul>
             <li>Tipo de interés: 8–12% anual (2026)</li>
             <li>LTV: 60–80% del valor de tasación</li>
@@ -1038,265 +748,229 @@
           </ul>
         </div>
         <div class="box">
-          <h4>Capital privado / prestamistas particulares</h4>
+          <h3>Capital privado / prestamistas particulares</h3>
           <ul>
             <li>Tipo de interés: 10–15% anual</li>
             <li>Más flexible en condiciones y plazo</li>
-            <li>Cierre más rápido (crucial en off-market)</li>
-            <li>Menor LTV que la banca: 50–70%</li>
+            <li>Cierre rápido, crucial en compras off-market</li>
+            <li>LTV menor: 50–70%</li>
             <li>Formalizar siempre con escritura pública</li>
           </ul>
         </div>
       </div>
 
       <h3>El efecto del apalancamiento en los números</h3>
-      <div class="kpi-row">
-        <div class="kpi-card">
-          <div class="kpi-label">Sin financiación</div>
-          <div class="kpi-val">24%</div>
-          <div class="kpi-sub">IRR anual sobre capital total de 120k€</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Con 70% LTV al 10%</div>
-          <div class="kpi-val">51%</div>
-          <div class="kpi-sub">IRR sobre equity propio de 36k€ (mismo flip)</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Si el ARV baja 10%</div>
-          <div class="kpi-val">–</div>
-          <div class="kpi-sub">Sin financiación: margen reducido. Con financiación: posible pérdida</div>
-        </div>
-      </div>
+      <p>Un mismo flip con ARV de 200.000 €, compra a 80.000 € y reforma de 50.000 € da resultados muy distintos según si financias o no:</p>
 
-      <div class="warning-box">
-        <span class="icon">⚠️</span>
-        <p>
-          La financiación convierte un flip mediocre en bueno <em>y</em> un flip malo en catastrófico.
-          Solo apalanca cuando el margen sin financiación ya es sólido. El simulador permite modelar
-          el LTV de compra y el LTV de reforma por separado para ver el impacto exacto en la IRR.
-        </p>
+      <table class="table" style="margin-top:10px">
+        <thead>
+          <tr>
+            <th>Escenario</th>
+            <th>Capital propio</th>
+            <th>Beneficio neto</th>
+            <th>IRR anual (8 meses)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sin financiación</td>
+            <td>~140.000 €</td>
+            <td>25.000 €</td>
+            <td>~24%</td>
+          </tr>
+          <tr>
+            <td>70% LTV compra al 10%</td>
+            <td>~80.000 €</td>
+            <td>~20.000 € (tras intereses)</td>
+            <td>~37%</td>
+          </tr>
+          <tr>
+            <td>Si ARV baja un 10%</td>
+            <td>—</td>
+            <td>Sin financiación: margen reducido</td>
+            <td>Con financiación: posible pérdida</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout" role="note" style="margin-top:16px">
+        <p><strong>La financiación convierte un flip mediocre en bueno y un flip malo en catastrófico.</strong> Solo apalanca cuando el margen sin financiación ya es sólido. El simulador permite modelar el LTV de compra y el LTV de reforma por separado para ver el impacto exacto en la IRR.</p>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          12. ESCENARIOS
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="escenarios">
       <h2 id="escenarios">12. Escenarios: pesimista, base y optimista</h2>
       <p>
-        Nunca analices un flip con un único escenario. Las variables más impactantes son el ARV final
-        (puede desviarse un 5–10%), el coste de reforma (+15–20% por imprevistos) y el tiempo de venta
-        (puede alargarse 2–4 meses). Modelar tres escenarios te permite saber de antemano cuánto puedes
-        perder en el peor caso.
+        Nunca analices un flip con un único escenario. Las variables más impactantes son el ARV final (puede desviarse ±5–10%), el coste de reforma (+15–20% por imprevistos) y el tiempo de venta (puede alargarse 2–4 meses). Modelar tres escenarios te permite saber de antemano cuánto puedes perder en el peor caso.
       </p>
 
-      <div class="example-block">
-        <h4>Estructura de escenarios recomendada</h4>
-        <dl>
-          <dt>Pesimista: ARV</dt><dd class="negative">−10% sobre base</dd>
-          <dt>Pesimista: Reforma</dt><dd class="negative">+15% sobre base</dd>
-          <dt>Pesimista: Meses extra</dt><dd class="negative">+2 meses</dd>
-          <dt>Pesimista: Tipo financiación</dt><dd class="negative">+1,5% anual</dd>
-          <dt>Base: ARV</dt><dd>100% (tu estimación central)</dd>
-          <dt>Base: Reforma</dt><dd>100% (presupuesto + contingencia)</dd>
-          <dt>Optimista: ARV</dt><dd class="positive">+5% sobre base</dd>
-          <dt>Optimista: Reforma</dt><dd class="positive">−10% sobre base</dd>
-          <dt>Optimista: Meses menos</dt><dd class="positive">−1 mes</dd>
-        </dl>
+      <div class="grid">
+        <div class="box">
+          <h3>Escenario pesimista</h3>
+          <ul>
+            <li>ARV: −10% sobre tu estimación base</li>
+            <li>Reforma: +15% sobre presupuesto</li>
+            <li>Meses: +2 meses de holding extra</li>
+            <li>Tipo financiación: +1,5% anual</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Escenario optimista</h3>
+          <ul>
+            <li>ARV: +5% sobre tu estimación base</li>
+            <li>Reforma: −10% sobre presupuesto</li>
+            <li>Meses: −1 mes de holding</li>
+            <li>Tipo financiación: sin cambio</li>
+          </ul>
+        </div>
       </div>
 
-      <p>
-        La pregunta clave es: <strong>¿puedo asumir el escenario pesimista?</strong> Si el peor caso
-        implica una pérdida que pone en peligro tu capital o liquidez, el flip no es viable aunque el
-        escenario base sea atractivo.
+      <p style="margin-top:14px">
+        La pregunta clave es: <strong>¿puedo asumir el escenario pesimista?</strong> Si el peor caso implica una pérdida que pone en peligro tu capital o liquidez, el flip no es viable aunque el escenario base sea atractivo.
       </p>
-
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          El simulador de UnaHojaTools incluye una tabla de escenarios editable y recalcula
-          el MAO, beneficio e IRR de cada uno automáticamente. También genera un gráfico de
-          sensibilidad MAO vs ARV para ver el rango de precios de compra aceptables.
-        </p>
-      </div>
+      <p class="see-also">
+        👉 El <a href="/flip/">simulador de UnaHojaTools</a> incluye una tabla de escenarios editable y recalcula el MAO, beneficio e IRR de cada uno automáticamente, junto con un gráfico de sensibilidad MAO vs ARV.
+      </p>
     </section>
 
     <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          13. EJEMPLO COMPLETO
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="ejemplo">
       <h2 id="ejemplo">13. Ejemplo completo: piso en Madrid de 200.000 € (valor reformado)</h2>
       <p>
-        Veamos un caso real con todos los números para un piso de <strong>80 m²</strong> en Madrid
-        con ARV estimado de <strong>200.000 €</strong> y reforma integral.
+        Veamos un caso real con todos los números para un piso de <strong>80 m²</strong> en Madrid con ARV estimado de <strong>200.000 €</strong> y reforma integral.
       </p>
 
-      <h3>Datos de la operación</h3>
-      <div class="example-block">
-        <h4>Inputs</h4>
-        <dl>
-          <dt>Superficie</dt><dd>80 m²</dd>
-          <dt>ARV (precio de cierre estimado)</dt><dd>200.000 €</dd>
-          <dt>Descuento negociación estimado</dt><dd>3%</dd>
-          <dt>ARV neto de cierre</dt><dd class="accent">194.000 €</dd>
-          <dt>Reforma (900 €/m² + 15% contingencia)</dt><dd>82.800 €</dd>
-          <dt>Meses de obra</dt><dd>4 meses</dd>
-          <dt>Meses de venta</dt><dd>3 meses</dd>
-          <dt>Meses totales</dt><dd>7 meses</dd>
-          <dt>ITP Madrid</dt><dd>6%</dd>
-          <dt>Costes fijos compra (notaría, registro, gestoría)</dt><dd>2.000 €</dd>
-          <dt>Agencia venta</dt><dd>3%</dd>
-          <dt>Gastos fijos venta</dt><dd>1.500 €</dd>
-          <dt>Holding mensual</dt><dd>300 €/mes</dd>
-          <dt>Buffer de riesgo</dt><dd>10% sobre ARV</dd>
-          <dt>Objetivo</dt><dd>Beneficio neto ≥ 25.000 €</dd>
-        </dl>
+      <h3>Datos de la operación (inputs)</h3>
+      <div class="grid">
+        <div class="box">
+          <ul>
+            <li>Superficie: 80 m²</li>
+            <li>ARV bruto (precio de anuncio comparables): 206.000 €</li>
+            <li>Descuento negociación estimado: 3%</li>
+            <li>ARV neto de cierre: <strong>200.000 €</strong></li>
+            <li>Reforma (900 €/m² + 15% contingencia): <strong>82.800 €</strong></li>
+            <li>Meses de obra: 4 · Meses de venta: 3</li>
+          </ul>
+        </div>
+        <div class="box">
+          <ul>
+            <li>ITP Madrid: 6%</li>
+            <li>Gastos fijos compra (notaría, registro, gestoría): 2.000 €</li>
+            <li>Agencia de venta: 3% · Gastos fijos venta: 1.500 €</li>
+            <li>Holding mensual: 300 €/mes</li>
+            <li>Buffer de riesgo: 10% sobre ARV</li>
+            <li>Objetivo: beneficio neto ≥ 25.000 €</li>
+          </ul>
+        </div>
       </div>
 
-      <h3>Cálculo del MAO</h3>
-      <table class="cost-table">
+      <h3>Cascada de costes y cálculo del MAO</h3>
+      <table class="table" style="margin-top:10px">
         <thead>
-          <tr><th>Concepto</th><th>Importe</th></tr>
+          <tr>
+            <th>Concepto</th>
+            <th>Importe</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>ARV neto de cierre</td><td>194.000 €</td></tr>
-          <tr><td>− Agencia venta (3%)</td><td>−5.820 €</td></tr>
-          <tr><td>− Gastos venta fijos</td><td>−1.500 €</td></tr>
+          <tr><td>ARV neto de cierre</td><td>200.000 €</td></tr>
+          <tr><td>− Agencia venta (3%)</td><td>−6.000 €</td></tr>
+          <tr><td>− Gastos fijos de venta</td><td>−1.500 €</td></tr>
           <tr><td>− Reforma total (con contingencia)</td><td>−82.800 €</td></tr>
-          <tr><td>− Holding (7 × 300 €)</td><td>−2.100 €</td></tr>
-          <tr><td>− Buffer (10% sobre ARV neto)</td><td>−19.400 €</td></tr>
+          <tr><td>− Holding (7 meses × 300 €)</td><td>−2.100 €</td></tr>
+          <tr><td>− Buffer riesgo (10% sobre ARV)</td><td>−20.000 €</td></tr>
           <tr><td>− Beneficio objetivo</td><td>−25.000 €</td></tr>
-          <tr><td>= Disponible para compra + costes de compra</td><td><strong>57.380 €</strong></td></tr>
+          <tr><td>= Disponible para compra + costes de compra</td><td><strong>62.600 €</strong></td></tr>
           <tr><td>÷ (1 + ITP 6% + costes fijos ≈ 7,3%)</td><td></td></tr>
+          <tr><td><strong>MAO estimado</strong></td><td><strong>≈ 58.000 €</strong></td></tr>
         </tbody>
-        <tfoot>
-          <tr class="cost-total">
-            <td><strong>MAO estimado</strong></td>
-            <td><strong>≈ 53.500 €</strong></td>
-          </tr>
-        </tfoot>
       </table>
 
-      <div class="kpi-row" style="margin-top:20px">
-        <div class="kpi-card">
-          <div class="kpi-label">MAO</div>
-          <div class="kpi-val">53.500 €</div>
-          <div class="kpi-sub">Precio máximo de compra</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Beneficio neto base</div>
-          <div class="kpi-val">≈ 25.000 €</div>
-          <div class="kpi-sub">Si compras al MAO exacto</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Margen sobre ARV</div>
-          <div class="kpi-val">≈ 12,9%</div>
-          <div class="kpi-sub">Beneficio / precio de venta</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">IRR anual estimada</div>
-          <div class="kpi-val">≈ 38%</div>
-          <div class="kpi-sub">Ciclo de 7 meses sin financiación</div>
-        </div>
+      <div class="callout" role="note" style="margin-top:16px">
+        <p><strong>Resultados con compra al MAO:</strong> MAO ≈ 58.000 € · Beneficio neto ≈ 25.000 € · Margen ≈ 12,5% · IRR anual ≈ 38% (ciclo de 7 meses, sin financiación).</p>
+        <p class="muted">Con un precio de compra de 58.000 € sobre 80 m² (725 €/m²) frente a un ARV de 2.500 €/m², ese diferencial solo es posible en Madrid en pisos muy degradados, sin ascensor, en plantas bajas o con problemas legales resolubles. El trabajo de sourcing es tan importante como el cálculo.</p>
       </div>
 
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          Fíjate en lo que supone el ARV en esta zona: con un precio de compra de 53.500 €
-          sobre 80 m², estaríamos hablando de ≈668 €/m² de compra, mientras el ARV es de
-          2.425 €/m². Ese diferencial solo es posible en Madrid en pisos muy degradados,
-          sin ascensor, en plantas bajas o con problemas legales resolubles. El trabajo de
-          sourcing es tan importante como el cálculo.
-        </p>
-      </div>
-
-      <div class="anchor-cta">
-        <p>🧮 Introduce tus datos reales y calcula el MAO exacto con el simulador</p>
-        <a class="btn-cta" href="/flip/">Abrir simulador →</a>
-      </div>
+      <p class="see-also" style="margin-top:16px">
+        👉 Introduce tus datos reales y calcula el MAO exacto en el <a href="/flip/">simulador de flip</a>.
+      </p>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          14. ERRORES
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="errores">
       <h2 id="errores">14. Los 7 errores más caros en un flip inmobiliario</h2>
-      <ol class="step-list">
-        <li>
-          <div>
-            <strong>Usar el precio de anuncio como ARV</strong>
-            Los precios publicados en portales llevan un descuento real de cierre del 3–8%.
-            Usar el precio de anuncio infla el ARV y permite pagar de más. Trabaja siempre con precios de cierre.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Presupuestar la reforma sin visita técnica</strong>
-            Una estimación visual sin abrir paredes, comprobar instalaciones y revisar la estructura
-            puede diferir del presupuesto real en un 40–60%. Siempre pre-due-diligence técnica antes de comprometerse.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>No incluir los costes de compra en el MAO</strong>
-            El ITP + notaría + registro en España suma fácilmente el 8–10% del precio de compra.
-            Olvidarlo convierte un flip calculado como rentable en una operación que apenas cubre gastos.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Ignorar el holding y el tiempo de venta</strong>
-            Cada mes que el piso no se vende cuesta dinero real. Una operación planificada para 6 meses
-            que dura 10 puede perder 1.500–5.000 € adicionales solo en holding e intereses.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>No planificar la fiscalidad antes de comprar</strong>
-            Descubrir que el beneficio tributa al 23% o, peor, que Hacienda lo considera actividad económica
-            después de cerrar la venta es un error que puede costar miles de euros. La planificación fiscal
-            va antes de la compra, no después de la venta.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>Enamorarse de la propiedad o del proyecto</strong>
-            Los números mandan, no las emociones. Si el MAO calculado es de 80.000 € y el vendedor pide
-            95.000 € sin margen de negociación, la respuesta es pasar. Siempre habrá otra operación.
-          </div>
-        </li>
-        <li>
-          <div>
-            <strong>No tener un escenario pesimista viable</strong>
-            Si en el peor escenario (ARV −10%, reforma +15%, 3 meses más de venta) el resultado es
-            una pérdida que no puedes asumir, el flip tiene demasiado riesgo. El escenario pesimista
-            debe ser aceptable antes de firmar.
-          </div>
-        </li>
-      </ol>
+
+      <div class="grid">
+        <div class="box">
+          <h3>1. Usar el precio de anuncio como ARV</h3>
+          <p>Los precios publicados llevan un descuento real de cierre del 3–8%. Usar el precio de anuncio infla el ARV y permite pagar de más. Trabaja siempre con precios de cierre.</p>
+        </div>
+        <div class="box">
+          <h3>2. Presupuestar la reforma sin visita técnica</h3>
+          <p>Una estimación visual sin abrir paredes ni revisar instalaciones puede diferir del real en un 40–60%. Siempre pre-due-diligence técnica antes de comprometerte.</p>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:0">
+        <div class="box">
+          <h3>3. No incluir los costes de compra en el MAO</h3>
+          <p>El ITP + notaría + registro en España suma fácilmente el 8–10% del precio de compra. Olvidarlo convierte un flip calculado como rentable en una operación que apenas cubre gastos.</p>
+        </div>
+        <div class="box">
+          <h3>4. Ignorar el holding y el tiempo de venta</h3>
+          <p>Cada mes que el piso no se vende cuesta dinero real. Una operación planificada para 6 meses que dura 10 puede perder 1.500–5.000 € adicionales solo en holding e intereses.</p>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:0">
+        <div class="box">
+          <h3>5. No planificar la fiscalidad antes de comprar</h3>
+          <p>Descubrir que el beneficio tributa al 23%, o que Hacienda lo califica como actividad económica, después de cerrar la venta puede costar miles de euros. La planificación fiscal va antes de la compra.</p>
+        </div>
+        <div class="box">
+          <h3>6. Enamorarse de la propiedad o del proyecto</h3>
+          <p>Los números mandan, no las emociones. Si el MAO calculado es de 80.000 € y el vendedor pide 95.000 € sin margen de negociación, la respuesta es pasar. Siempre habrá otra operación.</p>
+        </div>
+      </div>
+      <div class="grid" style="margin-top:0">
+        <div class="box">
+          <h3>7. No tener un escenario pesimista viable</h3>
+          <p>Si en el peor escenario (ARV −10%, reforma +15%, 3 meses más de venta) el resultado es una pérdida que no puedes asumir, el flip tiene demasiado riesgo. El escenario pesimista debe ser aceptable antes de firmar.</p>
+        </div>
+        <div class="box">
+          <h3>La solución a todos los anteriores</h3>
+          <p>Un modelo de cálculo completo con comparables reales, todos los costes incluidos, tres escenarios y la IRR como criterio de decisión. Exactamente lo que hace el <a href="/flip/">simulador de UnaHojaTools</a>.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          15. PRECIOS POR CCAA
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="ccaa">
       <h2 id="ccaa">15. Precios por CCAA: dónde buscar oportunidades en 2026</h2>
       <p>
-        El simulador de UnaHojaTools utiliza los datos de €/m² por comunidad autónoma como
-        baseline para sugerir el ARV cuando no tienes comparables propios. Aquí la tabla de referencia
-        (fuente: Idealista, enero 2026):
+        El simulador utiliza los datos de €/m² por CCAA como baseline para sugerir el ARV cuando no tienes comparables propios. Tabla de referencia (fuente: Idealista, enero 2026):
       </p>
 
-      <table class="cost-table">
+      <table class="table" style="margin-top:16px">
         <thead>
-          <tr><th>Comunidad Autónoma</th><th>€/m² anuncio (ene 2026)</th><th>ARV estimado 80 m²</th></tr>
+          <tr>
+            <th>Comunidad Autónoma</th>
+            <th>€/m² anuncio (ene 2026)</th>
+            <th>ARV estimado 80 m²</th>
+          </tr>
         </thead>
         <tbody>
-          <tr><td>Madrid</td><td>4.585 €/m²</td><td>≈ 367.000 €</td></tr>
           <tr><td>Baleares</td><td>5.194 €/m²</td><td>≈ 415.000 €</td></tr>
+          <tr><td>Madrid</td><td>4.585 €/m²</td><td>≈ 367.000 €</td></tr>
           <tr><td>Euskadi</td><td>3.460 €/m²</td><td>≈ 277.000 €</td></tr>
           <tr><td>Canarias</td><td>3.200 €/m²</td><td>≈ 256.000 €</td></tr>
           <tr><td>Cataluña</td><td>2.776 €/m²</td><td>≈ 222.000 €</td></tr>
@@ -1314,152 +988,85 @@
           <tr><td>Extremadura</td><td>1.040 €/m²</td><td>≈ 83.000 €</td></tr>
         </tbody>
       </table>
+      <p class="muted" style="margin-top:10px">Precios de anuncio, no de cierre. Aplica un descuento del 3–6% para estimar el ARV real y ajusta por microzona. El simulador permite introducir un ajuste de microzona (%) sobre el baseline de CCAA.</p>
 
-      <p class="muted small">
-        * Precios de anuncio, no de cierre. Para calcular ARV real aplica un descuento del 3–6% y
-        ajusta por microzona. El simulador permite introducir un ajuste de microzona (%) sobre el baseline de CCAA.
-      </p>
-
-      <div class="tip-box">
-        <span class="icon">💡</span>
-        <p>
-          Los mercados con precio alto (Madrid, Baleares, Euskadi) tienen más volumen de transacciones
-          y mayor liquidez, lo que reduce el riesgo de tiempo de venta. Los mercados con precio bajo
-          (Castilla-La Mancha, Extremadura) tienen menos liquidez pero pueden ofrecer descuentos de
-          compra mayores. Adapta tu estrategia al mercado donde operas.
-        </p>
+      <div class="grid" style="margin-top:16px">
+        <div class="box">
+          <h3>Mercados con alta liquidez (Madrid, Baleares, Euskadi)</h3>
+          <p>Mayor volumen de transacciones y menor riesgo de tiempo de venta. Los descuentos de compra suelen ser menores porque hay más competencia por las oportunidades.</p>
+        </div>
+        <div class="box">
+          <h3>Mercados con menor liquidez (Castilla-La Mancha, Extremadura)</h3>
+          <p>Pueden ofrecer descuentos de compra mayores, pero el tiempo de venta es más incierto. Requieren mayor buffer y escenarios más conservadores.</p>
+        </div>
       </div>
     </section>
 
-    <!-- ══════════════════════════════════════════════════
+    <!-- ══════════════════════════════════════
          16. FAQ
-    ══════════════════════════════════════════════════ -->
+    ══════════════════════════════════════ -->
     <section class="card" aria-labelledby="faq">
-      <h2 id="faq">Preguntas frecuentes sobre flips inmobiliarios</h2>
+      <h2 id="faq">Preguntas frecuentes</h2>
 
       <details>
         <summary><strong>¿Qué es un flip inmobiliario?</strong></summary>
-        <p>
-          Un flip inmobiliario es la estrategia de comprar una propiedad por debajo de su valor de mercado,
-          reformarla o mejorarla, y venderla en un plazo corto (normalmente 6–18 meses) para obtener
-          un beneficio. La rentabilidad depende de acertar el precio de compra (MAO), controlar la
-          reforma y vender al precio de mercado real (ARV).
-        </p>
+        <p>Un flip inmobiliario es la estrategia de comprar una propiedad por debajo de su valor de mercado, reformarla y venderla en un plazo corto (normalmente 6–18 meses) para obtener un beneficio. La rentabilidad depende de acertar el precio de compra (MAO), controlar la reforma y vender al precio de mercado real (ARV).</p>
       </details>
 
       <details>
         <summary><strong>¿Cómo se calcula el MAO de un flip inmobiliario?</strong></summary>
-        <p>
-          El MAO (Maximum Allowable Offer) es el precio máximo que puedes pagar para que el flip sea
-          rentable según tu objetivo. La fórmula completa es: MAO = ARV − Reforma − Costes de compra −
-          Costes de venta − Holding − Buffer − Beneficio objetivo. El atajo popular (regla del 70%) es:
-          MAO = ARV × 0,70 − Reforma, aunque en España con ITP alto conviene usar 0,65.
-        </p>
+        <p>El MAO (Maximum Allowable Offer) es el precio máximo que puedes pagar para que el flip sea rentable. La fórmula completa es: MAO = ARV − Reforma − Costes de compra − Costes de venta − Holding − Buffer − Beneficio objetivo. El atajo popular (regla del 70%) es: MAO = ARV × 0,70 − Reforma, aunque en España con ITP alto conviene usar 0,65.</p>
       </details>
 
       <details>
         <summary><strong>¿Qué es el ARV en un flip?</strong></summary>
-        <p>
-          El ARV (After Repair Value) es el valor de mercado estimado del inmueble una vez terminadas
-          las obras y puesto a la venta en condiciones óptimas. Es la variable más crítica del flip.
-          Se calcula analizando comparables reales: propiedades similares vendidas (no solo anunciadas)
-          en la misma zona en los últimos 3–6 meses, ajustando por superficie, estado, planta y orientación.
-        </p>
+        <p>El ARV (After Repair Value) es el valor de mercado estimado del inmueble una vez terminadas las obras y puesto a la venta en condiciones óptimas. Es la variable más crítica del flip. Se calcula analizando comparables reales: propiedades similares vendidas (no solo anunciadas) en la misma zona en los últimos 3–6 meses, ajustando por superficie, estado, planta y orientación.</p>
       </details>
 
       <details>
         <summary><strong>¿Cuánto hay que presupuestar para la reforma de un flip?</strong></summary>
-        <p>
-          En España, una reforma integral de un piso estándar (cocina, baños, suelos, instalaciones) oscila
-          entre 700 y 1.100 €/m² para calidades medias, y entre 1.100 y 1.600 €/m² para calidades altas.
-          Las reformas cosméticas ligeras pueden rondar los 150–350 €/m². A estos costes hay que añadir
-          siempre una contingencia del 10–20% para imprevistos estructurales, de licencias o de suministros.
-        </p>
+        <p>En España, una reforma integral estándar (cocina, baños, suelos, instalaciones) oscila entre 700 y 1.100 €/m² para calidades medias. Las reformas cosméticas ligeras pueden rondar los 150–350 €/m². Añade siempre una contingencia del 10–20% para imprevistos estructurales, de licencias o de suministros.</p>
       </details>
 
       <details>
         <summary><strong>¿Qué impuestos se pagan en un flip inmobiliario en España?</strong></summary>
-        <p>
-          En la compra pagarás ITP (entre el 4% y el 10% según la comunidad autónoma) si es segunda mano,
-          o IVA (10%) + AJD si es obra nueva. En la venta, el beneficio tributa como ganancia patrimonial
-          en el IRPF a tipos que van del 19% al 28% según el importe. Si el flip se realiza de forma habitual,
-          Hacienda puede considerarlo actividad económica. Además hay que prever la plusvalía municipal.
-          Consulta siempre con un asesor fiscal especializado.
-        </p>
+        <p>En la compra pagarás ITP (entre el 4% y el 10% según la CCAA) si es segunda mano, o IVA (10%) + AJD si es obra nueva. En la venta, el beneficio tributa como ganancia patrimonial en el IRPF a tipos del 19% al 28% según el importe. Si realizas flips de forma habitual, Hacienda puede considerarlo actividad económica. Consulta siempre con un asesor fiscal especializado.</p>
       </details>
 
       <details>
         <summary><strong>¿Qué es la IRR en un flip y cómo se interpreta?</strong></summary>
-        <p>
-          La IRR (Internal Rate of Return, Tasa Interna de Retorno) mide la rentabilidad anualizada
-          del capital invertido. Un flip de 6 meses con un 15% de beneficio neto tiene una IRR anual
-          del ~41%, porque en teoría puedes hacer dos ciclos al año. En España, para un flip residencial
-          se considera aceptable una IRR del 20–30% anual, buena por encima del 30% y excepcional por encima del 40%.
-          Valores por debajo del 15% anual raramente compensan el riesgo operativo.
-        </p>
+        <p>La IRR (Internal Rate of Return) mide la rentabilidad anualizada del capital invertido teniendo en cuenta el tiempo. Un flip de 6 meses con un 15% de beneficio neto tiene una IRR anual del ~41%, porque puedes hacer dos ciclos al año. Se considera aceptable una IRR del 20–30% anual, buena por encima del 30% y excepcional por encima del 40%. Valores por debajo del 15% anual raramente compensan el riesgo operativo.</p>
       </details>
 
       <details>
         <summary><strong>¿Cuál es la regla del 70% en flips inmobiliarios?</strong></summary>
-        <p>
-          La regla del 70% establece que no deberías pagar más del 70% del ARV menos el coste de la reforma:
-          MAO = ARV × 0,70 − Reforma. El 30% restante cubre costes de compra, holding, venta y beneficio.
-          En España, dado el ITP más alto que en EE.UU., muchos flippers usan el 65% como referencia más
-          conservadora. Recuerda que es un atajo de filtrado, no un modelo de decisión completo.
-        </p>
+        <p>La regla del 70% establece que no deberías pagar más del 70% del ARV menos el coste de la reforma: MAO = ARV × 0,70 − Reforma. En España, dado el ITP más alto, muchos flippers usan el 65% como referencia más conservadora. Es un atajo de filtrado rápido, no un modelo de decisión completo.</p>
       </details>
 
       <details>
         <summary><strong>¿Es mejor hacer un flip con o sin financiación bancaria?</strong></summary>
-        <p>
-          Financiar un flip mejora la IRR sobre el capital propio (efecto apalancamiento), pero aumenta
-          el riesgo: si la operación se alarga o el ARV baja, los intereses erosionan el margen. En España,
-          los préstamos puente para flips tienen tipos del 8–12% anual (2026). Solo apalanca cuando el margen
-          sin financiación ya es sólido. El simulador de UnaHojaTools permite modelar ambos escenarios
-          con LTV de compra y de reforma independientes.
-        </p>
+        <p>Financiar un flip mejora la IRR sobre el capital propio (efecto apalancamiento), pero aumenta el riesgo. En España, los préstamos puente para flips tienen tipos del 8–12% anual (2026). Solo apalanca cuando el margen sin financiación ya es sólido. El simulador permite modelar LTV de compra y de reforma por separado para ver el impacto exacto en la IRR.</p>
       </details>
 
       <details>
         <summary><strong>¿Cuántos comparables necesito para calcular el ARV con fiabilidad?</strong></summary>
-        <p>
-          Para que el ARV sea estadísticamente robusto se recomienda un mínimo de 3 comparables con precio
-          de cierre conocido. Con menos de 3 comps, el baseline de €/m² por CCAA es un punto de partida más
-          fiable que una media de 1–2 inmuebles. Con 5 o más comps de calidad, la dispersión (coeficiente
-          de variación) debería ser inferior al 15–20%. Si supera ese umbral, la zona tiene poca
-          homogeneidad y debes ser más conservador en el ARV.
-        </p>
+        <p>Para que el ARV sea estadísticamente robusto se recomiendan un mínimo de 3 comparables con precio de cierre conocido. Con menos de 3 comps, el baseline de €/m² por CCAA es un punto de partida más fiable. Con 5 o más comps de calidad, la dispersión debería ser inferior al 15–20%. Si supera ese umbral, la zona tiene poca homogeneidad y debes ser más conservador en el ARV.</p>
       </details>
 
       <details>
         <summary><strong>¿Qué es el buffer de riesgo y cuánto debe ser?</strong></summary>
-        <p>
-          El buffer de riesgo es un porcentaje del ARV que reservas para cubrir desviaciones no
-          cuantificables: un retraso de licencia, un comprador que se echa atrás, una negociación
-          de último momento, o costes de obra menores imprevistos que no justifican la contingencia
-          de reforma. El rango habitual es del 10–15% del ARV. El simulador lo ajusta automáticamente
-          según la calidad y cantidad de tus comparables: a más dispersión y menos datos, mayor buffer sugerido.
-        </p>
+        <p>El buffer de riesgo es un porcentaje del ARV que reservas para cubrir desviaciones no cuantificables: un retraso de licencia, un comprador que se echa atrás, una negociación de último momento o costes imprevistos menores. El rango habitual es del 10–15% del ARV. El simulador lo ajusta automáticamente según la calidad y cantidad de tus comparables: a más dispersión y menos datos, mayor buffer sugerido.</p>
       </details>
     </section>
 
     <aside class="adslot" data-adslot aria-label="Publicidad"></aside>
 
-    <!-- CTA FINAL -->
     <section class="card">
-      <div class="anchor-cta" style="flex-direction: column; text-align: center; gap: 12px;">
-        <div>
-          <div class="hero-badge">Simulador gratuito · Sin registro</div>
-          <h3 style="margin: 10px 0 8px; font-size: 1.3rem;">Calcula tu flip con todos los números reales</h3>
-          <p style="margin: 0; color: var(--text-muted); font-size: .9rem; max-width: 520px; margin: 0 auto;">
-            MAO por objetivo, ARV desde comparables, reforma con contingencia, escenarios pesimista/base/optimista,
-            IRR anual, gráficos de sensibilidad y cascada de costes. Todo en local, sin registro.
-          </p>
-        </div>
-        <a class="btn-cta" href="/flip/" style="font-size: 1rem; padding: 12px 28px;">Ir al simulador de flip →</a>
-      </div>
-
-      <p class="see-also" style="margin-top: 16px;">
+      <p class="see-also">
+        👉 Simula tu flip completo con MAO por objetivo, escenarios, IRR anual y gráficos de sensibilidad en el
+        <a href="/flip/">simulador de flip inmobiliario</a>.
+      </p>
+      <p class="see-also" style="margin-top:8px">
         👉 ¿Necesitas también calcular la financiación? Consulta el
         <a href="/hipoteca/">simulador de hipoteca</a> con cuadro de amortización completo.
       </p>
