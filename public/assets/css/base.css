@@ -614,6 +614,17 @@ textarea {
   padding: 14px 16px;
    }
 
+/* Consentbar: mejorar contraste de textos específicos */
+
+#consentbar strong {
+  color: #1f2937; /* gris oscuro elegante */
+}
+
+#consentbar #consentReject {
+  color: #374151; /* más oscuro pero no agresivo */
+  font-weight: 600;
+}
+
 /* Contenedor externo transparente */
 #consentbar.card {
   background: transparent;
