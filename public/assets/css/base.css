@@ -614,6 +614,13 @@ textarea {
   padding: 14px 16px;
    }
 
+/* Contenedor externo transparente */
+#consentbar.card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
 
 /* Tipografía */
 #consentbar strong {
