@@ -960,7 +960,7 @@
     const pad = { l: 54, r: 16, t: 20, b: 34 };
     const x0 = pad.l, y0 = pad.t, x1 = w - pad.r, y1 = h - pad.b;
 
-    const isSmall = window.innerWidth < 850;
+    const isSmall = window.innerWidth < 1200;
       const items = isSmall
         ? waterfallItemsAggregated(out.base)
         : waterfallItemsBase(out.base, out.maoBase, out.baseRes);
