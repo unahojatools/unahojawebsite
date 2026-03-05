@@ -273,8 +273,15 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
                   <div class="field field-offer">
                     <label>Tu oferta / precio compra (€)</label>
-                    <input id="f-offerPrice" type="number" placeholder="Ej: 250000" min="0" step="1000" />
+                  
+                    <input id="f-offerPrice" type="number" min="0" step="1000" placeholder="Ej: 250000" />
+                  
                     <div class="small">Se usa para evaluar retornos; el MAO se calcula aparte.</div>
+                  
+                    <div class="offer-helper">
+                      <span class="small">MAO estimado: <strong id="f-maoHint">—</strong></span>
+                      <button type="button" class="btn" id="f-useMao">Usar MAO</button>
+                    </div>
                   </div>
 
                   <div class="field">
