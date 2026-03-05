@@ -1197,3 +1197,14 @@ body {
 @supports (-webkit-touch-callout: none) {
   body { min-height: -webkit-fill-available; }
 }
+
+/* GLOSARIO FLIPS */
+
+.glossary summary {
+  cursor: pointer;
+}
+
+summary:hover {
+  opacity: 0.9;
+}
+
