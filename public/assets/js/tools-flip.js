@@ -509,13 +509,7 @@
 
     const interest = intBuy + intReno;
 
-     // Impuestos: manual (€) o % del beneficio antes de impuestos (no circular)
-      let taxOther = 0;
-      
-      if (base.taxMode === "manual") {
-        taxOther = base.taxOtherManual || 0;
-      } else {
-        // Total sin impuestos (pero incluyendo plusvalía y buffer)
+      // Beneficio antes de impuestos (sin IRPF/IS), siempre disponible (pero incluyendo plusvalía y buffer)
         const totalWithoutTax =
           purchasePrice +
           buyCosts +
@@ -527,6 +521,13 @@
           buffer;
       
         const preTaxProfit = base.salePriceClose - totalWithoutTax;
+     
+     // Impuestos: manual (€) o % del beneficio antes de impuestos (no circular)
+      let taxOther = 0;
+      
+      if (base.taxMode === "manual") {
+        taxOther = base.taxOtherManual || 0;
+      } else {
         taxOther = (preTaxProfit > 0) ? (preTaxProfit * (base.taxPct || 0)) : 0;
       }
 
@@ -581,6 +582,7 @@
       buffer,
       loanBuy, loanReno, debt,
       intBuy, intReno, interest,
+      preTaxProfit,
       taxOther,
       totalCosts,
       profit,
@@ -680,8 +682,22 @@
      KPIs + tabla escenarios
      ======================= */
   function renderOutputs(out) {
-    // KPIs: usar Base
+    
+     // KPIs: usar Base
     const b = out.baseRes;
+
+    // Texto de ayuda para el impuesto %
+     const hint = document.getElementById("f-taxPctHint");
+     if (hint) {
+       if (out.base.taxMode === "pct") {
+         hint.textContent =
+           `Beneficio antes de impuestos: ${fmtEur(out.baseRes.preTaxProfit)} → ` +
+           `Impuesto estimado: ${fmtEur(out.baseRes.taxOther)}`;
+       } else {
+         hint.textContent = "";
+       }
+     }
+
     setHTML("f-kpis", `
       <div class="kpi"><div class="k">MAO (base)</div><div class="v">${isFinite(out.maoBase) ? fmtEur(out.maoBase) : "—"}</div></div>
       <div class="kpi"><div class="k">Beneficio (con tu oferta)</div><div class="v">${fmtEur2(b.profit)}</div></div>
