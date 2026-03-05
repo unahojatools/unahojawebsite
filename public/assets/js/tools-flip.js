@@ -1193,7 +1193,27 @@ IRR anual: ${isFinite(row.res.irrA) ? (row.res.irrA*100).toFixed(2)+"%" : "—"}
      Bindings
      ======================= */
   function bind() {
-    // Comparables: render inicial
+    
+     // Rellenar MAO como oferta
+     
+     document.getElementById("f-useMao")?.addEventListener("click", () => {
+
+        const mao = document.getElementById("f-maoHint")?.textContent;
+      
+        if(!mao || mao==="—") return;
+      
+        const numeric = Number(mao.replace(/[^\d]/g,""));
+      
+        const input = document.getElementById("f-offerPrice");
+      
+        if(input && numeric){
+          input.value = numeric;
+          flipCalculate();
+        }
+      
+      });
+     
+     // Comparables: render inicial
     renderCompTable(COMPS);
 
     $("f-addComp")?.addEventListener("click", () => {
