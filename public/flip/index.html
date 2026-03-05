@@ -362,10 +362,26 @@
                     <input id="f-plusvalia" type="number" value="0" min="0" step="50" />
                   </div>
 
-                  <div class="field">
-                    <label>IRPF/IS y otros impuestos (€) (manual)</label>
-                    <input id="f-tax" type="number" value="0" min="0" step="50" />
-                    <div class="small">Modo simple: introduce una estimación o tu cálculo fiscal.</div>
+                 <div class="field">
+                    <label>IRPF/IS y otros impuestos</label>
+                  
+                    <select id="f-taxMode">
+                      <option value="manual">Manual (€)</option>
+                      <option value="pct">% del beneficio</option>
+                    </select>
+                  
+                    <!-- Manual € -->
+                    <div style="margin-top:8px" id="f-taxManualWrap">
+                      <input id="f-tax" type="number" value="0" min="0" step="50" />
+                      <div class="small">Introduce una estimación o tu cálculo fiscal.</div>
+                    </div>
+                  
+                    <!-- % beneficio -->
+                    <div style="margin-top:8px; display:none" id="f-taxPctWrap">
+                      <input id="f-taxPct" type="number" value="25" min="0" step="0.5" />
+                      <div class="small">Se aplica sobre el beneficio antes de impuestos.</div>
+                      <div class="small" id="f-taxPctHint" style="margin-top:6px"></div>
+                    </div>
                   </div>
                 </div>
               </div>
