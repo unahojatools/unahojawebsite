@@ -682,7 +682,13 @@
      KPIs + tabla escenarios
      ======================= */
   function renderOutputs(out) {
-    
+
+      // Usar MAO como oferta
+      const maoHint = document.getElementById("f-maoHint");
+      if(maoHint){
+        maoHint.textContent = isFinite(out.maoBase) ? fmtEur(out.maoBase) : "—";
+      }
+     
      // KPIs: usar Base
     const b = out.baseRes;
 
