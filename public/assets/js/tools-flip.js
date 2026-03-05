@@ -413,7 +413,10 @@
     const sellFixed = num("f-sellFixed", 1500);
 
     const plusvalia = num("f-plusvalia", 0);
-    const taxOther = num("f-tax", 0);
+   
+    const taxMode = str("f-taxMode", "manual");          // "manual" | "pct"
+    const taxOtherManual = num("f-tax", 0);              // € si manual
+    const taxPct = num("f-taxPct", 25) / 100;            // % si pct (ej. 0.25)
 
     const bufferPct = num("f-bufferPct", 10) / 100;
 
@@ -462,7 +465,9 @@
       sellFixed,
 
       plusvalia,
-      taxOther,
+      taxMode,
+      taxOtherManual,
+      taxPct,
 
       bufferPct,
 
@@ -504,23 +509,47 @@
 
     const interest = intBuy + intReno;
 
+     // Impuestos: manual (€) o % del beneficio antes de impuestos (no circular)
+      let taxOther = 0;
+      
+      if (base.taxMode === "manual") {
+        taxOther = base.taxOtherManual || 0;
+      } else {
+        // Total sin impuestos (pero incluyendo plusvalía y buffer)
+        const totalWithoutTax =
+          purchasePrice +
+          buyCosts +
+          base.renoTotal +
+          holding +
+          interest +
+          sellCosts +
+          base.plusvalia +
+          buffer;
+      
+        const preTaxProfit = base.salePriceClose - totalWithoutTax;
+        taxOther = (preTaxProfit > 0) ? (preTaxProfit * (base.taxPct || 0)) : 0;
+      }
+
     const totalCosts =
-      purchasePrice +
-      buyCosts +
-      base.renoTotal +
-      holding +
-      interest +
-      sellCosts +
-      base.plusvalia +
-      base.taxOther +
-      buffer;
+        purchasePrice +
+        buyCosts +
+        base.renoTotal +
+        holding +
+        interest +
+        sellCosts +
+        base.plusvalia +
+        taxOther +
+        buffer;
 
     const profit = base.salePriceClose - totalCosts;
     const margin = (base.salePriceClose > 0) ? (profit / base.salePriceClose) : NaN;
 
     // Equity invertida aprox: total costes - deuda (no incluye deuda como coste, sino como financiación)
-    const debt = loanBuy + loanReno;
-    const equityNeeded = Math.max(0, (purchasePrice + buyCosts + base.renoTotal + holding + interest + sellCosts + base.plusvalia + base.taxOther + buffer) - debt);
+      const debt = loanBuy + loanReno;
+      const equityNeeded = Math.max(
+        0,
+        (purchasePrice + buyCosts + base.renoTotal + holding + interest + sellCosts + base.plusvalia + taxOther + buffer) - debt
+      );
 
     // Flujos mensuales para IRR (aprox)
     // t0: equity inicial (compra + costes compra + parte equity reforma si hay) negativo
@@ -534,7 +563,7 @@
     const monthlyCarry = base.holdingMonthly + (interest / Math.max(1, months));
     for (let t = 1; t <= Math.max(0, months - 1); t++) flows.push(-monthlyCarry);
 
-    const netSale = base.salePriceClose - sellCosts - base.plusvalia - base.taxOther - buffer;
+    const netSale = base.salePriceClose - sellCosts - base.plusvalia - taxOther - buffer;
     // Al final también devolvemos principal (deuda) implícitamente porque equityNeeded se calculó neto,
     // pero para IRR usamos netSale - (purchase + reforma + buyCosts + holding + interest) de forma consistente:
     // Simplificación: flujo final como beneficio + retorno de equity:
@@ -552,6 +581,7 @@
       buffer,
       loanBuy, loanReno, debt,
       intBuy, intReno, interest,
+      taxOther,
       totalCosts,
       profit,
       margin,
