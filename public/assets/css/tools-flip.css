@@ -87,3 +87,15 @@ select[data-state="confirmed"]{
   font-weight:600;
   color:#4f46e5;
 }
+
+.offer-helper{
+display:flex;
+align-items:center;
+gap:12px;
+margin-top:8px;
+}
+
+.offer-helper .btn{
+padding:6px 10px;
+font-size:13px;
+}
