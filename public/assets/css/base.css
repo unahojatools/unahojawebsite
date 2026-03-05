@@ -1199,12 +1199,11 @@ body {
 }
 
 /* GLOSARIO FLIPS */
-
 .glossary summary {
   cursor: pointer;
 }
 
-summary:hover {
+.glossary summary:hover {
   opacity: 0.9;
 }
 
