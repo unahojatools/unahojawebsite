@@ -1203,7 +1203,7 @@ IRR anual: ${isFinite(row.res.irrA) ? (row.res.irrA*100).toFixed(2)+"%" : "—"}
       "f-renoEurM2","f-renoTotal","f-renoContPct","f-renoMonths",
       "f-holdingMonthly",
       "f-ltvBuy","f-rateBuy","f-financeReno","f-ltvReno","f-rateReno",
-      "f-sellAgencyPct","f-sellFixed","f-plusvalia","f-tax",
+      "f-sellAgencyPct","f-sellFixed","f-plusvalia","f-tax","f-taxPct","f-taxMode",
       "f-objMode","f-targetProfit","f-targetMarginPct","f-targetIrrPct",
       "f-bufferPct",
       "f-sc-arv-p","f-sc-reno-p","f-sc-months-p","f-sc-rate-p",
@@ -1239,5 +1239,36 @@ IRR anual: ${isFinite(row.res.irrA) ? (row.res.irrA*100).toFixed(2)+"%" : "—"}
   bind();
   recalcSuggestions(false);
   flipCalculate();
+
+   bind();
+recalcSuggestions(false);
+flipCalculate();
+
+
+      // ====== MODO IMPUESTOS (manual / % beneficio) ======
+      
+      function taxModeRenderUI() {
+        const mode = str("f-taxMode", "manual");
+      
+        const manual = document.getElementById("f-taxManualWrap");
+        const pct = document.getElementById("f-taxPctWrap");
+      
+        if (manual) manual.style.display = (mode === "manual") ? "" : "none";
+        if (pct) pct.style.display = (mode === "pct") ? "" : "none";
+      }
+      
+      // Cambiar modo
+      document.getElementById("f-taxMode")?.addEventListener("change", () => {
+        taxModeRenderUI();
+        flipCalculate();
+      });
+      
+      // Cambiar porcentaje
+      document.getElementById("f-taxPct")?.addEventListener("input", () => {
+        flipCalculate();
+      });
+      
+      // Estado inicial
+      taxModeRenderUI();
 
 })();
