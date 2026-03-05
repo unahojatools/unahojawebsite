@@ -75,3 +75,15 @@ select[data-state="confirmed"]{
   display:block;
   margin-top:6px;
 }
+
+.field-offer{
+  border:2px solid #6366f1;
+  background:rgba(99,102,241,0.06);
+  padding:12px;
+  border-radius:10px;
+}
+
+.field-offer label{
+  font-weight:600;
+  color:#4f46e5;
+}
