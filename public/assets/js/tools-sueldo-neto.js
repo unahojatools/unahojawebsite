@@ -259,7 +259,7 @@
       </div>`;
   }
 
-  function escapePdfText(v) { return String(v).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)'); }
+  /* function escapePdfText(v) { return String(v).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)'); }
   function buildSimplePdf(lines, title) {
     let content = 'BT\n/F1 10 Tf\n', y = 800;
     for (const line of lines) {
@@ -286,7 +286,9 @@
     return new Blob([pdf], { type: 'application/pdf' });
   }
 
-  /* Sustituye la función downloadNominaPdf actual por este bloque */
+  */
+
+  /* Patch print pdf fix */
 
 function openPayrollPrintWindow(model) {
   const win = window.open('', '_blank', 'noopener,noreferrer,width=980,height=1200');
