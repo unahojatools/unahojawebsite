@@ -259,72 +259,130 @@
       </div>`;
   }
 
-  /* function escapePdfText(v) { return String(v).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)'); }
-  function buildSimplePdf(lines, title) {
-    let content = 'BT\n/F1 10 Tf\n', y = 800;
-    for (const line of lines) {
-      content += `36 ${y} Td (${escapePdfText(line)}) Tj\n-36 0 Td\n`;
-      y -= 14;
-      if (y < 40) break;
-    }
-    content += 'ET';
-    const width = 595.28, height = 841.89;
-    const objects = [
-      '1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj',
-      '2 0 obj << /Type /Pages /Count 1 /Kids [3 0 R] >> endobj',
-      `3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 ${width} ${height}] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj`,
-      '4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj',
-      `5 0 obj << /Length ${content.length} >> stream\n${content}\nendstream endobj`
-    ];
-    let pdf = '%PDF-1.4\n';
-    const offsets = [0];
-    for (const obj of objects) { offsets.push(pdf.length); pdf += obj + '\n'; }
-    const xrefStart = pdf.length;
-    pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
-    for (let i = 1; i < offsets.length; i += 1) pdf += `${String(offsets[i]).padStart(10, '0')} 00000 n \n`;
-    pdf += `trailer << /Size ${objects.length + 1} /Root 1 0 R /Info << /Title (${escapePdfText(title)}) >> >>\nstartxref\n${xrefStart}\n%%EOF`;
-    return new Blob([pdf], { type: 'application/pdf' });
-  }
+  /* PRINT PDF*/
+    function openPayrollPrintFrame(model) {
+  const oldFrame = document.getElementById('sn-print-frame');
+  if (oldFrame) oldFrame.remove();
 
-  */
+  const frame = document.createElement('iframe');
+  frame.id = 'sn-print-frame';
+  frame.style.position = 'fixed';
+  frame.style.right = '0';
+  frame.style.bottom = '0';
+  frame.style.width = '0';
+  frame.style.height = '0';
+  frame.style.border = '0';
+  frame.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(frame);
 
-  /* Patch print pdf fix */
+  const fmtMoney = (n) =>
+    new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 2
+    }).format(Number(n || 0));
 
-function openPayrollPrintWindow(model) {
-  const win = window.open('', '_blank', 'noopener,noreferrer,width=980,height=1200');
-  if (!win) {
-    alert('El navegador ha bloqueado la ventana emergente del PDF. Permite pop-ups para esta página.');
-    return;
-  }
+  const periodLabel =
+    model.periodLabel || `${model.periodMonth || ''}/${model.periodYear || ''}`;
 
-  const fmtMoney = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n || 0);
-
-  const html = `<!doctype html>
+  const doc = frame.contentWindow.document;
+  doc.open();
+  doc.write(`<!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<title>Nómina ${model.periodLabel || (model.periodMonth + '/' + model.periodYear)}</title>
-<style>
-  @page { size: A4; margin: 12mm; }
-  * { box-sizing: border-box; }
-  body { font-family: Arial, Helvetica, sans-serif; color: #111; margin: 0; background: #fff; }
-  .sheet { width: 100%; margin: 0 auto; }
-  h1 { font-size: 18px; margin: 0 0 10px; text-transform: uppercase; }
-  .top, .meta, .foot { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .box { border: 1px solid #222; padding: 8px; }
-  .meta { margin-top: 8px; }
-  .meta .box div { margin-bottom: 4px; font-size: 12px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-  th, td { border: 1px solid #222; padding: 6px; font-size: 11px; vertical-align: top; }
-  th { background: #f3f4f6; text-align: left; }
-  .totals { display: grid; grid-template-columns: 1.2fr .8fr; gap: 12px; margin-top: 10px; }
-  .liquido { border: 2px solid #111; padding: 12px; text-align: center; }
-  .liquido .label { font-size: 12px; text-transform: uppercase; }
-  .liquido .value { font-size: 24px; font-weight: 700; margin-top: 6px; }
-  .small { font-size: 10px; color: #444; }
-  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
-  .sign > div { border-top: 1px solid #111; padding-top: 8px; text-align: center; min-height: 42px; font-size: 12px; }
-</style>
+  <meta charset="utf-8">
+  <title>Nómina ${periodLabel}</title>
+  <style>
+    @page { size: A4; margin: 12mm; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      margin: 0;
+      background: #fff;
+      padding: 0;
+    }
+    .sheet {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 10px;
+      text-transform: uppercase;
+    }
+    .top, .meta, .summary, .footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .box {
+      border: 1px solid #222;
+      padding: 8px;
+    }
+    .meta {
+      margin-top: 8px;
+    }
+    .meta .box div, .box p {
+      margin: 0 0 4px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #222;
+      padding: 6px;
+      font-size: 11px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: #f3f4f6;
+    }
+    .summary {
+      margin-top: 10px;
+    }
+    .liquido {
+      border: 2px solid #111;
+      padding: 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .liquido .label {
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    .liquido .value {
+      font-size: 24px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    .sign {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .sign > div {
+      border-top: 1px solid #111;
+      padding-top: 8px;
+      text-align: center;
+      min-height: 42px;
+      font-size: 12px;
+    }
+    .small {
+      font-size: 10px;
+      color: #444;
+      margin-top: 14px;
+    }
+  </style>
 </head>
 <body>
   <div class="sheet">
@@ -332,15 +390,16 @@ function openPayrollPrintWindow(model) {
 
     <div class="top">
       <div class="box">
-        <div><strong>Empresa:</strong> ${model.companyName || ''}</div>
-        <div><strong>CIF:</strong> ${model.companyCif || ''}</div>
-        <div><strong>Domicilio:</strong> ${model.companyAddress || ''}</div>
-        <div><strong>CCC:</strong> ${model.ccc || ''}</div>
+        <p><strong>Empresa:</strong> ${model.companyName || ''}</p>
+        <p><strong>CIF:</strong> ${model.companyCif || ''}</p>
+        <p><strong>Domicilio:</strong> ${model.companyAddress || ''}</p>
+        <p><strong>CCC:</strong> ${model.ccc || ''}</p>
       </div>
       <div class="box">
-        <div><strong>Periodo:</strong> ${model.periodLabel || (model.periodMonth + '/' + model.periodYear)}</div>
-        <div><strong>Fecha emisión:</strong> ${model.issueDate || ''}</div>
-        <div><strong>Total días:</strong> ${model.days || 30}</div>
+        <p><strong>Periodo:</strong> ${periodLabel}</p>
+        <p><strong>Fecha emisión:</strong> ${model.issueDate || ''}</p>
+        <p><strong>Localidad:</strong> ${model.locality || ''}</p>
+        <p><strong>Total días:</strong> ${model.days || 30}</p>
       </div>
     </div>
 
@@ -352,8 +411,8 @@ function openPayrollPrintWindow(model) {
         <div><strong>Categoría:</strong> ${model.category || ''}</div>
       </div>
       <div class="box">
-        <div><strong>Código empleado:</strong> ${model.employeeCode || ''}</div>
-        <div><strong>Sección:</strong> ${model.department || model.section || ''}</div>
+        <div><strong>Nº matrícula:</strong> ${model.employeeCode || ''}</div>
+        <div><strong>Sección:</strong> ${model.section || model.department || ''}</div>
         <div><strong>Puesto:</strong> ${model.position || ''}</div>
         <div><strong>Domicilio:</strong> ${model.workerAddress || ''}</div>
       </div>
@@ -361,20 +420,48 @@ function openPayrollPrintWindow(model) {
 
     <table>
       <thead>
-        <tr><th>Código</th><th>Unidades</th><th>Precio</th><th>Concepto</th><th>Devengos</th><th>Deducciones</th></tr>
+        <tr>
+          <th>Código</th>
+          <th>Unidades</th>
+          <th>Precio</th>
+          <th>Concepto</th>
+          <th>Devengos</th>
+          <th>Deducciones</th>
+        </tr>
       </thead>
       <tbody>
-        ${(model.devengos || []).map(i => `<tr><td>${i.code || ''}</td><td>${i.units ?? ''}</td><td>${fmtMoney(i.price || 0)}</td><td>${i.concept || ''}</td><td>${fmtMoney(i.amount || 0)}</td><td></td></tr>`).join('')}
-        ${(model.deductions || []).map(i => `<tr><td>${i.code || ''}</td><td></td><td></td><td>${i.concept || ''}</td><td></td><td>${fmtMoney(i.amount || 0)}</td></tr>`).join('')}
+        ${(model.devengos || []).map(i => `
+          <tr>
+            <td>${i.code || ''}</td>
+            <td>${i.units ?? ''}</td>
+            <td>${fmtMoney(i.price || 0)}</td>
+            <td>${i.concept || ''}</td>
+            <td>${fmtMoney(i.amount || 0)}</td>
+            <td></td>
+          </tr>
+        `).join('')}
+        ${(model.deductions || []).map(i => `
+          <tr>
+            <td>${i.code || ''}</td>
+            <td></td>
+            <td></td>
+            <td>${i.concept || ''}</td>
+            <td></td>
+            <td>${fmtMoney(i.amount || 0)}</td>
+          </tr>
+        `).join('')}
       </tbody>
     </table>
 
-    <div class="totals">
+    <div class="summary">
       <div class="box">
-        <div><strong>Total devengado:</strong> ${fmtMoney(model.totalDev || 0)}</div>
-        <div><strong>Total deducido:</strong> ${fmtMoney(model.totalDed || 0)}</div>
-        <div><strong>IBAN:</strong> ${model.iban || ''}</div>
-        <div><strong>Coste empresa estimado:</strong> ${fmtMoney((model.bases && model.bases.employerCost) || model.employerCost || 0)}</div>
+        <p><strong>Percepciones salariales:</strong> ${fmtMoney(model.salaryPerceptions || 0)}</p>
+        <p><strong>Percepciones no salariales:</strong> ${fmtMoney(model.nonsalaryPerceptions || 0)}</p>
+        <p><strong>Base Seguridad Social:</strong> ${fmtMoney(model.ssBase || 0)}</p>
+        <p><strong>Base AT y desempleo:</strong> ${fmtMoney(model.atBase || 0)}</p>
+        <p><strong>Base IRPF:</strong> ${fmtMoney(model.irpfBase || 0)}</p>
+        <p><strong>Total devengado:</strong> ${fmtMoney(model.totalDev || 0)}</p>
+        <p><strong>Total deducido:</strong> ${fmtMoney(model.totalDed || 0)}</p>
       </div>
       <div class="liquido">
         <div class="label">Líquido a percibir</div>
@@ -383,41 +470,65 @@ function openPayrollPrintWindow(model) {
     </div>
 
     ${(model.employerTable && model.employerTable.length) ? `
-    <table>
-      <thead>
-        <tr><th>Concepto</th><th>Base</th><th>Tipo trab.</th><th>Aportación trab.</th><th>Tipo emp.</th><th>Aportación emp.</th></tr>
-      </thead>
-      <tbody>
-        ${model.employerTable.map(r => `<tr><td>${r.concept || ''}</td><td>${fmtMoney(r.base || 0)}</td><td>${r.workerRate === '' ? '—' : ((r.workerRate || 0) + '%')}</td><td>${fmtMoney(r.workerAmt || 0)}</td><td>${r.employerRate === '' ? '—' : ((r.employerRate || 0) + '%')}</td><td>${fmtMoney(r.employerAmt || 0)}</td></tr>`).join('')}
-      </tbody>
-    </table>` : ''}
+      <table>
+        <thead>
+          <tr>
+            <th>Concepto</th>
+            <th>Base</th>
+            <th>Tipo trab.</th>
+            <th>Aportación trab.</th>
+            <th>Tipo emp.</th>
+            <th>Aportación emp.</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${model.employerTable.map(r => `
+            <tr>
+              <td>${r.concept || ''}</td>
+              <td>${fmtMoney(r.base || 0)}</td>
+              <td>${r.workerRate === '' ? '—' : `${r.workerRate || 0}%`}</td>
+              <td>${fmtMoney(r.workerAmt || 0)}</td>
+              <td>${r.employerRate === '' ? '—' : `${r.employerRate || 0}%`}</td>
+              <td>${fmtMoney(r.employerAmt || 0)}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    ` : ''}
 
-    <div class="sign">
-      <div>Sello empresa</div>
-      <div>Recibí</div>
+    <div class="footer" style="margin-top:10px;">
+      <div class="box">
+        <p><strong>IBAN:</strong> ${model.iban || ''}</p>
+        ${model.swift ? `<p><strong>SWIFT/BIC:</strong> ${model.swift}</p>` : ''}
+        <p><strong>Coste empresa:</strong> ${fmtMoney(model.employerCost || (model.bases && model.bases.employerCost) || 0)}</p>
+      </div>
+      <div class="sign">
+        <div>Sello empresa</div>
+        <div>Recibí</div>
+      </div>
     </div>
 
-    <p class="small">${model.legalNote || 'Documento generado automáticamente como simulación orientativa. Debe ser revisado antes de su uso laboral o contable.'}</p>
+    <p class="small">
+      ${model.legalNote || 'Documento generado automáticamente como simulación orientativa. Debe ser revisado antes de su uso laboral o contable.'}
+    </p>
   </div>
-
-<script>
-window.onload = () => {
-  setTimeout(() => {
-    window.print();
-  }, 250);
-};
-</script>
 </body>
-</html>`;
+</html>`);
+  doc.close();
 
-  win.document.open();
-  win.document.write(html);
-  win.document.close();
+  frame.onload = () => {
+    setTimeout(() => {
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+    }, 300);
+  };
 }
 
 function downloadNominaPdf(model) {
-  openPayrollPrintWindow(model);
+  openPayrollPrintFrame(model);
 }
+
+  
 
   function parseChildrenDetailed() {
     const total = Math.max(0, Math.round(getNumber('sn-children', 0)));
