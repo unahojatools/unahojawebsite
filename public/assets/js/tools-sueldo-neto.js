@@ -538,10 +538,7 @@ doc.write(`<!doctype html>
   <div class="sheet">
     <div class="doc-topbar">
       <div class="brand-wrap">
-        <div class="brand-mark">U</div>
-        <div class="brand-copy">
-          <p class="eyebrow">UnaHojaTools</p>
-          <h1>Recibo de salarios</h1>
+          <h1>Nómina</h1>
         </div>
       </div>
       <div class="doc-badge">Simulación orientativa · ${periodLabel}</div>
