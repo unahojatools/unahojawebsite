@@ -286,135 +286,308 @@
     model.periodLabel || `${model.periodMonth || ''}/${model.periodYear || ''}`;
 
   const doc = frame.contentWindow.document;
-  doc.open();
-  doc.write(`<!doctype html>
+doc.open();
+doc.write(`<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <title>Nómina ${periodLabel}</title>
   <style>
     @page { size: A4; margin: 12mm; }
-    * { box-sizing: border-box; }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: #111;
-      margin: 0;
-      background: #fff;
-      padding: 0;
+
+    :root{
+      --bg:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#dbe2ea;
+      --line-strong:#b8c4d3;
+      --surface:#f8fafc;
+      --surface-2:#eef2f7;
+      --brand:#6d5efc;
+      --brand-soft:#f1efff;
+      --radius:14px;
+      --radius-sm:10px;
+      --shadow:none;
     }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "DM Sans", Arial, Helvetica, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
     .sheet {
       width: 100%;
-      max-width: 100%;
       margin: 0 auto;
     }
-    h1 {
-      font-size: 18px;
-      margin: 0 0 10px;
-      text-transform: uppercase;
+
+    .doc-topbar {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      margin-bottom:16px;
+      padding-bottom:12px;
+      border-bottom:2px solid var(--line);
     }
-    .top, .meta, .summary, .footer {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+
+    .brand-wrap {
+      display:flex;
+      gap:12px;
+      align-items:center;
     }
-    .box {
-      border: 1px solid #222;
-      padding: 8px;
+
+    .brand-mark {
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      background: linear-gradient(135deg, var(--brand), #8b7fff);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      font-size:18px;
     }
-    .meta {
-      margin-top: 8px;
+
+    .brand-copy .eyebrow {
+      margin:0;
+      font-size:11px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
     }
-    .meta .box div, .box p {
-      margin: 0 0 4px;
-      font-size: 12px;
-      line-height: 1.35;
+
+    .brand-copy h1 {
+      margin:2px 0 0;
+      font-size:24px;
+      line-height:1.05;
+      font-weight:800;
     }
+
+    .doc-badge {
+      border:1px solid var(--line);
+      background:var(--surface);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .grid-2 {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .card {
+      border:1px solid var(--line);
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:12px 14px;
+    }
+
+    .card-title {
+      margin:0 0 8px;
+      font-size:12px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      color:var(--muted);
+    }
+
+    .meta-list {
+      display:grid;
+      gap:5px;
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .meta-list strong {
+      color:var(--text);
+    }
+
     table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      margin-top:12px;
+      font-size:11px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
     }
-    th, td {
-      border: 1px solid #222;
-      padding: 6px;
-      font-size: 11px;
-      vertical-align: top;
-      text-align: left;
+
+    thead th {
+      background:var(--surface-2);
+      color:var(--text);
+      font-weight:700;
+      text-align:left;
+      padding:8px 9px;
+      border-bottom:1px solid var(--line);
     }
-    th {
-      background: #f3f4f6;
+
+    tbody td {
+      padding:7px 9px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
     }
+
+    tbody tr:last-child td {
+      border-bottom:none;
+    }
+
     .summary {
-      margin-top: 10px;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:12px;
+      margin-top:12px;
     }
+
+    .totals-card {
+      border:1px solid var(--line);
+      background:var(--surface);
+      border-radius:var(--radius);
+      padding:12px 14px;
+    }
+
+    .totals-card p {
+      margin:0 0 6px;
+      font-size:12px;
+    }
+
     .liquido {
-      border: 2px solid #111;
-      padding: 12px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      border:1px solid rgba(109,94,252,.22);
+      background:var(--brand-soft);
+      border-radius:18px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
     }
+
     .liquido .label {
-      font-size: 12px;
-      text-transform: uppercase;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:var(--muted);
+      margin-bottom:8px;
     }
+
     .liquido .value {
-      font-size: 24px;
-      font-weight: 700;
-      margin-top: 6px;
+      font-size:34px;
+      line-height:1;
+      font-weight:900;
+      color:var(--text);
     }
-    .sign {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-top: 20px;
+
+    .footer {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:12px;
     }
-    .sign > div {
-      border-top: 1px solid #111;
-      padding-top: 8px;
-      text-align: center;
-      min-height: 42px;
-      font-size: 12px;
+
+    .signature-wrap {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      align-items:end;
+      padding:12px 0 0;
     }
-    .small {
-      font-size: 10px;
-      color: #444;
-      margin-top: 14px;
+
+    .signature {
+      border-top:1.5px solid var(--line-strong);
+      padding-top:8px;
+      min-height:44px;
+      text-align:center;
+      font-size:12px;
+      color:var(--text);
+    }
+
+    .legal {
+      margin-top:14px;
+      padding-top:10px;
+      border-top:1px solid var(--line);
+      font-size:10px;
+      line-height:1.45;
+      color:var(--muted);
+    }
+
+    .doc-footer {
+      margin-top:8px;
+      font-size:10px;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    @media print {
+      body { background:#fff; }
     }
   </style>
 </head>
 <body>
   <div class="sheet">
-    <h1>Nómina</h1>
-
-    <div class="top">
-      <div class="box">
-        <p><strong>Empresa:</strong> ${model.companyName || ''}</p>
-        <p><strong>CIF:</strong> ${model.companyCif || ''}</p>
-        <p><strong>Domicilio:</strong> ${model.companyAddress || ''}</p>
-        <p><strong>CCC:</strong> ${model.ccc || ''}</p>
+    <div class="doc-topbar">
+      <div class="brand-wrap">
+        <div class="brand-mark">U</div>
+        <div class="brand-copy">
+          <p class="eyebrow">UnaHojaTools</p>
+          <h1>Recibo de salarios</h1>
+        </div>
       </div>
-      <div class="box">
-        <p><strong>Periodo:</strong> ${periodLabel}</p>
-        <p><strong>Fecha emisión:</strong> ${model.issueDate || ''}</p>
-        <p><strong>Localidad:</strong> ${model.locality || ''}</p>
-        <p><strong>Total días:</strong> ${model.days || 30}</p>
+      <div class="doc-badge">Simulación orientativa · ${periodLabel}</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <p class="card-title">Empresa</p>
+        <div class="meta-list">
+          <div><strong>Empresa:</strong> ${model.companyName || ''}</div>
+          <div><strong>CIF:</strong> ${model.companyCif || ''}</div>
+          <div><strong>Domicilio:</strong> ${model.companyAddress || ''}</div>
+          <div><strong>CCC:</strong> ${model.ccc || ''}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Liquidación</p>
+        <div class="meta-list">
+          <div><strong>Periodo:</strong> ${periodLabel}</div>
+          <div><strong>Fecha emisión:</strong> ${model.issueDate || ''}</div>
+          <div><strong>Localidad:</strong> ${model.locality || ''}</div>
+          <div><strong>Total días:</strong> ${model.days || 30}</div>
+        </div>
       </div>
     </div>
 
-    <div class="meta">
-      <div class="box">
-        <div><strong>Trabajador:</strong> ${model.workerName || ''}</div>
-        <div><strong>NIF:</strong> ${model.workerNif || ''}</div>
-        <div><strong>Nº afiliación SS:</strong> ${model.workerSs || ''}</div>
-        <div><strong>Categoría:</strong> ${model.category || ''}</div>
+    <div class="grid-2" style="margin-top:12px;">
+      <div class="card">
+        <p class="card-title">Trabajador</p>
+        <div class="meta-list">
+          <div><strong>Trabajador:</strong> ${model.workerName || ''}</div>
+          <div><strong>NIF:</strong> ${model.workerNif || ''}</div>
+          <div><strong>Nº afiliación SS:</strong> ${model.workerSs || ''}</div>
+          <div><strong>Categoría:</strong> ${model.category || ''}</div>
+        </div>
       </div>
-      <div class="box">
-        <div><strong>Nº matrícula:</strong> ${model.employeeCode || ''}</div>
-        <div><strong>Sección:</strong> ${model.section || model.department || ''}</div>
-        <div><strong>Puesto:</strong> ${model.position || ''}</div>
-        <div><strong>Domicilio:</strong> ${model.workerAddress || ''}</div>
+
+      <div class="card">
+        <p class="card-title">Datos internos</p>
+        <div class="meta-list">
+          <div><strong>Nº matrícula:</strong> ${model.employeeCode || ''}</div>
+          <div><strong>Sección:</strong> ${model.section || model.department || ''}</div>
+          <div><strong>Puesto:</strong> ${model.position || ''}</div>
+          <div><strong>Domicilio:</strong> ${model.workerAddress || ''}</div>
+        </div>
       </div>
     </div>
 
@@ -454,7 +627,7 @@
     </table>
 
     <div class="summary">
-      <div class="box">
+      <div class="totals-card">
         <p><strong>Percepciones salariales:</strong> ${fmtMoney(model.salaryPerceptions || 0)}</p>
         <p><strong>Percepciones no salariales:</strong> ${fmtMoney(model.nonsalaryPerceptions || 0)}</p>
         <p><strong>Base Seguridad Social:</strong> ${fmtMoney(model.ssBase || 0)}</p>
@@ -463,6 +636,7 @@
         <p><strong>Total devengado:</strong> ${fmtMoney(model.totalDev || 0)}</p>
         <p><strong>Total deducido:</strong> ${fmtMoney(model.totalDed || 0)}</p>
       </div>
+
       <div class="liquido">
         <div class="label">Líquido a percibir</div>
         <div class="value">${fmtMoney(model.liquid || 0)}</div>
@@ -496,25 +670,31 @@
       </table>
     ` : ''}
 
-    <div class="footer" style="margin-top:10px;">
-      <div class="box">
-        <p><strong>IBAN:</strong> ${model.iban || ''}</p>
-        ${model.swift ? `<p><strong>SWIFT/BIC:</strong> ${model.swift}</p>` : ''}
-        <p><strong>Coste empresa:</strong> ${fmtMoney(model.employerCost || (model.bases && model.bases.employerCost) || 0)}</p>
+    <div class="footer">
+      <div class="card">
+        <p class="card-title">Pago y coste</p>
+        <div class="meta-list">
+          <div><strong>IBAN:</strong> ${model.iban || ''}</div>
+          ${model.swift ? `<div><strong>SWIFT/BIC:</strong> ${model.swift}</div>` : ''}
+          <div><strong>Coste empresa:</strong> ${fmtMoney(model.employerCost || (model.bases && model.bases.employerCost) || 0)}</div>
+        </div>
       </div>
-      <div class="sign">
-        <div>Sello empresa</div>
-        <div>Recibí</div>
+
+      <div class="signature-wrap">
+        <div class="signature">Sello empresa</div>
+        <div class="signature">Recibí</div>
       </div>
     </div>
 
-    <p class="small">
+    <div class="legal">
       ${model.legalNote || 'Documento generado automáticamente como simulación orientativa. Debe ser revisado antes de su uso laboral o contable.'}
-    </p>
+    </div>
+
+    <div class="doc-footer">unahojatools.com/sueldo-neto/</div>
   </div>
 </body>
 </html>`);
-  doc.close();
+doc.close();
 
   frame.onload = () => {
     setTimeout(() => {
