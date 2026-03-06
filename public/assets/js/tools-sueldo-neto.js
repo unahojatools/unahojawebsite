@@ -329,11 +329,11 @@ doc.write(`<!doctype html>
     .doc-topbar {
       display:flex;
       justify-content:space-between;
-      align-items:flex-start;
-      gap:16px;
-      margin-bottom:16px;
-      padding-bottom:12px;
-      border-bottom:2px solid var(--line);
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+      padding-bottom:6px;
+      border-bottom:1px solid var(--line);
     }
 
     .brand-wrap {
