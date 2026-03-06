@@ -578,11 +578,10 @@ doc.write(`<!doctype html>
 <body>
   <div class="sheet">
     <div class="doc-topbar">
-      <div class="brand-wrap">
-          <h2>Recibo de salarios</h2>
-        </div>
+      <div class="brand-copy">
+         <h1>Recibo de salarios</h1>
       </div>
-      <div class="doc-badge">Simulación orientativa · ${periodLabel}</div>
+      <div class="doc-badge">${periodLabel}</div>
     </div>
 
     <div class="grid-2">
