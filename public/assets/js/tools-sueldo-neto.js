@@ -241,7 +241,7 @@
     host.innerHTML = `
       <div class="nomina-sheet">
         <div class="nomina-head">
-          <div><h3>Recibo de salarios</h3><p><strong>Empresa:</strong> ${model.companyName} · ${model.companyCif}</p><p><strong>Domicilio:</strong> ${model.companyAddress}</p><p><strong>CCC:</strong> ${model.ccc}</p></div>
+          <div><h3>Nómina</h3><p><strong>Empresa:</strong> ${model.companyName} · ${model.companyCif}</p><p><strong>Domicilio:</strong> ${model.companyAddress}</p><p><strong>CCC:</strong> ${model.ccc}</p></div>
           <div><p><strong>Periodo:</strong> ${model.periodLabel}</p><p><strong>Emisión:</strong> ${model.issueDate}</p><p><strong>Total días:</strong> ${model.days}</p></div>
         </div>
         <div class="nomina-meta">
