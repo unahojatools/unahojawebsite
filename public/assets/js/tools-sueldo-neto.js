@@ -286,43 +286,136 @@
     return new Blob([pdf], { type: 'application/pdf' });
   }
 
-  function downloadNominaPdf(model) {
-    const lines = [
-      'RECIBO DE SALARIOS',
-      `${model.companyName} · ${model.companyCif}`,
-      model.companyAddress,
-      `CCC: ${model.ccc}`,
-      `Periodo: ${model.periodLabel} · Emisión: ${model.issueDate}`,
-      ' ',
-      `Trabajador: ${model.workerName}`,
-      `NIF: ${model.workerNif} · Nº SS: ${model.workerSs}`,
-      `Categoría: ${model.category} · Puesto: ${model.position}`,
-      `Dirección: ${model.workerAddress}`,
-      ' ',
-      'DEVENGOS',
-      ...model.devengos.map(i => `${i.code}  ${i.concept}  ${fmtMoney(i.amount)}`),
-      ' ',
-      'DEDUCCIONES',
-      ...model.deductions.map(i => `${i.code}  ${i.concept}  ${fmtMoney(i.amount)}`),
-      ' ',
-      `Total devengado: ${fmtMoney(model.totalDev)}`,
-      `Total deducido: ${fmtMoney(model.totalDed)}`,
-      `LIQUIDO A PERCIBIR: ${fmtMoney(model.liquid)}`,
-      ' ',
-      ...model.employerTable.map(i => `${i.concept}: base ${fmtMoney(i.base)} · trab ${fmtMoney(i.workerAmt)} · emp ${fmtMoney(i.employerAmt)}`),
-      ' ',
-      `IBAN: ${model.iban}`,
-      `Coste empresa estimado: ${fmtMoney(model.bases.employerCost)}`,
-      model.legalNote
-    ];
-    const blob = buildSimplePdf(lines, `Nomina ${model.periodLabel}`);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `nomina-simulada-${model.periodLabel.replace('/', '-')}.pdf`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  /* Sustituye la función downloadNominaPdf actual por este bloque */
+
+function openPayrollPrintWindow(model) {
+  const win = window.open('', '_blank', 'noopener,noreferrer,width=980,height=1200');
+  if (!win) {
+    alert('El navegador ha bloqueado la ventana emergente del PDF. Permite pop-ups para esta página.');
+    return;
   }
+
+  const fmtMoney = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 2 }).format(n || 0);
+
+  const html = `<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Nómina ${model.periodLabel || (model.periodMonth + '/' + model.periodYear)}</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body { font-family: Arial, Helvetica, sans-serif; color: #111; margin: 0; background: #fff; }
+  .sheet { width: 100%; margin: 0 auto; }
+  h1 { font-size: 18px; margin: 0 0 10px; text-transform: uppercase; }
+  .top, .meta, .foot { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .box { border: 1px solid #222; padding: 8px; }
+  .meta { margin-top: 8px; }
+  .meta .box div { margin-bottom: 4px; font-size: 12px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  th, td { border: 1px solid #222; padding: 6px; font-size: 11px; vertical-align: top; }
+  th { background: #f3f4f6; text-align: left; }
+  .totals { display: grid; grid-template-columns: 1.2fr .8fr; gap: 12px; margin-top: 10px; }
+  .liquido { border: 2px solid #111; padding: 12px; text-align: center; }
+  .liquido .label { font-size: 12px; text-transform: uppercase; }
+  .liquido .value { font-size: 24px; font-weight: 700; margin-top: 6px; }
+  .small { font-size: 10px; color: #444; }
+  .sign { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 20px; }
+  .sign > div { border-top: 1px solid #111; padding-top: 8px; text-align: center; min-height: 42px; font-size: 12px; }
+</style>
+</head>
+<body>
+  <div class="sheet">
+    <h1>Recibo de salarios</h1>
+
+    <div class="top">
+      <div class="box">
+        <div><strong>Empresa:</strong> ${model.companyName || ''}</div>
+        <div><strong>CIF:</strong> ${model.companyCif || ''}</div>
+        <div><strong>Domicilio:</strong> ${model.companyAddress || ''}</div>
+        <div><strong>CCC:</strong> ${model.ccc || ''}</div>
+      </div>
+      <div class="box">
+        <div><strong>Periodo:</strong> ${model.periodLabel || (model.periodMonth + '/' + model.periodYear)}</div>
+        <div><strong>Fecha emisión:</strong> ${model.issueDate || ''}</div>
+        <div><strong>Total días:</strong> ${model.days || 30}</div>
+      </div>
+    </div>
+
+    <div class="meta">
+      <div class="box">
+        <div><strong>Trabajador:</strong> ${model.workerName || ''}</div>
+        <div><strong>NIF:</strong> ${model.workerNif || ''}</div>
+        <div><strong>Nº afiliación SS:</strong> ${model.workerSs || ''}</div>
+        <div><strong>Categoría:</strong> ${model.category || ''}</div>
+      </div>
+      <div class="box">
+        <div><strong>Código empleado:</strong> ${model.employeeCode || ''}</div>
+        <div><strong>Sección:</strong> ${model.department || model.section || ''}</div>
+        <div><strong>Puesto:</strong> ${model.position || ''}</div>
+        <div><strong>Domicilio:</strong> ${model.workerAddress || ''}</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Código</th><th>Unidades</th><th>Precio</th><th>Concepto</th><th>Devengos</th><th>Deducciones</th></tr>
+      </thead>
+      <tbody>
+        ${(model.devengos || []).map(i => `<tr><td>${i.code || ''}</td><td>${i.units ?? ''}</td><td>${fmtMoney(i.price || 0)}</td><td>${i.concept || ''}</td><td>${fmtMoney(i.amount || 0)}</td><td></td></tr>`).join('')}
+        ${(model.deductions || []).map(i => `<tr><td>${i.code || ''}</td><td></td><td></td><td>${i.concept || ''}</td><td></td><td>${fmtMoney(i.amount || 0)}</td></tr>`).join('')}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <div class="box">
+        <div><strong>Total devengado:</strong> ${fmtMoney(model.totalDev || 0)}</div>
+        <div><strong>Total deducido:</strong> ${fmtMoney(model.totalDed || 0)}</div>
+        <div><strong>IBAN:</strong> ${model.iban || ''}</div>
+        <div><strong>Coste empresa estimado:</strong> ${fmtMoney((model.bases && model.bases.employerCost) || model.employerCost || 0)}</div>
+      </div>
+      <div class="liquido">
+        <div class="label">Líquido a percibir</div>
+        <div class="value">${fmtMoney(model.liquid || 0)}</div>
+      </div>
+    </div>
+
+    ${(model.employerTable && model.employerTable.length) ? `
+    <table>
+      <thead>
+        <tr><th>Concepto</th><th>Base</th><th>Tipo trab.</th><th>Aportación trab.</th><th>Tipo emp.</th><th>Aportación emp.</th></tr>
+      </thead>
+      <tbody>
+        ${model.employerTable.map(r => `<tr><td>${r.concept || ''}</td><td>${fmtMoney(r.base || 0)}</td><td>${r.workerRate === '' ? '—' : ((r.workerRate || 0) + '%')}</td><td>${fmtMoney(r.workerAmt || 0)}</td><td>${r.employerRate === '' ? '—' : ((r.employerRate || 0) + '%')}</td><td>${fmtMoney(r.employerAmt || 0)}</td></tr>`).join('')}
+      </tbody>
+    </table>` : ''}
+
+    <div class="sign">
+      <div>Sello empresa</div>
+      <div>Recibí</div>
+    </div>
+
+    <p class="small">${model.legalNote || 'Documento generado automáticamente como simulación orientativa. Debe ser revisado antes de su uso laboral o contable.'}</p>
+  </div>
+
+<script>
+window.onload = () => {
+  setTimeout(() => {
+    window.print();
+  }, 250);
+};
+</script>
+</body>
+</html>`;
+
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+}
+
+function downloadNominaPdf(model) {
+  openPayrollPrintWindow(model);
+}
 
   function parseChildrenDetailed() {
     const total = Math.max(0, Math.round(getNumber('sn-children', 0)));
