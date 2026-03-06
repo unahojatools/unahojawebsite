@@ -538,7 +538,7 @@ doc.write(`<!doctype html>
   <div class="sheet">
     <div class="doc-topbar">
       <div class="brand-wrap">
-          <h2>Nómina</h2>
+          <h1>Recibo de salarios</h1>
         </div>
       </div>
       <div class="doc-badge">Simulación orientativa · ${periodLabel}</div>
