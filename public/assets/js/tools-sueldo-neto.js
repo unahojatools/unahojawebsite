@@ -538,7 +538,7 @@ doc.write(`<!doctype html>
   <div class="sheet">
     <div class="doc-topbar">
       <div class="brand-wrap">
-          <h1>Nómina</h1>
+          <h2>Nómina</h2>
         </div>
       </div>
       <div class="doc-badge">Simulación orientativa · ${periodLabel}</div>
