@@ -466,7 +466,7 @@ doc.write(`<!doctype html>
       border:1px solid rgba(109,94,252,.22);
       background:var(--brand-soft);
       border-radius:18px;
-      padding:18px;
+      padding:14px;
       display:flex;
       flex-direction:column;
       justify-content:center;
@@ -492,8 +492,8 @@ doc.write(`<!doctype html>
     .footer {
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:12px;
+      gap:8px;
+      margin-top:8px;
     }
 
     .signature-wrap {
@@ -506,7 +506,7 @@ doc.write(`<!doctype html>
 
     .signature {
       border-top:1.5px solid var(--line-strong);
-      padding-top:8px;
+      padding-top:6px;
       min-height:44px;
       text-align:center;
       font-size:12px;
@@ -514,8 +514,8 @@ doc.write(`<!doctype html>
     }
 
     .legal {
-      margin-top:14px;
-      padding-top:10px;
+      margin-top:10px;
+      padding-top:6px;
       border-top:1px solid var(--line);
       font-size:10px;
       line-height:1.45;
@@ -523,7 +523,7 @@ doc.write(`<!doctype html>
     }
 
     .doc-footer {
-      margin-top:8px;
+      margin-top:6px;
       font-size:10px;
       color:var(--muted);
       text-align:right;
@@ -538,7 +538,7 @@ doc.write(`<!doctype html>
   <div class="sheet">
     <div class="doc-topbar">
       <div class="brand-wrap">
-          <h1>Recibo de salarios</h1>
+          <h2>Recibo de salarios</h2>
         </div>
       </div>
       <div class="doc-badge">Simulación orientativa · ${periodLabel}</div>
