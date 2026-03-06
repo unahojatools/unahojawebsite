@@ -386,7 +386,7 @@
 </head>
 <body>
   <div class="sheet">
-    <h1>Recibo de salarios</h1>
+    <h1>Nómina</h1>
 
     <div class="top">
       <div class="box">
