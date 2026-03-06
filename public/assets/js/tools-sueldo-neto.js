@@ -293,245 +293,286 @@ doc.write(`<!doctype html>
   <meta charset="utf-8">
   <title>Nómina ${periodLabel}</title>
   <style>
-    @page { size: A4; margin: 12mm; }
-
-    :root{
-      --bg:#ffffff;
-      --text:#0f172a;
-      --muted:#475569;
-      --line:#dbe2ea;
-      --line-strong:#b8c4d3;
-      --surface:#f8fafc;
-      --surface-2:#eef2f7;
-      --brand:#6d5efc;
-      --brand-soft:#f1efff;
-      --radius:14px;
-      --radius-sm:10px;
-      --shadow:none;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Inter, "DM Sans", Arial, Helvetica, sans-serif;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    .sheet {
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    .doc-topbar {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:8px;
-      padding-bottom:6px;
-      border-bottom:1px solid var(--line);
-    }
-
-    .brand-wrap {
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
-
-    .brand-mark {
-      width:40px;
-      height:40px;
-      border-radius:12px;
-      background: linear-gradient(135deg, var(--brand), #8b7fff);
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      font-size:18px;
-    }
-
-    .brand-copy .eyebrow {
-      margin:0;
-      font-size:11px;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
-    .brand-copy h1 {
-      margin:2px 0 0;
-      font-size:24px;
-      line-height:1.05;
-      font-weight:800;
-    }
-
-    .doc-badge {
-      border:1px solid var(--line);
-      background:var(--surface);
-      border-radius:999px;
-      padding:8px 12px;
-      font-size:11px;
-      color:var(--muted);
-      white-space:nowrap;
-    }
-
-    .grid-2 {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .card {
-      border:1px solid var(--line);
-      background:var(--surface);
-      border-radius:var(--radius);
-      padding:12px 14px;
-    }
-
-    .card-title {
-      margin:0 0 8px;
-      font-size:12px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-      color:var(--muted);
-    }
-
-    .meta-list {
-      display:grid;
-      gap:5px;
-      font-size:12px;
-      line-height:1.35;
-    }
-
-    .meta-list strong {
-      color:var(--text);
-    }
-
-    table {
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      margin-top:12px;
-      font-size:11px;
-      border:1px solid var(--line);
-      border-radius:14px;
-      overflow:hidden;
-    }
-
-    thead th {
-      background:var(--surface-2);
-      color:var(--text);
-      font-weight:700;
-      text-align:left;
-      padding:8px 9px;
-      border-bottom:1px solid var(--line);
-    }
-
-    tbody td {
-      padding:7px 9px;
-      border-bottom:1px solid var(--line);
-      vertical-align:top;
-    }
-
-    tbody tr:last-child td {
-      border-bottom:none;
-    }
-
-    .summary {
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:12px;
-      margin-top:12px;
-    }
-
-    .totals-card {
-      border:1px solid var(--line);
-      background:var(--surface);
-      border-radius:var(--radius);
-      padding:12px 14px;
-    }
-
-    .totals-card p {
-      margin:0 0 6px;
-      font-size:12px;
-    }
-
-    .liquido {
-      border:1px solid rgba(109,94,252,.22);
-      background:var(--brand-soft);
-      border-radius:18px;
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      align-items:center;
-      text-align:center;
-    }
-
-    .liquido .label {
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      color:var(--muted);
-      margin-bottom:8px;
-    }
-
-    .liquido .value {
-      font-size:34px;
-      line-height:1;
-      font-weight:900;
-      color:var(--text);
-    }
-
-    .footer {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      margin-top:8px;
-    }
-
-    .signature-wrap {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
-      align-items:end;
-      padding:12px 0 0;
-    }
-
-    .signature {
-      border-top:1.5px solid var(--line-strong);
-      padding-top:6px;
-      min-height:44px;
-      text-align:center;
-      font-size:12px;
-      color:var(--text);
-    }
-
-    .legal {
-      margin-top:10px;
-      padding-top:6px;
-      border-top:1px solid var(--line);
-      font-size:10px;
-      line-height:1.45;
-      color:var(--muted);
-    }
-
-    .doc-footer {
-      margin-top:6px;
-      font-size:10px;
-      color:var(--muted);
-      text-align:right;
-    }
-
-    @media print {
-      body { background:#fff; }
-    }
+          @page { size: A4; margin: 5mm; }
+      
+      :root{
+        --bg:#ffffff;
+        --text:#0f172a;
+        --muted:#5b6472;
+        --line:#dbe2ea;
+        --line-strong:#bcc7d4;
+        --surface:#f8fafc;
+        --surface-2:#eef2f7;
+        --brand:#6d5efc;
+        --brand-soft:#f1efff;
+        --radius:10px;
+        --radius-sm:8px;
+      }
+      
+      * { box-sizing: border-box; }
+      
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, "DM Sans", Arial, Helvetica, sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      
+      body {
+        font-size: 11px;
+        line-height: 1.25;
+      }
+      
+      .sheet {
+        width: 100%;
+        margin: 0 auto;
+      }
+      
+      /* cabecera */
+      .doc-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--line);
+      }
+      
+      .brand-wrap {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        min-width: 0;
+      }
+      
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, var(--brand), #8b7fff);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 13px;
+        flex: 0 0 auto;
+      }
+      
+      .brand-copy .eyebrow {
+        margin: 0;
+        font-size: 9px;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--muted);
+        line-height: 1.1;
+      }
+      
+      .brand-copy h1 {
+        margin: 1px 0 0;
+        font-size: 18px;
+        line-height: 1.02;
+        font-weight: 800;
+      }
+      
+      .doc-badge {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: 999px;
+        padding: 5px 9px;
+        font-size: 9px;
+        color: var(--muted);
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+      
+      /* grids */
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      
+      .card {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 8px 10px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      .card-title {
+        margin: 0 0 5px;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .05em;
+        color: var(--muted);
+        line-height: 1.1;
+      }
+      
+      .meta-list {
+        display: grid;
+        gap: 2px;
+        font-size: 10px;
+        line-height: 1.22;
+      }
+      
+      .meta-list div {
+        margin: 0;
+      }
+      
+      .meta-list strong {
+        color: var(--text);
+      }
+      
+      /* tablas */
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 8px;
+        font-size: 9.5px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      thead th {
+        background: var(--surface-2);
+        color: var(--text);
+        font-weight: 700;
+        text-align: left;
+        padding: 5px 6px;
+        border-bottom: 1px solid var(--line);
+        line-height: 1.15;
+      }
+      
+      tbody td {
+        padding: 4px 6px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+        line-height: 1.18;
+      }
+      
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      
+      /* resumen */
+      .summary {
+        display: grid;
+        grid-template-columns: 1.15fr .85fr;
+        gap: 8px;
+        margin-top: 8px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      .totals-card {
+        border: 1px solid var(--line);
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 8px 10px;
+      }
+      
+      .totals-card p {
+        margin: 0 0 3px;
+        font-size: 10px;
+        line-height: 1.2;
+      }
+      
+      .liquido {
+        border: 1px solid rgba(109,94,252,.22);
+        background: var(--brand-soft);
+        border-radius: 14px;
+        padding: 10px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        text-align: center;
+      }
+      
+      .liquido .label {
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        color: var(--muted);
+        line-height: 1.1;
+      }
+      
+      .liquido .value {
+        font-size: 26px;
+        line-height: 1;
+        font-weight: 900;
+        color: var(--text);
+      }
+      
+      /* footer */
+      .footer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 8px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      .signature-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        align-items: end;
+        padding: 10px 0 0;
+      }
+      
+      .signature {
+        border-top: 1px solid var(--line-strong);
+        padding-top: 5px;
+        min-height: 28px;
+        text-align: center;
+        font-size: 10px;
+        color: var(--text);
+        line-height: 1.1;
+      }
+      
+      .legal {
+        margin-top: 8px;
+        padding-top: 6px;
+        border-top: 1px solid var(--line);
+        font-size: 8.5px;
+        line-height: 1.28;
+        color: var(--muted);
+      }
+      
+      .doc-footer {
+        margin-top: 4px;
+        font-size: 8px;
+        color: var(--muted);
+        text-align: right;
+      }
+      
+      /* seguridad para impresión */
+      .doc-topbar,
+      .grid-2,
+      .summary,
+      .footer,
+      .card,
+      .totals-card,
+      .liquido,
+      .signature-wrap {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
   </style>
 </head>
 <body>
