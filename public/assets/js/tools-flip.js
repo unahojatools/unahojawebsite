@@ -949,7 +949,7 @@
       { label: "Agencia venta", v: -sellAgency, type: "out" },
       { label: "Gastos venta", v: -base.sellFixed, type: "out" },
       { label: "Plusvalía", v: -base.plusvalia, type: "out" },
-      { label: "Impuestos", v: -base.taxOther, type: "out" },
+      { label: "Impuestos", v: -(resOffer?.taxOther || 0), type: "out" },
       { label: "Buffer", v: -buffer, type: "out" },
       { label: "Compra", v: -offer, type: "out" },
       { label: "ITP", v: -itp, type: "out" },
@@ -966,7 +966,7 @@
     return items;
   }
 
-   function waterfallItemsAggregated(base){
+   function waterfallItemsAggregated(base, resOffer){
      const offer = base.offer;
    
      const itp = offer * base.itpPct;
@@ -991,7 +991,7 @@
      const items = [
        { label:"Venta", v: base.salePriceClose, type:"in" },
        { label:"Costes venta", v: -sellTotal, type:"out" },
-       { label:"Impuestos", v: -(base.plusvalia + base.taxOther), type:"out" },
+       { label:"Impuestos", v: -(base.plusvalia + (resOffer?.taxOther || 0)), type:"out" },
        { label:"Buffer", v: -buffer, type:"out" },
        { label:"Compra total", v: -buyTotal, type:"out" },
        { label:"Reforma", v: -base.renoTotal, type:"out" },
@@ -1009,12 +1009,12 @@
     const { ctx, w, h } = dprScaleCanvas(canvas);
     clearCanvas(ctx, w, h);
 
-    const pad = { l: 54, r: 16, t: 20, b: 34 };
+    const pad = { l: 54, r: 16, t: 20, b: 64 };
     const x0 = pad.l, y0 = pad.t, x1 = w - pad.r, y1 = h - pad.b;
 
-    const isSmall = window.innerWidth < 1200;
-      const items = isSmall
-        ? waterfallItemsAggregated(out.base)
+    const useAggregated = w < 980;
+      const items = useAggregated
+        ? waterfallItemsAggregated(out.base, out.baseRes)
         : waterfallItemsBase(out.base, out.maoBase, out.baseRes);
 
     let acc = 0;
@@ -1079,7 +1079,8 @@
 
       const label = it.label.length > 14 ? it.label.slice(0, 14) + "…" : it.label;
       
-      if (isSmall) {
+      const rotateLabels = useAggregated || barW < 44;
+      if (rotateLabels) {
         // Etiqueta vertical (móvil)
         ctx.save();
         ctx.translate(x + barW/2, y1 + 30);
